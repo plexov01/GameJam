@@ -32,9 +32,7 @@ namespace GameJam.Features.UI
                     
                     lastPanelInstance?.Panel.SetActive(false);
                 }
-                
-                _panelInstanceModels.Clear();
-                
+
                 _panelInstanceModels.Add(new PanelInstanceModel
                 {
                     PanelId = panelId,
