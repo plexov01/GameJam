@@ -2,6 +2,7 @@
 { 
 	using UnityEngine;
 	using System;
+	using UnityEngine.Serialization;
 
 	/// <summary>
 	/// Экземпляр панели
@@ -10,9 +11,9 @@
 	public class PanelInstanceModel
 	{
 		/// <summary>
-		/// Id панели
+		/// Имя панели
 		/// </summary>
-		public string PanelId = default;
+		public string panelName = default;
 		/// <summary>
 		/// Экзмепляр панели
 		/// </summary>

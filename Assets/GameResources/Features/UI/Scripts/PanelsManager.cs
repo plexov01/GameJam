@@ -19,10 +19,10 @@ namespace GameJam.Features.UI
         /// <summary>
         /// Показать панель
         /// </summary>
-        /// <param name="panelId"></param>
-        public void ShowPanel(string panelId)
+        /// <param name="panelName"></param>
+        public void ShowPanel(string panelName)
         {
-            GameObject panelInstance = _panelPool.GetPanelFromPool(panelId);
+            GameObject panelInstance = _panelPool.GetPanelFromPool(panelName);
 
             if (panelInstance!=null)
             {
@@ -35,13 +35,13 @@ namespace GameJam.Features.UI
 
                 _panelInstanceModels.Add(new PanelInstanceModel
                 {
-                    PanelId = panelId,
+                    panelName = panelName,
                     Panel = panelInstance
                 });
             }
             else
             {
-                Debug.LogWarning($"Trying to use panelId = {panelId}, but this is not found in the ObjectPool");
+                Debug.LogWarning($"Trying to use panelId = {panelName}, but this is not found in the ObjectPool");
             }
         }
         
