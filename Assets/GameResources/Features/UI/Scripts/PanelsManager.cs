@@ -8,7 +8,6 @@ namespace GameJam.Features.UI
     /// </summary>
     public class PanelsManager : MonoBehaviour
     {
-
         private List<PanelInstanceModel> _panelInstanceModels = new List<PanelInstanceModel>();
 
         private PanelPool _panelPool = default;
@@ -17,7 +16,10 @@ namespace GameJam.Features.UI
         {
             _panelPool = FindObjectOfType<PanelPool>();
         }
-
+        /// <summary>
+        /// Показать панель
+        /// </summary>
+        /// <param name="panelId"></param>
         public void ShowPanel(string panelId)
         {
             GameObject panelInstance = _panelPool.GetPanelFromPool(panelId);

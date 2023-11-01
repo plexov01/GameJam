@@ -5,7 +5,7 @@ namespace GameJob.Features.UI
     using UnityEngine;
     
     /// <summary>
-    /// Пулл панелей
+    /// Пул панелей
     /// </summary>
     public class PanelPool : MonoBehaviour
     {

@@ -9,6 +9,9 @@ namespace GameJam.Features.UI
     [RequireComponent(typeof(Button))]
     public class ShowPanelButton : AbstractButton
     {
+        /// <summary>
+        /// Имя загружаемой панели
+        /// </summary>
         public string NamePanelForShow = default;
 
         private PanelsManager _panelsManager = default;
