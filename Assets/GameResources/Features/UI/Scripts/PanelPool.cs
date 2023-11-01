@@ -2,7 +2,6 @@ namespace GameJob.Features.UI
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Unity.VisualScripting;
     using UnityEngine;
     
     /// <summary>
@@ -54,11 +53,7 @@ namespace GameJob.Features.UI
       
             Debug.LogWarning("Object pool doesn't have a prefab for the object with name " + panelName);
             return null;
-            
-            
         }
-
-
     }
 }
 
