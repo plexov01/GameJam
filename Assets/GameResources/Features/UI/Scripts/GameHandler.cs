@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameHandler : MonoBehaviour
 {
-    public GameHandler Instance { get; private set; }
+    public static GameHandler Instance { get; private set; }
     
     public enum State
     {
@@ -20,6 +20,9 @@ public class GameHandler : MonoBehaviour
 
     private State currentState;
 
+    private float secondStageTimer;
+    private float secondStageTimerMax = 180f;
+
 
     private void Awake()
     {
@@ -30,10 +33,39 @@ public class GameHandler : MonoBehaviour
 
     private void Update()
     {
+        switch (currentState)
+        {
+            case State.WaitingForStart:
+                break;
+            case State.FirstStage:
+                break;
+            case State.SecondStage:
+                if (secondStageTimer >= secondStageTimerMax)
+                {
+                    secondStageTimer = 0f;
+
+                    currentState = State.ThirdStage;
+                    OnStateChanged?.Invoke(this, EventArgs.Empty);
+                }
+                break;
+            case State.ThirdStage:
+                break;
+            case State.GameOver:
+                break;
+        }
+    }
+
+    public void GameOver()
+    {
+        currentState = State.GameOver;
         OnStateChanged?.Invoke(this, EventArgs.Empty);
     }
 
-
+    public void StartSecondStage()
+    {
+        currentState = State.SecondStage;
+        OnStateChanged?.Invoke(this, EventArgs.Empty);
+    }
 
     public bool IsGameOver()
     {
