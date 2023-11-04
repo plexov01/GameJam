@@ -9,7 +9,7 @@ public static class SceneLoader
     {
         Main,
         Loading,
-        Level1,
+        TowerDefense,
     }
 
 

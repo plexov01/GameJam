@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Loading.unity
     guid: 4a8104ec57f2c534a841ee57ea305f90
   - enabled: 1
-    path: Assets/Scenes/Level1.unity
-    guid: d433c60835683c542a4fb75497708e8c
+    path: Assets/Scenes/TowerDefense.unity
+    guid: 89fe59cd8e9f76b4482c165660bdf178
   m_configObjects: {}

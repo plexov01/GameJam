@@ -13,7 +13,7 @@ namespace GameResources.Features.UI.Scripts.Buttons
 
         protected override void ClickAction()
         {
-            SceneLoader.LoadScene(SceneLoader.Scene.Level1);
+            SceneLoader.LoadScene(SceneLoader.Scene.TowerDefense);
             GameHandler.Instance.ChangeState(GameHandler.State.FirstStage);
         }
     }

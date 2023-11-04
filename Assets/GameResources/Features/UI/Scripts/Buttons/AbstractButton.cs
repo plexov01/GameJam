@@ -19,10 +19,7 @@ namespace GameJam.Features.UI
 
         protected abstract void ClickAction();
 
-        protected virtual  void OnDestroy()
-        {
-            _button.onClick.RemoveListener(ClickAction);
-        }
+        protected virtual  void OnDestroy() => _button.onClick.RemoveListener(ClickAction);
     }
 }
 
