@@ -14,6 +14,7 @@ namespace GameResources.Features.UI.Scripts.Buttons
         protected override void ClickAction()
         {
             SceneLoader.LoadScene(SceneLoader.Scene.Level1);
+            GameHandler.Instance.ChangeState(GameHandler.State.FirstStage);
         }
     }
 }

@@ -27,49 +27,42 @@ public class GameHandler : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        
+        DontDestroyOnLoad(this);
 
         currentState = State.WaitingForStart;
+
+        OnStateChanged += GameHandler_OnStateChanged;
+    }
+
+    private void GameHandler_OnStateChanged(object sender, EventArgs e)
+    {
+        if (currentState == State.GameOver)
+        {
+            Time.timeScale = 0;
+            Debug.Log("Game Over!");
+        }
     }
 
     private void Update()
     {
-        switch (currentState)
+        if (currentState == State.SecondStage)
         {
-            case State.WaitingForStart:
-                break;
-            case State.FirstStage:
-                break;
-            case State.SecondStage:
-                if (secondStageTimer >= secondStageTimerMax)
-                {
-                    secondStageTimer = 0f;
+            secondStageTimer += Time.deltaTime;
+            if (secondStageTimer >= secondStageTimerMax)
+            {
+                secondStageTimer = 0f;
 
-                    currentState = State.ThirdStage;
-                    OnStateChanged?.Invoke(this, EventArgs.Empty);
-                }
-                break;
-            case State.ThirdStage:
-                break;
-            case State.GameOver:
-                break;
+                currentState = State.ThirdStage;
+                OnStateChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 
-    public void GameOver()
+    public void ChangeState(State newState)
     {
-        currentState = State.GameOver;
+        currentState = newState;
         OnStateChanged?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void StartSecondStage()
-    {
-        currentState = State.SecondStage;
-        OnStateChanged?.Invoke(this, EventArgs.Empty);
-    }
-
-    public bool IsGameOver()
-    {
-        return currentState == State.GameOver;
     }
     
     public bool IsFirstStageActive()

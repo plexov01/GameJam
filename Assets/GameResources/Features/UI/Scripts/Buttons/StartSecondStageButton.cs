@@ -7,6 +7,6 @@ public class StartSecondStageButton : AbstractButton
 {
     protected override void ClickAction()
     {
-        GameHandler.Instance.StartSecondStage();
+        GameHandler.Instance.ChangeState(GameHandler.State.SecondStage);
     }
 }
