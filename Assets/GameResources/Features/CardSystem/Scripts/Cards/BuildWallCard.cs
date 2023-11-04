@@ -9,9 +9,7 @@ namespace GameJob.Features.CardSystem
     {
         public override void ActivateCard()
         {
-            Debug.Log($"BuildWallCard activated");
-            // TODO: Создать стену
-            
+            BuildManager.instance.BuildWall();
         }
     }
 
