@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - NodeForTurret
+  - NodeForWall
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -13,14 +17,14 @@ TagManager:
   - UI
   - 
   - 
+  - Terrain
+  - Path
+  - Wall
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - Turret
+  - Bullet
   - 
   - 
   - 
