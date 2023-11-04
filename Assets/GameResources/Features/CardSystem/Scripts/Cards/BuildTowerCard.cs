@@ -9,8 +9,7 @@ namespace GameJob.Features.CardSystem
     {
         public override void ActivateCard()
         {
-            Debug.Log($"BuildTowerCard activated");
-            // TODO: Создать башню
+            BuildManager.instance.BuildTurret();
         }
     }
 }
