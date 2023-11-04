@@ -36,16 +36,16 @@ public class Health : MonoBehaviour, IDamageable
             {
                 print(Vector3.Distance(enemy.transform.position, transform.position));
 
-                if (enemy.GetComponent<NavMeshAgent>() != null && Vector3.Distance(enemy.transform.position, transform.position) < 4f)
+                if (enemy.GetComponent<NavMeshAgent>() != null && Vector3.Distance(enemy.transform.position, transform.position) < 6f)
                 {
                     enemy.GetComponent<NavMeshAgent>().speed = enemy.GetComponent<EnemyMovement>().baseSpeed;
                 }
             }
 
-            if (EnemyManager.instance != null)
+            /*if (EnemyManager.instance != null)
             {
                 EnemyManager.instance.UpdateMesh();
-            }
+            }*/
         }
     }
 }
