@@ -11,6 +11,7 @@ namespace GameJob.Features.CardSystem
         {
             Debug.Log($"BuildWallCard activated");
             // TODO: Создать стену
+            
         }
     }
 

@@ -1,6 +1,7 @@
 namespace GameJob.Features.CardSystem
 {
     using GameJam.Features.CardSystem;
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
@@ -19,7 +20,6 @@ namespace GameJob.Features.CardSystem
         private int _numberOfSelection = default;
 
         public bool FirstStage = default;
-        public bool SecondStage = default;
 
         private UiCardController _uiCardController = default;
 
@@ -32,9 +32,14 @@ namespace GameJob.Features.CardSystem
 
         private void OnEnable()
         {
-            //TODO: подписка на событие изменения этапа
+            GameHandler.OnStateChanged += DoLogicOnStages;
         }
-        
+
+        private void OnDisable()
+        {
+            GameHandler.OnStateChanged -= DoLogicOnStages;
+        }
+
         /// <summary>
         /// Получить карты в указаном количестве
         /// </summary>
@@ -99,11 +104,11 @@ namespace GameJob.Features.CardSystem
                 {
                     cards = GetStarterCards();
                 }
-
-                if (SecondStage)
+                else
                 {
                     cards = GetRandomCards(2);
                 }
+                
                 
                 _uiCardController.ShowCards(cards);
             }
@@ -112,23 +117,22 @@ namespace GameJob.Features.CardSystem
                 _uiCardController.HideUIChooseCard();
             }
         }
-        
+
         private void Start()
         {
-            // DoLogicOnStages();
-            // SetNumberCardSelection(5);
-            // TryChooseNextCard();
+            SetNumberCardSelection(5);
+            TryChooseNextCard();
         }
-        
-        private void DoLogicOnStages()
+
+        private void DoLogicOnStages(object sender, EventArgs args)
         {
-            //GameHandler.METHOD
-            //Первая стадия
-            if (true)
+            if (!GameHandler.Instance.IsFirstStageActive())
             {
-                SetNumberCardSelection(5);
+                FirstStage = false;
+                SetNumberCardSelection(0);
                 TryChooseNextCard();
             }
+
         }
     }
 }
