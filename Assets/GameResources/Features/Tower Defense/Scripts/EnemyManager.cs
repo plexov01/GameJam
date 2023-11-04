@@ -3,22 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Unity.AI.Navigation;
+using System.Linq;
 
 public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager instance = null;
 
-    private Vector3 spawnPoint;
     public List<GameObject> enemyPrefabs = new List<GameObject>();
 
     public List<int> enemyOrder;
 
     public Transform end;
     public NavMeshSurface surface;
-    [SerializeField] private GameObject path;
-    private bool pathState = true;
-    //[SerializeField] private GameObject wall;
-    //private bool wallState = false;
+
+    private string enemyTag = "EnemyTrigger";
 
     private void Awake()
     {
@@ -32,15 +30,10 @@ public class EnemyManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
-
-        spawnPoint = transform.position;
     }
 
     void Start()
     {
-        path.SetActive(pathState);
-        //wall.SetActive(wallState);
-
         surface.BuildNavMesh();
 
         //StartCoroutine(UpdateNavMesh());
@@ -50,27 +43,24 @@ public class EnemyManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Keypad1))
+        if (Input.GetKeyDown(KeyCode.Keypad5))
         {
-            print("path");
-            pathState = !pathState;
-            path.SetActive(pathState);
-            //surface.BuildNavMesh();
+            StartCoroutine(SpawnEnemies(3, 0));
         }
 
-        /*if (Input.GetKeyDown(KeyCode.Keypad2))
+        if (Input.GetKeyDown(KeyCode.Keypad6))
         {
-            print("wall");
-            wallState = !wallState;
-            wall.SetActive(wallState);
-            surface.BuildNavMesh();
-        }*/
+            KillAllEnemies();
+        }
+    }
 
-        if (Input.GetKeyDown(KeyCode.Keypad3))
+    public IEnumerator SpawnEnemies(int numberToSpawn, int enemyType)
+    {
+        for (int i = 0; i < numberToSpawn; i++)
         {
-            print("build navMesh");
-            surface.BuildNavMesh();
-            surface.BuildNavMesh();
+            Instantiate(enemyPrefabs[enemyType], Vector3.zero, Quaternion.identity, transform.GetChild(0));
+
+            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -78,19 +68,25 @@ public class EnemyManager : MonoBehaviour
     {
         for (int i = 0; i < enemyOrder.Count; i++)
         {
-            Instantiate(enemyPrefabs[enemyOrder[i]], Vector3.zero, Quaternion.identity, transform);
+            Instantiate(enemyPrefabs[enemyOrder[i]], Vector3.zero, Quaternion.identity, transform.GetChild(0));
 
             yield return new WaitForSeconds(1f);
         }
+    }
 
-        /*yield return new WaitForSeconds(5f);
+    public void KillAllEnemies()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
 
-        for (int i = 0; i < enemyOrder.Count; i++)
+        foreach (GameObject enemy in enemies)
         {
-            Instantiate(enemyPrefabs[enemyOrder[i]], Vector3.zero, Quaternion.identity, transform);
+            enemy.GetComponent<IDamageable>().TakeDamage(10000f, enemy.transform);
+        }
+    }
 
-            yield return new WaitForSeconds(1f);
-        }*/
+    public void IncreaseEnemiesHP()
+    {
+
     }
 
     public void UpdateMesh()

@@ -54,6 +54,7 @@ public class Node : MonoBehaviour
             GameObject turrentToBuild = BuildManager.instance.GetTurretToBuild();
             turret = Instantiate(turrentToBuild, transform.position + new Vector3(0, 0, 0), transform.rotation);
             buildManager.buildTurret = false;
+            buildManager.turretCount++;
         }
 
         if (wall != null)
@@ -66,7 +67,7 @@ public class Node : MonoBehaviour
             GameObject wallToBuild = BuildManager.instance.GetWallToBuild();
             wall = Instantiate(wallToBuild, transform.position + new Vector3(0, 2.5f, 0), transform.rotation, EnemyManager.instance.surface.transform);
             buildManager.buildWall = false;
-            EnemyManager.instance.UpdateMesh();
+            //EnemyManager.instance.UpdateMesh();
         }
     }
 }

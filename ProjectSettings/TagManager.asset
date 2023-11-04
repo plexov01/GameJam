@@ -8,6 +8,8 @@ TagManager:
   - NodeForTurret
   - NodeForWall
   - Wall
+  - EnemyTrigger
+  - Turret
   layers:
   - Default
   - TransparentFX
