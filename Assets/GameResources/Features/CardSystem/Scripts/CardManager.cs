@@ -13,19 +13,25 @@ namespace GameJob.Features.CardSystem
     /// </summary>
     public class CardManager : MonoBehaviour
     {
+        [Range(2, 6)] public int TimeLoopShow = default;
         
         private List<AbstractCard> _abstractCards = new List<AbstractCard>();
-
-        private bool _cardSelected = false;
+        private List<AbstractCard> _abstractSpecialCards = new List<AbstractCard>();
+        private List<AbstractCard> _abstractNotSpecialCards = new List<AbstractCard>();
+        
         private int _numberOfSelection = default;
 
         public bool FirstStage = default;
 
         private UiCardController _uiCardController = default;
 
+        private Coroutine _coroutineShowCard = default;
+
         private void Awake()
         {
             _abstractCards = Resources.LoadAll<AbstractCard>("Cards").ToList();
+            _abstractSpecialCards = _abstractCards.Where(x => x.Special == true).ToList();
+            _abstractNotSpecialCards = _abstractCards.Where(x => x.Special == false).ToList();
 
             _uiCardController = FindObjectOfType<UiCardController>(true);
         }
@@ -40,8 +46,20 @@ namespace GameJob.Features.CardSystem
             GameHandler.OnStateChanged -= DoLogicOnStages;
         }
 
+        private IEnumerator ShowCardEveryTime(float time)
+        {
+            while (true)
+            {
+                yield return new WaitForSecondsRealtime(time-1);
+                _uiCardController.HideUIChooseCard();
+                yield return new WaitForSecondsRealtime(1f);
+                TryChooseNextCard();
+            }
+            
+        }
+
         /// <summary>
-        /// Получить карты в указаном количестве
+        /// Получить обычные карты в указаном количестве
         /// </summary>
         /// <param name="number"></param>
         /// <returns></returns>
@@ -50,7 +68,7 @@ namespace GameJob.Features.CardSystem
             List<AbstractCard> cards = new List<AbstractCard>();
             for (int i = 0; i < number; i++)
             {
-                cards.Add(_abstractCards[Random.Range(0,_abstractCards.Count)]);
+                cards.Add(_abstractNotSpecialCards[Random.Range(0,_abstractNotSpecialCards.Count)]);
             }
             
             return cards;
@@ -107,6 +125,11 @@ namespace GameJob.Features.CardSystem
                 else
                 {
                     cards = GetRandomCards(2);
+                    // Добавление 1 карты с 15% шансом
+                    if (Random.Range(0,100)<15)
+                    {
+                        cards.Add(_abstractSpecialCards[Random.Range(0, _abstractSpecialCards.Count)]);
+                    }
                 }
                 
                 
@@ -122,6 +145,10 @@ namespace GameJob.Features.CardSystem
         {
             SetNumberCardSelection(5);
             TryChooseNextCard();
+            if (_coroutineShowCard==null)
+            {
+                _coroutineShowCard = StartCoroutine(ShowCardEveryTime(TimeLoopShow));
+            }
         }
 
         private void DoLogicOnStages(object sender, EventArgs args)
@@ -130,7 +157,11 @@ namespace GameJob.Features.CardSystem
             {
                 FirstStage = false;
                 SetNumberCardSelection(0);
-                TryChooseNextCard();
+                // if (_coroutineShowCard==null)
+                // {
+                //     _coroutineShowCard = StartCoroutine(ShowCardEveryTime(TimeLoopShow));
+                // }
+                
             }
 
         }

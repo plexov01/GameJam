@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cad9ac1150e590848b314b015c91cec5, type: 3}
-  m_Name: BuildWallCard
+  m_Script: {fileID: 11500000, guid: 4bbffe8059aa4ff997f60f8ca8b2d551, type: 3}
+  m_Name: EnemyWaveCard
   m_EditorClassIdentifier: 
-  Name: "\u0421\u0442\u0435\u043D\u0430"
+  Name: "\u0412\u043E\u043B\u043D\u0430 \u0432\u0440\u0430\u0433\u043E\u0432"
   Description: 
-  CardSprite: {fileID: 21300000, guid: e5ba94bc2f19fa349897033824e46340, type: 3}
+  CardSprite: {fileID: 21300000, guid: 1c038b8124e08d14cbd4b91c2681e7a2, type: 3}
   EventSound: {fileID: 0}
