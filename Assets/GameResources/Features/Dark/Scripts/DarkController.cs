@@ -52,11 +52,7 @@ namespace GameJam.Features.UI
             
             _coroutineShowDark = StartCoroutine(DarkActive(TimeShowDark));
         }
-
-        private void Start()
-        {
-            ShowDark();
-        }
+        
     }
 
 }

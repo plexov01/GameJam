@@ -1,4 +1,4 @@
-﻿namespace GameJob.Features.CardSystem
+﻿namespace GameJam.Features.CardSystem
 {
 	using UnityEngine;
 

@@ -1,5 +1,6 @@
-﻿namespace GameJob.Features.CardSystem
+﻿namespace GameJam.Features.CardSystem
 {
+	using UI;
 	using UnityEngine;
 
 	[CreateAssetMenu(fileName = "MakeDarkCard", menuName = "Cards/MakeDarkCard")]
@@ -8,7 +9,7 @@
 		public override void ActivateCard()
 		{
 			base.ActivateCard();
-			Debug.Log("MakeDarkCard");
+			FindObjectOfType<DarkController>()?.ShowDark();
 		}
 	}
 }
