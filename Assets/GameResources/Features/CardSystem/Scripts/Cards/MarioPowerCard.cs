@@ -7,6 +7,14 @@
 		public override void ActivateCard()
 		{
 			base.ActivateCard();
+			if (Random.Range(0,100)<50)
+			{
+				
+			}
+			else
+			{
+				
+			}
 			Debug.Log("MarioPowerCard");
 		}
 	}
