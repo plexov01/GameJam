@@ -31,13 +31,12 @@ public class CoolnessScaleUI : MonoBehaviour
     }
 
     private void UpdateUI(object sender, CoolnessScaleController.OnCoolnessChangedEventArgs e)
-    {
-        float coolness = (float)e.coolness / e.coolnessMax;
-        scaleSlider.value = coolness;
+    { 
+        scaleSlider.value = e.coolness;
 
         foreach (var pair in coolnessIconValuePairList)
         {
-            if (coolness <= pair.sliderValueMin)
+            if (e.coolness <= pair.sliderValueMin)
             {
                 handleImage.sprite = pair.icon;
                 break;

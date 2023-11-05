@@ -11,8 +11,7 @@ public class CoolnessScaleController : MonoBehaviour
     public static event EventHandler<OnCoolnessChangedEventArgs> OnCoolnessChanged;
     public class OnCoolnessChangedEventArgs : EventArgs
     {
-        public int coolness;
-        public int coolnessMax;
+        public float coolness;
     }
     
     [SerializeField] private int coolnessMax = 1000;
@@ -26,7 +25,7 @@ public class CoolnessScaleController : MonoBehaviour
     public void AddCoolness(int points)
     {
         currentCoolness += points;
-        OnCoolnessChanged?.Invoke(this,new OnCoolnessChangedEventArgs{coolness = this.currentCoolness, coolnessMax = coolnessMax});
+        OnCoolnessChanged?.Invoke(this,new OnCoolnessChangedEventArgs{coolness = GetCoolness()});
     }
 
     public float GetCoolness()

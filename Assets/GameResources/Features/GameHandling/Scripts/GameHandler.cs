@@ -23,6 +23,9 @@ public class GameHandler : MonoBehaviour
     private float secondStageTimer;
     private float secondStageTimerMax = 180f;
 
+    private bool hasImmortality = true;
+    private bool canLose = true;
+
 
     private void Awake()
     {
@@ -32,7 +35,41 @@ public class GameHandler : MonoBehaviour
 
         currentState = State.WaitingForStart;
 
+        
+    }
+
+    private void Start()
+    {
         OnStateChanged += GameHandler_OnStateChanged;
+        CoolnessScaleController.OnCoolnessChanged += CoolnessScaleController_OnCoolnessChanged;
+    }
+
+    private void CoolnessScaleController_OnCoolnessChanged(object sender, CoolnessScaleController.OnCoolnessChangedEventArgs e)
+    {
+        if (e.coolness > 0.05f && e.coolness < 0.95)
+        {
+            hasImmortality = true;
+        }
+        else if (hasImmortality)
+        {
+            StartCoroutine(GetImmortality());
+        }
+    }
+
+    private IEnumerator GetImmortality()
+    {
+        hasImmortality = false;
+        
+        canLose = false;
+
+        yield return new WaitForSeconds(3f);
+
+        canLose = true;
+    }
+
+    private void OnDestroy()
+    {
+        OnStateChanged -= GameHandler_OnStateChanged;
     }
 
     private void GameHandler_OnStateChanged(object sender, EventArgs e)
