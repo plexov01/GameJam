@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class TDManager : MonoBehaviour
 {
@@ -27,6 +29,24 @@ public class TDManager : MonoBehaviour
 
         buildManager = GetComponent<BuildManager>();
         enemyManager = GetComponent<EnemyManager>();
+    }
+
+    private void Start()
+    {
+        GameHandler.OnStateChanged += GameHandler_OnStateChanged;
+    }
+    
+    private void OnDestroy()
+    {
+        GameHandler.OnStateChanged -= GameHandler_OnStateChanged;
+    }
+
+    private void GameHandler_OnStateChanged(object sender, EventArgs e)
+    {
+        if (GameHandler.Instance.IsSecondOrThirdStageActive())
+        {
+            StartCoroutine(StartSpawningEnemies(0, 2f));
+        }
     }
 
     private void Update()
@@ -161,6 +181,16 @@ public class TDManager : MonoBehaviour
     public void Repair()
     {
         buildManager.buildMode = BuildManager.BuildMode.Repair;
+    }
+    
+    public IEnumerator StartSpawningEnemies(int enemyType = 0, float spawanDelay = 1f)
+    {
+        while (true)
+        {
+            Instantiate(enemyManager.enemyPrefabs[enemyType], Vector3.zero, Quaternion.identity, transform.GetChild(0));
+
+            yield return new WaitForSeconds(spawanDelay);
+        }
     }
 
     public IEnumerator SpawnEnemies(int numberToSpawn, int enemyType = 0, float spawanDelay = 1f)
