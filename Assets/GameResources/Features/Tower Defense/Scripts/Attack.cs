@@ -20,26 +20,21 @@ public class Attack : MonoBehaviour
         //print("entered trigger");
         damageable = other.GetComponent<IDamageable>();
 
-        if (damageable != null)
-        {
-            //print(damageable.GetTransform().parent.name);
-            if (AttackCoroutine == null)
-            {
-                if (isBullet && GetComponent<Bullet>().target == other.transform.parent)
-                {
-                    print("bullet");
-                    damageable.TakeDamage(damage, GetComponent<Bullet>().target);
-                    Destroy(gameObject);
-                    return;
-                }
+        if (damageable == null || AttackCoroutine != null) return;
 
-                else if (!isBullet && other.transform.CompareTag("Wall"))
-                {
-                    print("enemy");
-                    transform.parent.GetComponent<NavMeshAgent>().speed = 0;
-                    AttackCoroutine = StartCoroutine(AttackCroutine(other.transform));
-                }
-            }
+        if (isBullet && GetComponent<Bullet>().target == other.transform.parent)
+        {
+            print("bullet");
+            damageable.TakeDamage(damage, GetComponent<Bullet>().target);
+            Destroy(gameObject);
+            return;
+        }
+
+        if (!isBullet && other.transform.CompareTag("Wall"))
+        {
+            print("enemy");
+            transform.parent.GetComponent<NavMeshAgent>().speed = 0;
+            AttackCoroutine = StartCoroutine(AttackCroutine(other.transform));
         }
     }
 
