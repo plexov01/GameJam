@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 public class Health : MonoBehaviour, IDamageable
 {
@@ -23,10 +22,12 @@ public class Health : MonoBehaviour, IDamageable
 
         if (currentHealth <= 0 && objectToDestroy != null)
         {
-            if (objectToDestroy.CompareTag(wallTag) || objectToDestroy.CompareTag(gatesTag))
+            if (objectToDestroy.transform.GetChild(0).CompareTag(wallTag) || objectToDestroy.transform.GetChild(0).CompareTag(gatesTag))
             {
                 GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
                 //print(enemies.Length);
+
+                print("wall destoyed");
 
                 foreach (GameObject enemy in enemies)
                 {
@@ -35,32 +36,27 @@ public class Health : MonoBehaviour, IDamageable
                         if (enemy.transform.GetChild(0).GetComponent<Attack>().damageable == transform.GetComponent<IDamageable>())
                         {
                             enemy.GetComponent<Enemy>().attacking = false;
-                            //print("stop coroutine");
-                            //enemy.transform.GetChild(0).GetComponent<Attack>().StopAttack();
-                            //print(enemy.transform.GetChild(0).GetComponent<Attack>().attackCoroutine);
-
-                            //enemy.transform.GetComponent<NavMeshAgent>().speed = enemy.transform.GetComponent<Enemy>().speed;
                             enemy.transform.GetChild(0).GetComponent<Attack>().damageable = null;
                         }
                     }
                 }
             }
 
-            if (objectToDestroy.CompareTag(wallTag))
+            if (objectToDestroy.transform.GetChild(0).CompareTag(wallTag))
             {
                 CoolnessScaleController.Instance.AddCoolness(40);
                 BuildManager.instance.wallCount--;
             }
-            else if (objectToDestroy.CompareTag(gatesTag))
+            else if (objectToDestroy.transform.GetChild(0).CompareTag(gatesTag))
             {
                 CoolnessScaleController.Instance.AddCoolness(200);
                 print("gates destoyed");
             }
-            else if (objectToDestroy.CompareTag(enemyTag))
+            else if (objectToDestroy.transform.GetChild(0).CompareTag(enemyTag))
             {
                 CoolnessScaleController.Instance.AddCoolness(-1);
             }
-            else if (objectToDestroy.CompareTag(turretTag))
+            else if (objectToDestroy.transform.GetChild(0).CompareTag(turretTag))
             {
                 BuildManager.instance.turretCount--;
             }
