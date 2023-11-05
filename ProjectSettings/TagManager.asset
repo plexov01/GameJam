@@ -12,6 +12,7 @@ TagManager:
   - Turret
   - WallBlock
   - MainBase
+  - Meteor
   layers:
   - Default
   - TransparentFX
@@ -25,11 +26,11 @@ TagManager:
   - Path
   - Wall
   - 
-  - 
+  - EnemyTrigger
   - Enemy
   - Turret
   - Bullet
-  - 
+  - Meteor
   - 
   - 
   - 

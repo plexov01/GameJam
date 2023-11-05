@@ -74,6 +74,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseSpeed: 10
   type: 0
+  health: 0
+  speed: 0
+  size: 0
+  damage: 0
+  attackSpeed: 0
+  attacking: 0
+  reachedEnd: 0
 --- !u!33 &7414943744807891913
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -133,7 +140,7 @@ SphereCollider:
   m_GameObject: {fileID: 1192704153530966981}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -167,7 +174,7 @@ GameObject:
   - component: {fileID: 1192704154300581399}
   - component: {fileID: 4897922871777685342}
   - component: {fileID: 1278306156325845858}
-  m_Layer: 13
+  m_Layer: 12
   m_Name: Trigger
   m_TagString: EnemyTrigger
   m_Icon: {fileID: 0}
@@ -265,8 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 25
-  attackDelay: 1
-  isBullet: 0
+  attackSpeed: 1
 --- !u!114 &1278306156325845858
 MonoBehaviour:
   m_ObjectHideFlags: 0

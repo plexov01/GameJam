@@ -15,6 +15,14 @@ public class Attack : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (transform.CompareTag("Meteor"))
+        {
+            if (other.GetComponent<IDamageable>() != null)
+            {
+                other.GetComponent<IDamageable>().TakeDamage(TDManager.instance.meteorDamage);
+            }
+        }
+
         if (other.CompareTag("Wall"))
         {
             damageable = other.GetComponent<IDamageable>();
@@ -22,11 +30,14 @@ public class Attack : MonoBehaviour
 
             if (damageable != null && AttackCoroutine == null)
             {
-                transform.parent.GetComponent<Enemy>().attacking = true;
-                NavMeshAgent agent = transform.parent.GetComponent<NavMeshAgent>();
-                agent.velocity = Vector3.zero;
-                agent.speed = 0;
-                AttackCoroutine = StartCoroutine(AttackCroutine());
+                if (transform.parent.GetComponent<Enemy>() != null)
+                {
+                    transform.parent.GetComponent<Enemy>().attacking = true;
+                    NavMeshAgent agent = transform.parent.GetComponent<NavMeshAgent>();
+                    agent.velocity = Vector3.zero;
+                    agent.speed = 0;
+                    AttackCoroutine = StartCoroutine(AttackCroutine());
+                }
             }
         }
     }
