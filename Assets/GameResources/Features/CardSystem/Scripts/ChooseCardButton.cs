@@ -26,7 +26,7 @@ namespace GameJam.Features.CardSystem
 
         protected override void ClickAction()
         {
-            _cardManager.SelectCard(_nameCard);
+            _cardManager.PlayCard(_nameCard);
         }
         /// <summary>
         /// Установить карту, которую активирует кнопка

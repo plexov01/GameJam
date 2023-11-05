@@ -147,6 +147,10 @@ public class GameHandler : MonoBehaviour
     {
         return currentState == State.FirstStage;
     }
+    public bool IsSecondStageActive()
+    {
+        return currentState == State.SecondStage;
+    }
     
     public bool IsSecondOrThirdStageActive()
     {

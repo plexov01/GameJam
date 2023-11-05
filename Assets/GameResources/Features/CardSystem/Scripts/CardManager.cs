@@ -1,3 +1,5 @@
+using UnityEngine.Serialization;
+
 namespace GameJam.Features.CardSystem
 {
     using GameJam.Features.CardSystem;
@@ -6,14 +8,13 @@ namespace GameJam.Features.CardSystem
     using System.Collections.Generic;
     using System.Linq;
     using UnityEngine;
-    using Random = UnityEngine.Random;
 
     /// <summary>
     /// Менеджер карт
     /// </summary>
     public class CardManager : MonoBehaviour
     {
-        [Range(2, 6)] public int TimeLoopShow = default;
+        [FormerlySerializedAs("TimeLoopShow")] [Range(2, 6)] public int cardTimerMax = default;
         
         private List<AbstractCard> _abstractCards = new List<AbstractCard>();
         private List<AbstractCard> _abstractSpecialCards = new List<AbstractCard>();
@@ -21,7 +22,7 @@ namespace GameJam.Features.CardSystem
         
         private int _numberOfSelection = default;
 
-        private bool _firstStage = true;
+        private bool isRandomlyChoosing = false;
 
         private UiCardController _uiCardController = default;
 
@@ -42,61 +43,80 @@ namespace GameJam.Features.CardSystem
 
         private void Update()
         {
-            if (!isGamePlaying) return;
-            
-            cardTimer += Time.deltaTime;
-            if (cardTimer >= TimeLoopShow)
+            if (isRandomlyChoosing)
             {
-                cardTimer = 0f;
-                
-                
-                
+                cardTimer += Time.deltaTime;
+                if (cardTimer >= cardTimerMax)
+                {
+                    cardTimer = 0f;
+
+                    List<AbstractCard> tempList = new List<AbstractCard>();
+                    tempList.Add(GetRandomCommonCard());
+                    tempList.Add(GetRandomCommonCard());
+
+                    int number = UnityEngine.Random.Range(0, 100);
+                    Debug.Log("Random number is "+number);
+                    
+                    if (number < 15)
+                    {
+                        tempList.Add(GetRandomRareCard());
+                    }
+                    
+                    _uiCardController.ShowCards(tempList);
+                    _uiCardController.ShowUIChooseCard();
+                }
             }
-            
+        }
+
+        private void Start()
+        {
+            _uiCardController.ShowCards(GetStarterCards());
+            _uiCardController.ShowUIChooseCard();
         }
 
         private void OnEnable()
         {
-            GameHandler.OnStateChanged += DoLogicOnStages;
+            GameHandler.OnStateChanged += GameHandler_OnStageChanged;
         }
 
         private void OnDisable()
         {
-            GameHandler.OnStateChanged -= DoLogicOnStages;
+            GameHandler.OnStateChanged -= GameHandler_OnStageChanged;
         }
 
-        private IEnumerator ShowCardEveryTime(float time)
-        {
-            while (true)
-            {
-                if (_numberOfSelection < 1)
-                {
-                    SetNumberCardSelection(1);
-                }
-                TryChooseNextCard();
-                
-                yield return new WaitForSecondsRealtime(time-1);
-                _uiCardController.HideUIChooseCard();
-                yield return new WaitForSecondsRealtime(1f);
-            }
-            
-        }
+        // private IEnumerator ShowCardEveryTime(float time)
+        // {
+        //     while (true)
+        //     {
+        //         if (_numberOfSelection < 1)
+        //         {
+        //             SetNumberCardSelection(1);
+        //         }
+        //         ChooseCards();
+        //         
+        //         yield return new WaitForSecondsRealtime(time-1);
+        //         _uiCardController.HideUIChooseCard();
+        //         yield return new WaitForSecondsRealtime(1f);
+        //     }
+        //     
+        // }
 
         /// <summary>
         /// Получить обычные карты в указаном количестве
         /// </summary>
         /// <param name="number"></param>
         /// <returns></returns>
-        public List<AbstractCard> GetRandomCards(int number)
-        {
-            List<AbstractCard> cards = new List<AbstractCard>();
-            for (int i = 0; i < number; i++)
-            {
-                cards.Add(_abstractNotSpecialCards[Random.Range(0,_abstractNotSpecialCards.Count)]);
-            }
-            
-            return cards;
-        }
+        // public List<AbstractCard> GetRandomCards(int number)
+        // {
+        //     System.Random rnd = new System.Random(System.DateTime.Now.Millisecond + System.DateTime.Now.Second);
+        //     List<AbstractCard> cards = new List<AbstractCard>();
+        //     for (int i = 0; i < number; i++)
+        //     {
+        //         cards.Add(_abstractNotSpecialCards[rnd.Next(0,_abstractNotSpecialCards.Count)]);
+        //     }
+        //     
+        //     return cards;
+        // }
         /// <summary>
         /// Получить стартоввые карты
         /// </summary>
@@ -111,85 +131,86 @@ namespace GameJam.Features.CardSystem
         /// <summary>
         /// Выбрать карту
         /// </summary>
-        public void SelectCard(string nameCard)
+        private AbstractCard GetRandomCommonCard()
         {
-            AbstractCard selectedCard = _abstractCards.FirstOrDefault(x => x.name == nameCard);
+            return _abstractNotSpecialCards[UnityEngine.Random.Range(0, _abstractNotSpecialCards.Count())];
+        }
+        
+        private AbstractCard GetRandomRareCard()
+        {
+            return _abstractSpecialCards[UnityEngine.Random.Range(0, _abstractSpecialCards.Count())];
+        }
+
+        public void PlayCard(string cardName)
+        {
+            AbstractCard selectedCard = _abstractCards.FirstOrDefault(x => x.name == cardName);
             if (selectedCard!=null)
             {
                 selectedCard.ActivateCard();
-                TryChooseNextCard();
-            }
-            else
-            {
-                Debug.LogWarning($"Среди доступных карт не было {nameCard}");
-            }
-        }
-        /// <summary>
-        /// Установить количество выбираемых карточек
-        /// </summary>
-        /// <param name="number"></param>
-        public void SetNumberCardSelection(int number) => _numberOfSelection = number;
-
-        
-        /// <summary>
-        /// Попытаться выбрать следующую карту
-        /// </summary>
-        public void TryChooseNextCard()
-        {
-            if (_numberOfSelection>0)
-            {
-                _numberOfSelection--;
-                _uiCardController.ShowUIChooseCard();
-                List<AbstractCard> cards = new List<AbstractCard>();
-                
-                if (_firstStage)
-                {
-                    cards = GetStarterCards();
-                }
-                else
-                {
-                    cards = GetRandomCards(2);
-                    
-                    // Добавление 1 карты с 15% шансом
-                    if (Random.Range(0, 100)<15)
-                    {
-                        cards.Add(_abstractSpecialCards[Random.Range(0, _abstractSpecialCards.Count)]);
-                    }
-                }
-                
-                
-                _uiCardController.ShowCards(cards);
-            }
-            else
-            {
                 _uiCardController.HideUIChooseCard();
             }
-        }
-
-        private void Start()
-        {
-            SetNumberCardSelection(5);
-            TryChooseNextCard();
-            
-        }
-
-        private void DoLogicOnStages(object sender, EventArgs args)
-        {
-            if (GameHandler.Instance.IsGameOver())
+            else
             {
-                StopAllCoroutines();
+                Debug.LogWarning($"Среди доступных карт не было {cardName}");
             }
-            if (!GameHandler.Instance.IsFirstStageActive())
-            {
-                _firstStage = false;
-                if (_coroutineShowCard == null)
-                {
-                    SetNumberCardSelection(0);
-                    isGamePlaying = true;
-                    //_coroutineShowCard = StartCoroutine(ShowCardEveryTime(TimeLoopShow));
+        }
+        
+        
+        // public void GetRandomCommonCard1(string nameCard)
+        // {
+        //     AbstractCard selectedCard = _abstractCards.FirstOrDefault(x => x.name == nameCard);
+        //     if (selectedCard!=null)
+        //     {
+        //         selectedCard.ActivateCard();
+        //         ChooseCards();
+        //     }
+        //     else
+        //     {
+        //         Debug.LogWarning($"Среди доступных карт не было {nameCard}");
+        //     }
+        // }
+        
 
-                }
-                
+     
+        // public void ChooseCards(List<AbstractCard> cardPool, int numberOfCardsToGet)
+        // {
+        //     _uiCardController.ShowUIChooseCard();
+        //     List<AbstractCard> cards = new List<AbstractCard>();
+        //     
+        //     if (_numberOfSelection>0)
+        //     {
+        //         if (isRandomlyChoosing)
+        //         {
+        //             cards = GetStarterCards();
+        //         }
+        //         else
+        //         {
+        //             cards = GetRandomCards(2);
+        //             
+        //             // Добавление 1 карты с 15% шансом
+        //             System.Random rnd = new System.Random(System.DateTime.Now.Millisecond + System.DateTime.Now.Second);
+        //
+        //             if (rnd.Next(0,100) < 15)
+        //             {
+        //                 cards.Add(_abstractSpecialCards[rnd.Next(0, _abstractSpecialCards.Count)]);
+        //             }
+        //         }
+        //         
+        //         
+        //         _uiCardController.ShowCards(cards);
+        //     }
+        //     else
+        //     {
+        //         _uiCardController.HideUIChooseCard();
+        //     }
+        // }
+        
+
+        private void GameHandler_OnStageChanged(object sender, EventArgs args)
+        {
+            if (GameHandler.Instance.IsSecondStageActive())
+            {
+                isRandomlyChoosing = true;
             }
 
         }
