@@ -22,6 +22,7 @@ public class Attack : MonoBehaviour
 
             if (damageable != null && AttackCoroutine == null)
             {
+                transform.parent.GetComponent<Enemy>().attacking = true;
                 NavMeshAgent agent = transform.parent.GetComponent<NavMeshAgent>();
                 agent.velocity = Vector3.zero;
                 agent.speed = 0;

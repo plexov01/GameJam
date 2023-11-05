@@ -20,7 +20,7 @@ public class Health : MonoBehaviour, IDamageable
     {
         currentHealth -= damage;
 
-        if (currentHealth <= 0)
+        if (currentHealth <= 0 && objectToDestroy != null)
         {
             if (objectToDestroy.CompareTag(wallTag))
             {
@@ -33,7 +33,9 @@ public class Health : MonoBehaviour, IDamageable
                     {
                         if (enemy.transform.GetChild(0).GetComponent<Attack>().damageable == transform.GetComponent<IDamageable>())
                         {
-                            enemy.transform.GetComponent<NavMeshAgent>().speed = enemy.transform.GetComponent<Enemy>().speed;
+                            enemy.GetComponent<Enemy>().attacking = false;
+
+                            //enemy.transform.GetComponent<NavMeshAgent>().speed = enemy.transform.GetComponent<Enemy>().speed;
                             enemy.transform.GetChild(0).GetComponent<Attack>().damageable = null;
                         }
                     }
@@ -52,7 +54,7 @@ public class Health : MonoBehaviour, IDamageable
             {
                 CoolnessScaleController.Instance.AddCoolness(-1);
             }
-            
+
             Destroy(objectToDestroy);
         }
     }
