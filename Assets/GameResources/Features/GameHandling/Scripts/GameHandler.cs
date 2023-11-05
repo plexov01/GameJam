@@ -127,6 +127,7 @@ public class GameHandler : MonoBehaviour
         Debug.Log("Game is over! Ending is " + ending);
         ChangeState(State.GameOver);
         Time.timeScale = 0f;
+        
     }
 
     public void RestartGame()

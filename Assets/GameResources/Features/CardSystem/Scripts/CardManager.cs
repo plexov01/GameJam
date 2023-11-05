@@ -155,6 +155,10 @@ namespace GameJob.Features.CardSystem
 
         private void DoLogicOnStages(object sender, EventArgs args)
         {
+            if (GameHandler.Instance.IsGameOver())
+            {
+                StopAllCoroutines();
+            }
             if (!GameHandler.Instance.IsFirstStageActive())
             {
                 _firstStage = false;
