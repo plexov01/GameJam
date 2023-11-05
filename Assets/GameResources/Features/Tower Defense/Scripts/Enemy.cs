@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private Transform enemy;
+
     //private NavMeshAgent agent;
     //private Transform destination;
     public float baseSpeed = 10f;
@@ -33,7 +35,7 @@ public class Enemy : MonoBehaviour
         healthScript = transform.GetChild(0).GetComponent<Health>();
         attackScript = transform.GetChild(0).GetComponent<Attack>();
 
-        sizeVector = transform.localScale;
+        sizeVector = enemy.localScale;
     }
 
     private void Start()
@@ -57,10 +59,10 @@ public class Enemy : MonoBehaviour
 
         if (!attacking && !reachedEnd)
         {
-            Vector3 dir = target.position - transform.position;
-            transform.Translate(speed * Time.deltaTime * dir.normalized, Space.World);
+            Vector3 dir = target.position - enemy.position;
+            enemy.Translate(speed * Time.deltaTime * dir.normalized, Space.World);
 
-            Vector2 transformPosition = new Vector2(transform.position.x, transform.position.z);
+            Vector2 transformPosition = new Vector2(enemy.position.x, enemy.position.z);
             Vector2 targetPosition = new Vector2(target.position.x, target.position.z);
 
             if (Vector2.Distance(transformPosition, targetPosition) <= 0.4f)
@@ -92,7 +94,7 @@ public class Enemy : MonoBehaviour
         healthScript.currentHealth = health;
         //agent.speed = speed;
         baseSpeed = speed;
-        transform.localScale = sizeVector * size;
+        enemy.localScale = sizeVector * size;
         attackScript.damage = damage;
         attackScript.attackSpeed = attackSpeed;
     }

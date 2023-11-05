@@ -85,7 +85,7 @@ public class TDManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Keypad6))
         {
-            DestroyTurrets(2);
+            FreezeEnemies(3f);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad7))
@@ -202,7 +202,7 @@ public class TDManager : MonoBehaviour
             }
             
             GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], Vector3.zero, Quaternion.identity, transform.GetChild(0));
-            mob.GetComponent<Enemy>().UpgradeEnemy(modifier);
+            mob.transform.GetChild(0).GetComponent<Enemy>().UpgradeEnemy(modifier);
 
             yield return new WaitForSeconds(spawanDelay);
         }
@@ -222,7 +222,7 @@ public class TDManager : MonoBehaviour
             }
             
             GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], Vector3.zero, Quaternion.identity, transform.GetChild(0));
-            mob.GetComponent<Enemy>().UpgradeEnemy(modifier);
+            mob.transform.GetChild(0).GetComponent<Enemy>().UpgradeEnemy(modifier);
 
             yield return new WaitForSeconds(spawanDelay);
         }
