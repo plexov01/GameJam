@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-    private Color startColor;
+    public Color startColor;
     public Color hoverColor;
-    private Renderer rend;
+    public Color unhoverColor;
+    public Renderer rend;
 
     private GameObject turret;
     private GameObject wall;
@@ -15,6 +16,7 @@ public class Node : MonoBehaviour
     {
         rend = GetComponent<Renderer>();
         startColor = rend.material.color;
+        unhoverColor = startColor;
     }
 
     private void Start()
@@ -49,9 +51,9 @@ public class Node : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (rend.material.color != startColor)
+        if (rend.material.color != unhoverColor)
         {
-            rend.material.color = startColor;
+            rend.material.color = unhoverColor;
         }
     }
 
@@ -72,7 +74,7 @@ public class Node : MonoBehaviour
                 turret = Instantiate(turrentToBuild, transform.position + new Vector3(0, 0, 0), transform.rotation);
                 buildManager.buildMode = BuildManager.BuildMode.None;
                 buildManager.turretCount++;
-                rend.material.color = startColor;
+                rend.material.color = unhoverColor;
             }
         }
 
@@ -89,7 +91,7 @@ public class Node : MonoBehaviour
                 wall = Instantiate(wallToBuild, transform.position + new Vector3(0, 2.5f, 0), transform.rotation, EnemyManager.instance.surface.transform);
                 buildManager.buildMode = BuildManager.BuildMode.None;
                 buildManager.wallCount++;
-                rend.material.color = startColor;
+                rend.material.color = unhoverColor;
             }
         }
 
@@ -106,7 +108,7 @@ public class Node : MonoBehaviour
                 GameObject mineToBuild = BuildManager.instance.GetMineToBuild();
                 mine = Instantiate(mineToBuild, transform.position + new Vector3(0, 0.6f, 0), transform.rotation, EnemyManager.instance.surface.transform);
                 buildManager.buildMode = BuildManager.BuildMode.None;
-                rend.material.color = startColor;
+                rend.material.color = unhoverColor;
             }
         }
 
@@ -117,7 +119,7 @@ public class Node : MonoBehaviour
                 Health health = transform.GetChild(0).GetComponent<Health>();
                 health.currentHealth = health.baseHealth;
                 buildManager.buildMode = BuildManager.BuildMode.None;
-                rend.material.color = startColor;
+                rend.material.color = unhoverColor;
             }
             else
             {

@@ -16,9 +16,10 @@ public class TDManager : MonoBehaviour
     private string turretTag = "Turret";
     private string enemyTag = "Enemy";
     private string enemyTriggerTag = "EnemyTrigger";
-    private string wallTag = "Wall";
+    private string wallTag = "WallBlock";
 
     private Coroutine freezeCoroutine = null;
+    private Coroutine lavaFloorCoroutine = null;
 
     [Header("Change enemy stats")]
     private float newHealth;
@@ -81,12 +82,12 @@ public class TDManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Keypad6))
         {
-            KillAllEnemies();
+            DestroyTurrets(2);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad7))
         {
-            
+            LavaFloor(3f);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad8))
@@ -124,14 +125,11 @@ public class TDManager : MonoBehaviour
             {
                 List<GameObject> turrets = GameObject.FindGameObjectsWithTag(turretTag).ToList();
 
+                Shuffle(turrets);
+
                 for (int i = 0; i < numberToDestroy; i++)
                 {
-                    int index = Random.Range(0, turrets.Count);
-
-                    turrets[index].GetComponent<IDamageable>().TakeDamage(10000f);
-
-                    turrets.Remove(turrets[index]);
-
+                    turrets[i].GetComponent<IDamageable>().TakeDamage(10000f);
                     buildManager.turretCount--;
                 }
             }
@@ -151,10 +149,8 @@ public class TDManager : MonoBehaviour
 
             foreach (GameObject wall in walls)
             {
-                wall.GetComponent<IDamageable>().TakeDamage(10000f);
+                wall.transform.GetChild(0).GetComponent<IDamageable>().TakeDamage(10000f);
             }
-
-            buildManager.wallCount = 0;
         }
         else
         {
@@ -162,17 +158,24 @@ public class TDManager : MonoBehaviour
             {
                 List<GameObject> walls = GameObject.FindGameObjectsWithTag(wallTag).ToList();
 
+                Shuffle(walls);
+
                 for (int i = 0; i < numberToDestroy; i++)
                 {
-                    int index = Random.Range(0, walls.Count);
-
-                    walls[index].GetComponent<IDamageable>().TakeDamage(10000f);
-
-                    walls.Remove(walls[index]);
-
-                    buildManager.wallCount--;
+                    walls[i].transform.GetChild(0).GetComponent<IDamageable>().TakeDamage(10000f);
                 }
             }
+        }
+    }
+
+    private void Shuffle<T>(List<T> inputList)
+    {
+        for (int i = 0; i < inputList.Count - 1; i++)
+        {
+            T temp = inputList[i];
+            int rand = Random.Range(i, inputList.Count);
+            inputList[i] = inputList[rand];
+            inputList[rand] = temp;
         }
     }
 
@@ -327,6 +330,59 @@ public class TDManager : MonoBehaviour
 
                 stats.UpdateStats();
             }
+        }
+    }
+
+    public void LavaFloor(float duration, float damage = 5f, float damageRate = 0.5f)
+    {
+        if (lavaFloorCoroutine != null)
+        {
+            StopCoroutine(lavaFloorCoroutine);
+        }
+
+        lavaFloorCoroutine = StartCoroutine(LavaFloorCoroutine(duration, damage, damageRate));
+    }
+
+    public IEnumerator LavaFloorCoroutine(float duration, float damage = 5f, float damageRate = 0.5f)
+    {
+        float timer = 0;
+
+        foreach (Node node in buildManager.walkableNodes)
+        {
+            node.rend.material.color = buildManager.lavaColor;
+            node.unhoverColor = buildManager.lavaColor;
+        }
+
+        while (timer < duration)
+        {
+            yield return new WaitForSeconds(damageRate);
+            timer += damageRate;
+
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTriggerTag);
+
+            foreach (GameObject enemy in enemies)
+            {
+                if (enemy != null)
+                {
+                    enemy.GetComponent<IDamageable>().TakeDamage(damage);
+                }
+            }
+
+            GameObject[] walls = GameObject.FindGameObjectsWithTag(wallTag);
+
+            foreach (GameObject wall in walls)
+            {
+                if (wall != null)
+                {
+                    wall.transform.GetChild(0).GetComponent<IDamageable>().TakeDamage(damage);
+                }
+            }
+        }
+
+        foreach (Node node in buildManager.walkableNodes)
+        {
+            node.rend.material.color = node.startColor;
+            node.unhoverColor = node.startColor;
         }
     }
 }
