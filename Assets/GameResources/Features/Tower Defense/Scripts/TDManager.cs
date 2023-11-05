@@ -80,7 +80,7 @@ public class TDManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Keypad5))
         {
-            StartCoroutine(SpawnEnemies(3));
+            StartCoroutine(SpawnEnemies(1));
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad6))
