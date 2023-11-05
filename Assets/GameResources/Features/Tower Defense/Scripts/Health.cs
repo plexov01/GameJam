@@ -25,7 +25,7 @@ public class Health : MonoBehaviour, IDamageable
             if (objectToDestroy.CompareTag(wallTag))
             {
                 GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
-                print(enemies.Length);
+                //print(enemies.Length);
 
                 foreach (GameObject enemy in enemies)
                 {
@@ -45,6 +45,7 @@ public class Health : MonoBehaviour, IDamageable
             if (objectToDestroy.CompareTag(wallTag))
             {
                 CoolnessScaleController.Instance.AddCoolness(40);
+                BuildManager.instance.wallCount--;
             }
             else if (objectToDestroy.CompareTag(gatesTag))
             {

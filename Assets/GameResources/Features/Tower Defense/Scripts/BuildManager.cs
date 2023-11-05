@@ -12,6 +12,9 @@ public class BuildManager : MonoBehaviour
     public GameObject wallPrefab;
     public GameObject minePrefab;
 
+    public Node[] walkableNodes;
+    public Color lavaColor;
+
     public enum BuildMode
     {
         None,
