@@ -126,6 +126,14 @@ public class GameHandler : MonoBehaviour
         
         Debug.Log("Game is over! Ending is " + ending);
         ChangeState(State.GameOver);
+        Time.timeScale = 0f;
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        ChangeState(State.FirstStage);
+        SceneLoader.LoadScene(SceneLoader.Scene.TowerDefense);
     }
 
     public void ChangeState(State newState)
