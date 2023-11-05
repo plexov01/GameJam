@@ -10,6 +10,8 @@ TagManager:
   - Wall
   - EnemyTrigger
   - Turret
+  - WallBlock
+  - MainBase
   layers:
   - Default
   - TransparentFX
