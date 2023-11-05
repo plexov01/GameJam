@@ -9,6 +9,7 @@ public class Health : MonoBehaviour, IDamageable
     
     private string enemyTag = "Enemy";
     private string wallTag = "WallBlock";
+    private string gatesTag = "MainBase";
 
     private void Awake()
     {
@@ -39,6 +40,19 @@ public class Health : MonoBehaviour, IDamageable
                 }
             }
 
+            if (objectToDestroy.CompareTag(wallTag))
+            {
+                CoolnessScaleController.Instance.AddCoolness(40);
+            }
+            else if (objectToDestroy.CompareTag(gatesTag))
+            {
+                CoolnessScaleController.Instance.AddCoolness(200);
+            }
+            else if (objectToDestroy.CompareTag(enemyTag))
+            {
+                CoolnessScaleController.Instance.AddCoolness(-1);
+            }
+            
             Destroy(objectToDestroy);
         }
     }

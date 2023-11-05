@@ -25008,7 +25008,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coolnessMax: 1000
-  currentCoolness: 500
+  currentCoolness: 350
 --- !u!1001 &2107245889
 PrefabInstance:
   m_ObjectHideFlags: 0
