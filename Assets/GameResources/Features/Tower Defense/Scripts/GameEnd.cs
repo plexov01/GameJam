@@ -11,6 +11,7 @@ public class GameEnd : MonoBehaviour
         if (!enteredTrigger && other.CompareTag("EnemyTrigger"))
         {
             enteredTrigger = true;
+            GameHandler.Instance.FinishGame();
             print("end game");
         }
     }

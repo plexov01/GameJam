@@ -8,5 +8,6 @@ public class StartSecondStageButton : AbstractButton
     protected override void ClickAction()
     {
         GameHandler.Instance.ChangeState(GameHandler.State.SecondStage);
+        Destroy(gameObject);
     }
 }
