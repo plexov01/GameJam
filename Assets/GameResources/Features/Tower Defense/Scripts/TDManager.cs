@@ -21,8 +21,11 @@ public class TDManager : MonoBehaviour
     private Coroutine freezeCoroutine = null;
     private Coroutine lavaFloorCoroutine = null;
 
-    [Header("Change enemy stats")]
-    private float newHealth;
+    [Header("Meteor")]
+    [SerializeField] private Transform[] nodesForMeteor;
+    [SerializeField] private float meteorHeight;
+    [SerializeField] private GameObject meteorPrefab;
+    public float meteorDamage = 500f;
     
     [Header("Scaling")]
     float modifier = 1f;
@@ -87,12 +90,12 @@ public class TDManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Keypad7))
         {
-            LavaFloor(3f);
+            SpawnMeteor();
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad8))
         {
-            FreezeEnemies(3f);
+            LavaFloor(3f);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad9))
@@ -381,5 +384,14 @@ public class TDManager : MonoBehaviour
             node.rend.material.color = node.startColor;
             node.unhoverColor = node.startColor;
         }
+    }
+
+    public void SpawnMeteor()
+    {
+        Transform node = nodesForMeteor[Random.Range(0, nodesForMeteor.Length)];
+
+        Vector3 spawnPosition = node.position + new Vector3(0, meteorHeight, 0);
+
+        GameObject meteor = Instantiate(meteorPrefab, spawnPosition, transform.rotation);
     }
 }
