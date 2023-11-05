@@ -16,8 +16,8 @@ public class Turret : MonoBehaviour
 
     public GameObject bulletPrefab;
     public Transform firePoint;
-    
-    
+    [SerializeField] private Transform barrel;
+    [SerializeField] private Transform barrelHolder;
 
     private void Awake()
     {
@@ -95,13 +95,20 @@ public class Turret : MonoBehaviour
     {
         if (target == null)
         {
+            barrel.localEulerAngles = new Vector3(0, 0, 0);
             return;
         }
 
         Vector3 dir = target.position - transform.position;
-        Quaternion lookRotation = Quaternion.LookRotation(dir);
-        Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
+        Quaternion lookRotation = Quaternion.LookRotation(dir.normalized);
+        Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation * Quaternion.Euler(0, -90f, 0), Time.deltaTime * turnSpeed).eulerAngles;
         partToRotate.rotation = Quaternion.Euler(0, rotation.y, 0);
+
+        barrelHolder.LookAt(new Vector3(target.position.x, target.position.y, barrel.position.z));
+
+        //print(barrelHolder.localEulerAngles.z);
+
+        barrel.localEulerAngles = new Vector3(0, 0, -barrelHolder.localEulerAngles.x);
 
         if (fireCountdown <= 0f)
         {

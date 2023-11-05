@@ -73,7 +73,7 @@ public class Node : MonoBehaviour
             else
             {
                 GameObject turrentToBuild = BuildManager.instance.GetTurretToBuild();
-                turret = Instantiate(turrentToBuild, transform.position + new Vector3(0, 0, 0), transform.rotation);
+                turret = Instantiate(turrentToBuild, transform.position + new Vector3(0, 0.5f, 0), transform.rotation);
                 buildManager.buildMode = BuildManager.BuildMode.None;
                 buildManager.turretCount++;
                 rend.material.color = unhoverColor;
