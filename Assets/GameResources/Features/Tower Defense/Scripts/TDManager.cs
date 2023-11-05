@@ -116,8 +116,6 @@ public class TDManager : MonoBehaviour
             {
                 turret.GetComponent<IDamageable>().TakeDamage(10000f);
             }
-
-            buildManager.turretCount = 0;
         }
         else
         {
@@ -130,7 +128,6 @@ public class TDManager : MonoBehaviour
                 for (int i = 0; i < numberToDestroy; i++)
                 {
                     turrets[i].GetComponent<IDamageable>().TakeDamage(10000f);
-                    buildManager.turretCount--;
                 }
             }
         }

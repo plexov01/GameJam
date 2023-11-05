@@ -10,6 +10,7 @@ public class Health : MonoBehaviour, IDamageable
     private string enemyTag = "Enemy";
     private string wallTag = "WallBlock";
     private string gatesTag = "MainBase";
+    private string turretTag = "Turret";
 
     private void Awake()
     {
@@ -54,6 +55,10 @@ public class Health : MonoBehaviour, IDamageable
             else if (objectToDestroy.CompareTag(enemyTag))
             {
                 CoolnessScaleController.Instance.AddCoolness(-1);
+            }
+            else if (objectToDestroy.CompareTag(turretTag))
+            {
+                BuildManager.instance.turretCount--;
             }
 
             Destroy(objectToDestroy);
