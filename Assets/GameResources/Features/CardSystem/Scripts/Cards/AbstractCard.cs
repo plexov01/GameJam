@@ -16,6 +16,14 @@ namespace GameJob.Features.CardSystem
         /// </summary>
         public string Description = default;
         /// <summary>
+        /// Особая карта
+        /// </summary>
+        public bool Special = default;
+        /// <summary>
+        /// Крутость карты
+        /// </summary>
+        public int Coolness = default;
+        /// <summary>
         /// Картинка карты
         /// </summary>
         public Sprite CardSprite = default;
@@ -23,11 +31,14 @@ namespace GameJob.Features.CardSystem
         /// Звук события в карте
         /// </summary>
         public AudioSource EventSound = default;
-        
+
         /// <summary>
         /// Активировать карту
         /// </summary>
-        public abstract void ActivateCard();
+        public virtual void ActivateCard()
+        {
+            CoolnessScaleController.Instance.AddCoolness(Coolness);
+        }
 
     }
 

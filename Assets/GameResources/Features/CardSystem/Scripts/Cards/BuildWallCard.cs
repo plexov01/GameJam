@@ -9,6 +9,7 @@ namespace GameJob.Features.CardSystem
     {
         public override void ActivateCard()
         {
+            base.ActivateCard();
             TDManager.instance.BuildWall();
         }
     }

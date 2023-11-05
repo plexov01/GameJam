@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a89b5fc6b11182747bc83f0f97ef920d, type: 3}
-  m_Name: BuildTowerCard
+  m_Script: {fileID: 11500000, guid: 373227457cf44b6a8f447626fcdfb0aa, type: 3}
+  m_Name: MakeDarkCard
   m_EditorClassIdentifier: 
-  Name: "\u0411\u0430\u0448\u043D\u044F"
+  Name: "\u0422\u044C\u043C\u0430"
   Description: 
-  Special: 0
+  Special: 1
   Coolness: 100
-  CardSprite: {fileID: 21300000, guid: 348aedc9cffc6254ab6cba97343bb84d, type: 3}
+  CardSprite: {fileID: 21300000, guid: 814c9d9f20c08044daab12f6b4d1dea8, type: 3}
   EventSound: {fileID: 0}
