@@ -5,66 +5,41 @@ using UnityEngine.AI;
 
 public class Attack : MonoBehaviour
 {
-    [SerializeField] private float damage = 3f;
+    public float damage = 3f;
 
-    private IDamageable damageable;
+    public IDamageable damageable;
 
-    [SerializeField] private float attackDelay = 1f;
+    public float attackSpeed = 1f;
 
     private Coroutine AttackCoroutine;
 
-    [SerializeField] private bool isBullet;
-
     private void OnTriggerEnter(Collider other)
     {
-        //print("entered trigger");
-        damageable = other.GetComponent<IDamageable>();
-
-        if (damageable != null)
+        if (other.CompareTag("Wall"))
         {
-            //print(damageable.GetTransform().parent.name);
-            if (AttackCoroutine == null)
-            {
-                if (isBullet && GetComponent<Bullet>().target == other.transform.parent)
-                {
-                    print("bullet");
-                    damageable.TakeDamage(damage, GetComponent<Bullet>().target);
-                    Destroy(gameObject);
-                    return;
-                }
+            damageable = other.GetComponent<IDamageable>();
+            print(damageable);
 
-                else if (!isBullet && other.transform.CompareTag("Wall"))
-                {
-                    print("enemy");
-                    transform.parent.GetComponent<NavMeshAgent>().speed = 0;
-                    AttackCoroutine = StartCoroutine(AttackCroutine(other.transform));
-                }
+            if (damageable != null && AttackCoroutine == null)
+            {
+                NavMeshAgent agent = transform.parent.GetComponent<NavMeshAgent>();
+                agent.velocity = Vector3.zero;
+                agent.speed = 0;
+                AttackCoroutine = StartCoroutine(AttackCroutine());
             }
         }
     }
 
-    private IEnumerator AttackCroutine(Transform target)
+    private IEnumerator AttackCroutine()
     {
-        print("attack");
-        WaitForSeconds Wait = new WaitForSeconds(attackDelay);
-
-        yield return Wait;
-
-        //print(target.parent.name);
-        //print(damageable);
-
-        if (target.GetComponent<IDamageable>() != null)
-        {
-            damageable = target.GetComponent<IDamageable>();
-        }
-
+        yield return new WaitForSeconds(1f / attackSpeed);
 
         while (damageable != null)
         {
             //print("deal " + damage + " damage from " + transform.parent.name + " to " + damageable.GetTransform().parent.name);
-            damageable.TakeDamage(damage, target);
+            damageable.TakeDamage(damage);
 
-            yield return Wait;
+            yield return new WaitForSeconds(1f/ attackSpeed);
         }
 
         AttackCoroutine = null;

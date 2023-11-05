@@ -72,7 +72,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd848987d3caf9a44b17208ed7d375ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpeed: 0
+  baseSpeed: 10
+  type: 0
 --- !u!33 &7414943744807891913
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -278,5 +279,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9ba6d3a8c822cf40a9889dc11c1e185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 45
+  baseHealth: 45
+  currentHealth: 500
   objectToDestroy: {fileID: 1192704153530966981}
