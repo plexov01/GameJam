@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class GameOverUI : MonoBehaviour
 {
-    [SerializeField] private GameObject panel1;
-    [SerializeField] private GameObject panel2;
-    [SerializeField] private GameObject panel3;
-    
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject endingPanel_S;
+    [SerializeField] private GameObject endingPanel_A;
+    [SerializeField] private GameObject endingPanel_B;
+    [SerializeField] private GameObject endingPanel_C;
+    [SerializeField] private GameObject endingPanel_D;
     
     private void Start()
     {
@@ -35,11 +37,39 @@ public class GameOverUI : MonoBehaviour
 
     private void Show()
     {
-        panel1.SetActive(true);
+        gameOverPanel.SetActive(true);
+        GameHandler.Ending ending = GameHandler.Instance.GetEnding();
+        
+        Debug.Log("Showing the ending!");
+
+        switch (ending)
+        {
+            case GameHandler.Ending.Ending_S:
+                endingPanel_S.SetActive(true);
+                break;
+            case GameHandler.Ending.Ending_A:
+                endingPanel_A.SetActive(true);
+                break;
+            case GameHandler.Ending.Ending_B:
+                endingPanel_B.SetActive(true);
+                break;
+            case GameHandler.Ending.Ending_C:
+                endingPanel_C.SetActive(true);
+                break;
+            case GameHandler.Ending.Ending_D:
+                endingPanel_D.SetActive(true);
+                break;
+        }
     }
     
     private void Hide()
     {
-        panel1.SetActive(false);
+        gameOverPanel.SetActive(false);
+        endingPanel_S.SetActive(false);
+        endingPanel_A.SetActive(false);
+        endingPanel_B.SetActive(false);
+        endingPanel_C.SetActive(false);
+        endingPanel_D.SetActive(false);
+        
     }
 }

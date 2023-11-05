@@ -15,16 +15,27 @@ public class GameHandler : MonoBehaviour
         ThirdStage,
         GameOver,
     }
+    
+    public enum Ending
+    {
+        Ending_S,
+        Ending_A,
+        Ending_B,
+        Ending_C,
+        Ending_D,
+    }
 
     public static event EventHandler OnStateChanged;
 
     private State currentState;
+    private Ending ending = Ending.Ending_B;
 
     private float secondStageTimer;
-    private float secondStageTimerMax = 180f;
+    [SerializeField] private float secondStageTimerMax = 180f;
 
+    private bool wasAnyExtremePointReached = false;
     private bool hasImmortality = true;
-    private bool canLose = true;
+    private bool canFinishGame = true;
 
 
     private void Awake()
@@ -38,7 +49,7 @@ public class GameHandler : MonoBehaviour
 
     private void Start()
     {
-        OnStateChanged += GameHandler_OnStateChanged;
+        // OnStateChanged += GameHandler_OnStateChanged;
         CoolnessScaleController.OnCoolnessChanged += CoolnessScaleController_OnCoolnessChanged;
     }
 
@@ -51,6 +62,17 @@ public class GameHandler : MonoBehaviour
         else if (hasImmortality)
         {
             StartCoroutine(GetImmortality());
+            wasAnyExtremePointReached = true;
+        }
+        else if (e.coolness < 0.05f)
+        {
+            ending = Ending.Ending_C;
+            FinishGame();
+        }
+        else if (e.coolness > 0.95f)
+        {
+            ending = Ending.Ending_D;
+            FinishGame();
         }
     }
 
@@ -58,25 +80,27 @@ public class GameHandler : MonoBehaviour
     {
         hasImmortality = false;
         
-        canLose = false;
+        canFinishGame = false;
+        
+        Debug.Log("Immortality!");
 
         yield return new WaitForSeconds(3f);
 
-        canLose = true;
+        canFinishGame = true;
     }
 
-    private void OnDestroy()
-    {
-        OnStateChanged -= GameHandler_OnStateChanged;
-    }
+    // private void OnDestroy()
+    // {
+    //     OnStateChanged -= GameHandler_OnStateChanged;
+    // }
 
-    private void GameHandler_OnStateChanged(object sender, EventArgs e)
-    {
-        if (IsGameOver())
-        {
-            Time.timeScale = 0;
-        }
-    }
+    // private void GameHandler_OnStateChanged(object sender, EventArgs e)
+    // {
+    //     if (IsGameOver())
+    //     {
+    //         Time.timeScale = 0;
+    //     }
+    // }
 
     private void Update()
     {
@@ -87,10 +111,21 @@ public class GameHandler : MonoBehaviour
             {
                 secondStageTimer = 0f;
 
+                ending = wasAnyExtremePointReached ? Ending.Ending_A : Ending.Ending_S;
+                
                 currentState = State.ThirdStage;
                 OnStateChanged?.Invoke(this, EventArgs.Empty);
             }
         }
+    }
+    
+
+    public void FinishGame()
+    {
+        if(!canFinishGame) return;
+        
+        Debug.Log("Game is over! Ending is " + ending);
+        ChangeState(State.GameOver);
     }
 
     public void ChangeState(State newState)
@@ -109,8 +144,18 @@ public class GameHandler : MonoBehaviour
         return currentState is State.SecondStage or State.ThirdStage;
     }
     
+    public bool IsThirdStateActive()
+    {
+        return currentState is State.ThirdStage;
+    }
+    
     public bool IsGameOver()
     {
         return currentState is State.GameOver;
+    }
+
+    public Ending GetEnding()
+    {
+        return ending;
     }
 }
