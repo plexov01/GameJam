@@ -90,7 +90,7 @@ public class TDManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Keypad7))
         {
-            SpawnMeteor();
+            SpawnMeteor(new Vector3(0,0,0));
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad8))
@@ -386,12 +386,14 @@ public class TDManager : MonoBehaviour
         }
     }
 
-    public void SpawnMeteor()
+    public void SpawnMeteor(Vector3 position)
     {
         Transform node = nodesForMeteor[Random.Range(0, nodesForMeteor.Length)];
 
-        Vector3 spawnPosition = node.position + new Vector3(0, meteorHeight, 0);
-
+        Vector3 spawnPosition = position;
+        // node.position + new Vector3(0, meteorHeight, 0);
+        
+        position.y += meteorHeight;
         GameObject meteor = Instantiate(meteorPrefab, spawnPosition, transform.rotation);
     }
 }

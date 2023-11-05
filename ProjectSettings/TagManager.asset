@@ -13,6 +13,7 @@ TagManager:
   - WallBlock
   - MainBase
   - Meteor
+  - Bomb
   layers:
   - Default
   - TransparentFX
