@@ -69,4 +69,9 @@ public class GameHandler : MonoBehaviour
     {
         return currentState == State.FirstStage;
     }
+    
+    public bool IsSecondOrThirdStageActive()
+    {
+        return currentState is State.SecondStage or State.ThirdStage;
+    }
 }

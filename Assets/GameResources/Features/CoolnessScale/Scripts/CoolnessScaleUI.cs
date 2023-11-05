@@ -47,4 +47,11 @@ public class CoolnessScaleUI : MonoBehaviour
         
     }
     
+    private void OnDestroy()
+    {
+        CoolnessScaleController.OnCoolnessChanged -= UpdateUI;
+    }
+
+    
+    
 }

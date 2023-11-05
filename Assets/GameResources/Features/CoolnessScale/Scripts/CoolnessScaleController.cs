@@ -28,13 +28,6 @@ public class CoolnessScaleController : MonoBehaviour
         currentCoolness += points;
         OnCoolnessChanged?.Invoke(this,new OnCoolnessChangedEventArgs{coolness = this.currentCoolness, coolnessMax = coolnessMax});
     }
-    
-    public void RemoveCoolness(int points)
-    {
-        currentCoolness -= points;
-        OnCoolnessChanged?.Invoke(this,new OnCoolnessChangedEventArgs{coolness = this.currentCoolness, coolnessMax = coolnessMax});
-    }
-
 
 
 }
