@@ -34,8 +34,6 @@ public class GameHandler : MonoBehaviour
         DontDestroyOnLoad(this);
 
         currentState = State.WaitingForStart;
-
-        
     }
 
     private void Start()
@@ -74,10 +72,9 @@ public class GameHandler : MonoBehaviour
 
     private void GameHandler_OnStateChanged(object sender, EventArgs e)
     {
-        if (currentState == State.GameOver)
+        if (IsGameOver())
         {
             Time.timeScale = 0;
-            Debug.Log("Game Over!");
         }
     }
 
@@ -110,5 +107,10 @@ public class GameHandler : MonoBehaviour
     public bool IsSecondOrThirdStageActive()
     {
         return currentState is State.SecondStage or State.ThirdStage;
+    }
+    
+    public bool IsGameOver()
+    {
+        return currentState is State.GameOver;
     }
 }
