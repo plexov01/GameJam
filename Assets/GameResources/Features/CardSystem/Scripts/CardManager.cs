@@ -21,7 +21,7 @@ namespace GameJob.Features.CardSystem
         
         private int _numberOfSelection = default;
 
-        public bool FirstStage = default;
+        private bool _firstStage = true;
 
         private UiCardController _uiCardController = default;
 
@@ -50,10 +50,15 @@ namespace GameJob.Features.CardSystem
         {
             while (true)
             {
+                if (_numberOfSelection < 1)
+                {
+                    SetNumberCardSelection(1);
+                }
+                TryChooseNextCard();
+                
                 yield return new WaitForSecondsRealtime(time-1);
                 _uiCardController.HideUIChooseCard();
                 yield return new WaitForSecondsRealtime(1f);
-                TryChooseNextCard();
             }
             
         }
@@ -118,7 +123,7 @@ namespace GameJob.Features.CardSystem
                 _uiCardController.ShowUIChooseCard();
                 List<AbstractCard> cards = new List<AbstractCard>();
                 
-                if (FirstStage)
+                if (_firstStage)
                 {
                     cards = GetStarterCards();
                 }
@@ -126,7 +131,7 @@ namespace GameJob.Features.CardSystem
                 {
                     cards = GetRandomCards(2);
                     // Добавление 1 карты с 15% шансом
-                    if (Random.Range(0,100)<15)
+                    if (Random.Range(0, 100)<15)
                     {
                         cards.Add(_abstractSpecialCards[Random.Range(0, _abstractSpecialCards.Count)]);
                     }
@@ -145,22 +150,19 @@ namespace GameJob.Features.CardSystem
         {
             SetNumberCardSelection(5);
             TryChooseNextCard();
-            if (_coroutineShowCard==null)
-            {
-                _coroutineShowCard = StartCoroutine(ShowCardEveryTime(TimeLoopShow));
-            }
+            
         }
 
         private void DoLogicOnStages(object sender, EventArgs args)
         {
             if (!GameHandler.Instance.IsFirstStageActive())
             {
-                FirstStage = false;
-                SetNumberCardSelection(0);
-                // if (_coroutineShowCard==null)
-                // {
-                //     _coroutineShowCard = StartCoroutine(ShowCardEveryTime(TimeLoopShow));
-                // }
+                _firstStage = false;
+                if (_coroutineShowCard == null)
+                {
+                    SetNumberCardSelection(0);
+                    _coroutineShowCard = StartCoroutine(ShowCardEveryTime(TimeLoopShow));
+                }
                 
             }
 

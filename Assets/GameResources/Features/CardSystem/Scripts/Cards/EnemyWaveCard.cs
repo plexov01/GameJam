@@ -7,7 +7,7 @@
 		public override void ActivateCard()
 		{
 			base.ActivateCard();
-			Debug.Log("EnemyWaveCard");
+			TDManager.instance.StartCoroutine(TDManager.instance.SpawnEnemies(10));
 		}
 	}
 }
