@@ -27,6 +27,10 @@ namespace GameJam.Features.CardSystem
 
         private Coroutine _coroutineShowCard = default;
 
+
+        private float cardTimer = 0f;
+        private bool isGamePlaying = false;
+
         private void Awake()
         {
             _abstractCards = Resources.LoadAll<AbstractCard>("Cards").ToList();
@@ -34,6 +38,21 @@ namespace GameJam.Features.CardSystem
             _abstractNotSpecialCards = _abstractCards.Where(x => x.Special == false).ToList();
 
             _uiCardController = FindObjectOfType<UiCardController>(true);
+        }
+
+        private void Update()
+        {
+            if (!isGamePlaying) return;
+            
+            cardTimer += Time.deltaTime;
+            if (cardTimer >= TimeLoopShow)
+            {
+                cardTimer = 0f;
+                
+                
+                
+            }
+            
         }
 
         private void OnEnable()
@@ -166,7 +185,9 @@ namespace GameJam.Features.CardSystem
                 if (_coroutineShowCard == null)
                 {
                     SetNumberCardSelection(0);
-                    _coroutineShowCard = StartCoroutine(ShowCardEveryTime(TimeLoopShow));
+                    isGamePlaying = true;
+                    //_coroutineShowCard = StartCoroutine(ShowCardEveryTime(TimeLoopShow));
+
                 }
                 
             }
