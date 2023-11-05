@@ -1,21 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Health : MonoBehaviour, IDamageable
 {
-    public float health = 500;
+    public float baseHealth = 500f;
+    public float currentHealth = 0f;
     [SerializeField] private GameObject objectToDestroy;
     
     private string enemyTag = "Enemy";
+    private string wallTag = "WallBlock";
 
-    public void TakeDamage(float damage, Transform target)
+    private void Awake()
     {
-        health -= damage;
+        currentHealth = baseHealth;
+    }
 
-        if (health <= 0)
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+
+        if (currentHealth <= 0)
         {
+            if (objectToDestroy.CompareTag(wallTag))
+            {
+                GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+                print(enemies.Length);
+
+                foreach (GameObject enemy in enemies)
+                {
+                    if (enemy != null)
+                    {
+                        if (enemy.transform.GetChild(0).GetComponent<Attack>().damageable == transform.GetComponent<IDamageable>())
+                        {
+                            enemy.transform.GetComponent<NavMeshAgent>().speed = enemy.transform.GetComponent<Enemy>().speed;
+                            enemy.transform.GetChild(0).GetComponent<Attack>().damageable = null;
+                        }
+                    }
+                }
+            }
+
             Destroy(objectToDestroy);
         }
     }
@@ -25,9 +48,9 @@ public class Health : MonoBehaviour, IDamageable
         return transform;
     }
 
-    private void OnDestroy()
+    /*private void OnDestroy()
     {
-        if (objectToDestroy.CompareTag("Wall"))
+        if (objectToDestroy.CompareTag(wallTag))
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
             print(enemies.Length);
@@ -36,16 +59,17 @@ public class Health : MonoBehaviour, IDamageable
             {
                 print(Vector3.Distance(enemy.transform.position, transform.position));
 
-                if (enemy.GetComponent<NavMeshAgent>() != null && Vector3.Distance(enemy.transform.position, transform.position) < 6f)
+                if (enemy.GetComponent<NavMeshAgent>() != null && Vector3.Distance(enemy.transform.position, transform.position) < 4.5f)
                 {
-                    enemy.GetComponent<NavMeshAgent>().speed = enemy.GetComponent<EnemyMovement>().baseSpeed;
+                    enemy.GetComponent<NavMeshAgent>().speed = enemy.GetComponent<Enemy>().baseSpeed;
+                    enemy.transform.GetChild(0).GetComponent<Attack>().damageable = null;
                 }
             }
 
-            /*if (EnemyManager.instance != null)
+            *//*if (EnemyManager.instance != null)
             {
                 EnemyManager.instance.UpdateMesh();
-            }*/
+            }*//*
         }
-    }
+    }*/
 }

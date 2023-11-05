@@ -8,8 +8,8 @@ public class Node : MonoBehaviour
 
     private GameObject turret;
     private GameObject wall;
+    private GameObject mine;
     private BuildManager buildManager;
-
 
     private void Awake()
     {
@@ -24,11 +24,24 @@ public class Node : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (buildManager.buildTurret && transform.CompareTag("NodeForTurret"))
-        { 
+        if (buildManager.buildMode == BuildManager.BuildMode.None) return;
+
+        if (buildManager.buildMode == BuildManager.BuildMode.Turret && transform.CompareTag("NodeForTurret"))
+        {
             rend.material.color = hoverColor;
         }
-        else if (buildManager.buildWall && transform.CompareTag("NodeForWall"))
+
+        if (buildManager.buildMode == BuildManager.BuildMode.Wall && transform.CompareTag("NodeForWall"))
+        {
+            rend.material.color = hoverColor;
+        }
+
+        if (buildManager.buildMode == BuildManager.BuildMode.Mine && transform.CompareTag("NodeForWall"))
+        {
+            rend.material.color = hoverColor;
+        }
+
+        if (buildManager.buildMode == BuildManager.BuildMode.Repair && (transform.CompareTag("WallBlock") || transform.CompareTag("MainBase")))
         {
             rend.material.color = hoverColor;
         }
@@ -44,30 +57,106 @@ public class Node : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (turret != null)
+        if (buildManager.buildMode == BuildManager.BuildMode.None) return;
+
+        if (buildManager.buildMode == BuildManager.BuildMode.Turret && transform.CompareTag("NodeForTurret"))
         {
-            Debug.Log("Can't build turret there!");
-            return;
-        }
-        else if (buildManager.buildTurret && transform.CompareTag("NodeForTurret"))
-        {
-            GameObject turrentToBuild = BuildManager.instance.GetTurretToBuild();
-            turret = Instantiate(turrentToBuild, transform.position + new Vector3(0, 0, 0), transform.rotation);
-            buildManager.buildTurret = false;
-            buildManager.turretCount++;
+            if (turret != null)
+            {
+                Debug.Log("Can't build turret there!");
+                return;
+            }
+            else
+            {
+                GameObject turrentToBuild = BuildManager.instance.GetTurretToBuild();
+                turret = Instantiate(turrentToBuild, transform.position + new Vector3(0, 0, 0), transform.rotation);
+                buildManager.buildMode = BuildManager.BuildMode.None;
+                buildManager.turretCount++;
+                rend.material.color = startColor;
+            }
         }
 
-        if (wall != null)
+        if (buildManager.buildMode == BuildManager.BuildMode.Wall && transform.CompareTag("NodeForWall"))
+        {
+            if (wall != null || mine != null)
+            {
+                Debug.Log("Can't build wall there!");
+                return;
+            }
+            else
+            {
+                GameObject wallToBuild = BuildManager.instance.GetWallToBuild();
+                wall = Instantiate(wallToBuild, transform.position + new Vector3(0, 2.5f, 0), transform.rotation, EnemyManager.instance.surface.transform);
+                buildManager.buildMode = BuildManager.BuildMode.None;
+                buildManager.wallCount++;
+                rend.material.color = startColor;
+            }
+        }
+
+        if (buildManager.buildMode == BuildManager.BuildMode.Mine && transform.CompareTag("NodeForWall"))
+        {
+            if (wall != null || mine != null)
+            {
+                Debug.Log("Can't build mine there!");
+                print(mine);
+                return;
+            }
+            else
+            {
+                GameObject mineToBuild = BuildManager.instance.GetMineToBuild();
+                mine = Instantiate(mineToBuild, transform.position + new Vector3(0, 0.6f, 0), transform.rotation, EnemyManager.instance.surface.transform);
+                buildManager.buildMode = BuildManager.BuildMode.None;
+                rend.material.color = startColor;
+            }
+        }
+
+        if (buildManager.buildMode == BuildManager.BuildMode.Repair)
+        {
+            if (transform.CompareTag("WallBlock") || transform.CompareTag("MainBase"))
+            {
+                Health health = transform.GetChild(0).GetComponent<Health>();
+                health.currentHealth = health.baseHealth;
+                buildManager.buildMode = BuildManager.BuildMode.None;
+                rend.material.color = startColor;
+            }
+            else
+            {
+                Debug.Log("Can't repair there!");
+            }
+        }
+
+        /*if (wall != null && buildManager.buildMode == BuildManager.BuildMode.Wall)
         {
             Debug.Log("Can't build wall there!");
             return;
         }
-        else if (buildManager.buildWall && transform.CompareTag("NodeForWall"))
+        else if (transform.CompareTag("NodeForWall"))
         {
             GameObject wallToBuild = BuildManager.instance.GetWallToBuild();
             wall = Instantiate(wallToBuild, transform.position + new Vector3(0, 2.5f, 0), transform.rotation, EnemyManager.instance.surface.transform);
-            buildManager.buildWall = false;
-            //EnemyManager.instance.UpdateMesh();
+            buildManager.buildMode = BuildManager.BuildMode.None;
+            buildManager.wallCount++;
+            rend.material.color = startColor;
         }
+
+        if (mine != null && buildManager.buildMode == BuildManager.BuildMode.Mine)
+        {
+            Debug.Log("Can't build mine there!");
+            return;
+        }
+        else if (transform.CompareTag("NodeForWall"))
+        {
+            GameObject mineToBuild = BuildManager.instance.GetMineToBuild();
+            mine = Instantiate(mineToBuild, transform.position + new Vector3(0, 0.6f, 0), transform.rotation, EnemyManager.instance.surface.transform);
+            buildManager.buildMode = BuildManager.BuildMode.None;
+            rend.material.color = startColor;
+        }
+
+        if (wall != null && buildManager.buildMode == BuildManager.BuildMode.Repair && transform.CompareTag("NodeForWall"))
+        {
+            print("repair wall");
+            buildManager.buildMode = BuildManager.BuildMode.None;
+            rend.material.color = startColor;
+        }*/
     }
 }
