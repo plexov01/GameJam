@@ -6,12 +6,9 @@ using UnityEngine.AI;
 public class Attack : MonoBehaviour
 {
     public float damage = 3f;
-
     public IDamageable damageable;
-
     public float attackSpeed = 1f;
-
-    private Coroutine AttackCoroutine;
+    public Coroutine attackCoroutine = null;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -26,23 +23,27 @@ public class Attack : MonoBehaviour
         if (other.CompareTag("Wall"))
         {
             damageable = other.GetComponent<IDamageable>();
-            print(damageable);
+            //print(damageable);
+            //print("entered wall trigger");
+            //print("damageable " + damageable);
+            //print("coroutine " + attackCoroutine);
 
-            if (damageable != null && AttackCoroutine == null)
+
+            if (damageable != null && attackCoroutine == null)
             {
                 if (transform.parent.GetComponent<Enemy>() != null)
                 {
                     transform.parent.GetComponent<Enemy>().attacking = true;
-                    NavMeshAgent agent = transform.parent.GetComponent<NavMeshAgent>();
-                    agent.velocity = Vector3.zero;
-                    agent.speed = 0;
-                    AttackCoroutine = StartCoroutine(AttackCroutine());
+                    //NavMeshAgent agent = transform.parent.GetComponent<NavMeshAgent>();
+                    //agent.velocity = Vector3.zero;
+                    //agent.speed = 0;
+                    attackCoroutine = StartCoroutine(AttackCoroutine());
                 }
             }
         }
     }
 
-    private IEnumerator AttackCroutine()
+    public IEnumerator AttackCoroutine()
     {
         yield return new WaitForSeconds(1f / attackSpeed);
 
@@ -54,6 +55,18 @@ public class Attack : MonoBehaviour
             yield return new WaitForSeconds(1f/ attackSpeed);
         }
 
-        AttackCoroutine = null;
+        //print("damageable in now null ");
+        attackCoroutine = null;
+    }
+
+
+    private void Update()
+    {
+        if (damageable == null) 
+        {
+            StopAllCoroutines();
+            attackCoroutine = null;
+            //print("stop attack " + attackCoroutine);
+        }
     }
 }

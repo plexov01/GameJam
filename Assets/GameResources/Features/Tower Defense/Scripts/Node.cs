@@ -12,6 +12,8 @@ public class Node : MonoBehaviour
     private GameObject mine;
     private BuildManager buildManager;
 
+    public LayerMask enemyMask;
+
     private void Awake()
     {
         rend = GetComponent<Renderer>();
@@ -80,13 +82,24 @@ public class Node : MonoBehaviour
 
         if (buildManager.buildMode == BuildManager.BuildMode.Wall && transform.CompareTag("NodeForWall"))
         {
-            if (wall != null || mine != null)
+            if (wall != null || mine != null || Physics.BoxCast(transform.position, new Vector3(2f, 1f, 2f), Vector3.up, Quaternion.identity, 20f, enemyMask))
             {
                 Debug.Log("Can't build wall there!");
                 return;
             }
             else
             {
+                /*print(Physics.BoxCast(transform.position + new Vector3(0f, 2.5f, 0f), new Vector3(2f, 2f, 2f), Vector3.up, Quaternion.identity, 20f, enemyMask));
+
+                RaycastHit[] hits = Physics.BoxCastAll(transform.position + new Vector3(0f, 2.5f, 0f), new Vector3(2f, 2f, 2f), Vector3.up, Quaternion.identity, 20f, enemyMask);
+
+                print("hits length: " + hits.Length);
+
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    print(hits[i]);
+                }*/
+
                 GameObject wallToBuild = BuildManager.instance.GetWallToBuild();
                 wall = Instantiate(wallToBuild, transform.position + new Vector3(0, 2.5f, 0), transform.rotation, EnemyManager.instance.surface.transform);
                 buildManager.buildMode = BuildManager.BuildMode.None;
@@ -161,4 +174,10 @@ public class Node : MonoBehaviour
             rend.material.color = startColor;
         }*/
     }
+
+    /*private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawCube(transform.position + new Vector3(0f, 2.5f, 0f), new Vector3(4f, 4f, 4f));
+    }*/
 }

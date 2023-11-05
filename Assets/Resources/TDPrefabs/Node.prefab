@@ -110,4 +110,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c86cb3d35c450a54bad35712e76c875a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startColor: {r: 0, g: 0, b: 0, a: 0}
   hoverColor: {r: 0.2830189, g: 0.26299396, b: 0.26299396, a: 0}
+  unhoverColor: {r: 0, g: 0, b: 0, a: 0}
+  rend: {fileID: 0}
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 4096
