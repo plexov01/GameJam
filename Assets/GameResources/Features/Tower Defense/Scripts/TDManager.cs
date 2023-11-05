@@ -12,7 +12,8 @@ public class TDManager : MonoBehaviour
     private EnemyManager enemyManager;
 
     private string turretTag = "Turret";
-    private string enemyTag = "EnemyTrigger";
+    private string enemyTag = "Enemy";
+    private string enemyTriggerTag = "EnemyTrigger";
     private string wallTag = "Wall";
 
     private Coroutine freezeCoroutine = null;
@@ -185,7 +186,7 @@ public class TDManager : MonoBehaviour
 
     public void KillAllEnemies()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTriggerTag);
 
         foreach (GameObject enemy in enemies)
         {
@@ -219,10 +220,12 @@ public class TDManager : MonoBehaviour
         {
             if (enemy != null)
             {
-                NavMeshAgent agent = enemy.transform.parent.GetComponent<NavMeshAgent>();
+                //NavMeshAgent agent = enemy.transform.parent.GetComponent<NavMeshAgent>();
 
-                enemy.transform.parent.GetComponent<NavMeshAgent>().speed = 0;
-                agent.velocity = Vector3.zero;
+                //enemy.transform.parent.GetComponent<NavMeshAgent>().speed = 0;
+                //agent.velocity = Vector3.zero;
+
+                enemy.GetComponent<Enemy>().speed = 0f;
             }
         }
 
@@ -232,9 +235,11 @@ public class TDManager : MonoBehaviour
         {
             if (enemy != null)
             {
-                NavMeshAgent agent = enemy.transform.parent.GetComponent<NavMeshAgent>();
+                //NavMeshAgent agent = enemy.transform.parent.GetComponent<NavMeshAgent>();
 
-                agent.speed = enemy.transform.parent.GetComponent<Enemy>().baseSpeed;
+                //agent.speed = enemy.transform.parent.GetComponent<Enemy>().baseSpeed;
+
+                enemy.GetComponent<Enemy>().speed = enemy.GetComponent<Enemy>().baseSpeed;
             }
         }
 
@@ -243,7 +248,7 @@ public class TDManager : MonoBehaviour
 
     public void IncreaseEnemiesHP(int enemyType, float amount)
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTriggerTag);
 
         foreach (GameObject enemy in enemies)
         {
@@ -254,9 +259,9 @@ public class TDManager : MonoBehaviour
         }
     }
 
-    public void ChangeEnemiesStats(int enemyType = 0, float deltaHealth = 0, float deltaSpeed = 0, float Size = 0, float deltaDamage = 0, float deltaAttackSpeed = 0)
+    public void ChangeEnemiesStats(int enemyType = 0, float deltaHealth = 0, float deltaSpeed = 0, float Size = 1, float deltaDamage = 0, float deltaAttackSpeed = 0)
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTriggerTag);
 
         foreach (GameObject enemy in enemies)
         {

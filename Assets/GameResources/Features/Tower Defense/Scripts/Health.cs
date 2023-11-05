@@ -9,6 +9,7 @@ public class Health : MonoBehaviour, IDamageable
     
     private string enemyTag = "Enemy";
     private string wallTag = "WallBlock";
+    private string gateTag = "MainBase";
 
     private void Awake()
     {
@@ -19,7 +20,7 @@ public class Health : MonoBehaviour, IDamageable
     {
         currentHealth -= damage;
 
-        if (currentHealth <= 0)
+        if (currentHealth <= 0 && objectToDestroy != null)
         {
             if (objectToDestroy.CompareTag(wallTag))
             {
@@ -32,11 +33,18 @@ public class Health : MonoBehaviour, IDamageable
                     {
                         if (enemy.transform.GetChild(0).GetComponent<Attack>().damageable == transform.GetComponent<IDamageable>())
                         {
-                            enemy.transform.GetComponent<NavMeshAgent>().speed = enemy.transform.GetComponent<Enemy>().speed;
+                            enemy.GetComponent<Enemy>().attacking = false;
+
+                            //enemy.transform.GetComponent<NavMeshAgent>().speed = enemy.transform.GetComponent<Enemy>().speed;
                             enemy.transform.GetChild(0).GetComponent<Attack>().damageable = null;
                         }
                     }
                 }
+            }
+
+            else if (objectToDestroy.CompareTag(gateTag))
+            {
+                print("gate is destroyed");
             }
 
             Destroy(objectToDestroy);
