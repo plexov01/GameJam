@@ -7,7 +7,7 @@
 		public override void ActivateCard()
 		{
 			base.ActivateCard();
-			Debug.Log("MakeRepairCard");
+			TDManager.instance.Repair();
 		}
 	}
 }
