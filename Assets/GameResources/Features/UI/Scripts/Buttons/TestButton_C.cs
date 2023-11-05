@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using GameJam.Features.UI;
 using UnityEngine;
 
-public class StartSecondStageButton : AbstractButton
+public class TestButton_C : AbstractButton
 {
     protected override void ClickAction()
     {
-        GameHandler.Instance.ChangeState(GameHandler.State.SecondStage);
-        Destroy(gameObject);
+        GameHandler.Instance.FinishGame();
     }
 }
