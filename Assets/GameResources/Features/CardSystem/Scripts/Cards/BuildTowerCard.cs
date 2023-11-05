@@ -9,7 +9,8 @@ namespace GameJob.Features.CardSystem
     {
         public override void ActivateCard()
         {
-            BuildManager.instance.BuildTurret();
+            
+            // BuildManager.instance.BuildTurret();
         }
     }
 }

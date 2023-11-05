@@ -16,6 +16,10 @@ namespace GameJob.Features.CardSystem
         /// </summary>
         public string Description = default;
         /// <summary>
+        /// Особая карта
+        /// </summary>
+        public bool Special = default;
+        /// <summary>
         /// Картинка карты
         /// </summary>
         public Sprite CardSprite = default;
