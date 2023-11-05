@@ -8,17 +8,20 @@ public class Mine : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
-
-        foreach (GameObject enemy in enemies)
+        if (other.CompareTag(enemyTag))
         {
-            if (enemy != null && Vector3.Distance(transform.position, enemy.transform.position) <= range)
-            {
-                enemy.GetComponent<IDamageable>().TakeDamage(damage);
-            }
-        }
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
 
-        Destroy(gameObject);
+            foreach (GameObject enemy in enemies)
+            {
+                if (enemy != null && Vector3.Distance(transform.position, enemy.transform.position) <= range)
+                {
+                    enemy.GetComponent<IDamageable>().TakeDamage(damage);
+                }
+            }
+
+            Destroy(gameObject);
+        }
     }
 
     private void OnDrawGizmos()

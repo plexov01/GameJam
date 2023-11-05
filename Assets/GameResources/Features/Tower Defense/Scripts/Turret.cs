@@ -21,7 +21,7 @@ public class Turret : MonoBehaviour
 
     private void Awake()
     {
-        GetComponent<SphereCollider>().radius = range / 3;
+        GetComponent<SphereCollider>().radius = range / transform.localScale.y;
     }
 
     private void OnTriggerEnter(Collider other)
