@@ -186,9 +186,20 @@ public class TDManager : MonoBehaviour
     
     public IEnumerator StartSpawningEnemies(int enemyType = 0, float spawanDelay = 1f)
     {
+        float modifier = 1f;
+        
         while (true)
         {
-            Instantiate(enemyManager.enemyPrefabs[enemyType], Vector3.zero, Quaternion.identity, transform.GetChild(0));
+            modifier += 0.02f;
+            
+            float coolness = CoolnessScaleController.Instance.GetCoolness();
+            if (coolness <= 0.3f)
+            {
+                modifier += 0.01f;
+            }
+            
+            GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], Vector3.zero, Quaternion.identity, transform.GetChild(0));
+            mob.GetComponent<Enemy>().UpgradeEnemy(modifier);
 
             yield return new WaitForSeconds(spawanDelay);
         }

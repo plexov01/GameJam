@@ -96,4 +96,10 @@ public class Enemy : MonoBehaviour
         attackScript.damage = damage;
         attackScript.attackSpeed = attackSpeed;
     }
+
+    public void UpgradeEnemy(float modifier)
+    {
+        health *= modifier;
+        damage *= modifier;
+    }
 }

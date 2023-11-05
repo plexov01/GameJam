@@ -29,5 +29,10 @@ public class CoolnessScaleController : MonoBehaviour
         OnCoolnessChanged?.Invoke(this,new OnCoolnessChangedEventArgs{coolness = this.currentCoolness, coolnessMax = coolnessMax});
     }
 
+    public float GetCoolness()
+    {
+        return (float)currentCoolness / coolnessMax;
+    }
+
 
 }
