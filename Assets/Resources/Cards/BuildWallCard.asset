@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: "\u0421\u0442\u0435\u043D\u0430"
   Description: 
+  Special: 0
+  Coolness: 100
   CardSprite: {fileID: 21300000, guid: e5ba94bc2f19fa349897033824e46340, type: 3}
   EventSound: {fileID: 0}

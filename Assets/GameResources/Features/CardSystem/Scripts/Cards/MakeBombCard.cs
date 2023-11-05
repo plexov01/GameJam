@@ -7,6 +7,7 @@
 	{
 		public override void ActivateCard()
 		{
+			base.ActivateCard();
 			Debug.Log("MakeBombCard");
 		}
 	}
