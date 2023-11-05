@@ -99,7 +99,8 @@ public class Enemy : MonoBehaviour
 
     public void UpgradeEnemy(float modifier)
     {
-        health *= modifier;
-        damage *= modifier;
+        transform.GetChild(0).GetComponent<Attack>().damage *= modifier;
+        transform.GetChild(0).GetComponent<Health>().currentHealth *= modifier;
+        transform.GetChild(0).GetComponent<Health>().baseHealth *= modifier;
     }
 }

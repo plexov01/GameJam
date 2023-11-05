@@ -22,7 +22,9 @@ public class TDManager : MonoBehaviour
 
     [Header("Change enemy stats")]
     private float newHealth;
-
+    
+    [Header("Scaling")]
+    float modifier = 1f;
 
     private void Awake()
     {
@@ -186,8 +188,6 @@ public class TDManager : MonoBehaviour
     
     public IEnumerator StartSpawningEnemies(int enemyType = 0, float spawanDelay = 1f)
     {
-        float modifier = 1f;
-        
         while (true)
         {
             modifier += 0.02f;
@@ -204,12 +204,22 @@ public class TDManager : MonoBehaviour
             yield return new WaitForSeconds(spawanDelay);
         }
     }
+    
 
     public IEnumerator SpawnEnemies(int numberToSpawn, int enemyType = 0, float spawanDelay = 1f)
     {
         for (int i = 0; i < numberToSpawn; i++)
         {
-            Instantiate(enemyManager.enemyPrefabs[enemyType], Vector3.zero, Quaternion.identity, transform.GetChild(0));
+            modifier += 0.02f;
+            
+            float coolness = CoolnessScaleController.Instance.GetCoolness();
+            if (coolness <= 0.3f)
+            {
+                modifier += 0.01f;
+            }
+            
+            GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], Vector3.zero, Quaternion.identity, transform.GetChild(0));
+            mob.GetComponent<Enemy>().UpgradeEnemy(modifier);
 
             yield return new WaitForSeconds(spawanDelay);
         }
