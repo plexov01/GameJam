@@ -131,7 +131,15 @@ public class Node : MonoBehaviour
                 else
                 {
                     SoundManager soundManager = SoundManager.Instance;
-                    soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
+                    if (Random.value < 0.5f)
+                    {
+                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
+                    }
+                    else
+                    {
+                        soundManager.PlaySound(soundManager.audioClipRefsSo.stopRats,Camera.main.transform.position);
+                    }
+                    
                 }
             }
         }

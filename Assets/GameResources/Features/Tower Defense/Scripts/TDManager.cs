@@ -483,8 +483,8 @@ public class TDManager : MonoBehaviour
 
     public void ChangeTurretTier(bool upgrade)
     {
-        SoundManager soundManager = SoundManager.Instance;
-        soundManager.PlaySound(soundManager.audioClipRefsSo.stopRats,Camera.main.transform.position);
+        // SoundManager soundManager = SoundManager.Instance;
+        // soundManager.PlaySound(soundManager.audioClipRefsSo.stopRats,Camera.main.transform.position);
         
         List<GameObject> turrets = GameObject.FindGameObjectsWithTag(turretTag).ToList();
 
