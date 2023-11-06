@@ -7,12 +7,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BuildTowerCard", menuName = "Cards/UpgradeTowerCard")]
 public class UpgradeTowerCard : AbstractCard
 {
-    public class BuildTowerCard : AbstractCard
+    public override void ActivateCard()
     {
-        public override void ActivateCard()
-        {
-            base.ActivateCard();
-            TDManager.instance.ChangeTurretTier(true);
-        }
+        base.ActivateCard();
+        TDManager.instance.ChangeTurretTier(true);
     }
 }
