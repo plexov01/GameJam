@@ -100,7 +100,7 @@ MonoBehaviour:
   target: {fileID: 0}
   damage: 15
   speed: 70
-  impactEffect: {fileID: 8528089137093792720, guid: 7f5a7de9e06206b4daf3befeb37029c0, type: 3}
+  impactEffect: {fileID: 8799921712464887557, guid: 61897f7b7401f0e49bf6ed65e805a38c, type: 3}
 --- !u!65 &4636187995486958811
 BoxCollider:
   m_ObjectHideFlags: 0

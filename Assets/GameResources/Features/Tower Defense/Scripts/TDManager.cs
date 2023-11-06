@@ -107,7 +107,7 @@ public class TDManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Keypad9))
         {
-            ChangeEnemiesStats(0, 99, 2, 2, 25, 3);
+            ChangeEnemiesStats(0, 50, 1.5f, 1.5f, 5, 3);
         }
     }
 
