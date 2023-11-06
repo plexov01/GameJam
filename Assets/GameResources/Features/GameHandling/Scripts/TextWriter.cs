@@ -12,18 +12,24 @@ public class TextWriter : MonoBehaviour
     private int characterIndex;
     private float timePerCharacter;
     private float timer;
+    private UITextAssistent assistent;
 
+    private bool isComplete = false;
+    
 
-    public void AddWriter(TextMeshProUGUI uiText, string textToWrite, float timePerCharacter)
+    public void AddWriter(TextMeshProUGUI uiText, string textToWrite, float timePerCharacter, UITextAssistent assistent)
     {
         this.uiText = uiText;
         this.textToWrite = textToWrite;
         this.timePerCharacter = timePerCharacter;
         characterIndex = 0;
+        this.assistent = assistent;
     }
 
     private void Update()
     {
+        if (isComplete) return;
+        
         if (uiText != null)
         {
             timer -= Time.deltaTime;
@@ -31,7 +37,15 @@ public class TextWriter : MonoBehaviour
             {
                 timer = timePerCharacter;
                 characterIndex++;
-
+                
+                if (characterIndex > textToWrite.Length)
+                {
+                    isComplete = true;
+                    assistent.Continue();
+                    
+                    return;
+                }
+                
                 uiText.text = textToWrite.Substring(0, characterIndex);
             }
         }

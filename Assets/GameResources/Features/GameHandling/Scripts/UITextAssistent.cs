@@ -7,17 +7,50 @@ using TMPro;
 
 public class UITextAssistent : MonoBehaviour
 {
-    [SerializeField] private TextWriter textWriter;
-    [SerializeField] private TextMeshProUGUI messageText1;
-    [SerializeField] private TextMeshProUGUI messageToWrite1;
+    [Serializable]
+    public struct MyStruct
+    {
+        public TextWriter textWriter;
+        public TextMeshProUGUI text;
+        public TextMeshProUGUI message;
+        public float timePerCharacter;
+    }
+
+    [SerializeField] private List<MyStruct> list = new List<MyStruct>();
     
-    [SerializeField] private TextMeshProUGUI messageText2;
-    [SerializeField] private TextMeshProUGUI messageToWrite2;
+    // [SerializeField] private TextWriter textWriter1;
+    // [SerializeField] private TextWriter textWriter2;
+    // [SerializeField] private TextMeshProUGUI messageText1;
+    // [SerializeField] private TextMeshProUGUI messageToWrite1;
+    //
+    // [SerializeField] private TextMeshProUGUI messageText2;
+    // [SerializeField] private TextMeshProUGUI messageToWrite2;
+    //
+    // [SerializeField] private float timePerCharacter1;
+    // [SerializeField] private float timePerCharacter2;
 
+    [SerializeField] private GameObject skipButton;
 
+    private int writerIndex = 0;
+    
+    
     private void Start()
     {
-        textWriter.AddWriter(messageText1, messageToWrite1.text,1f);
-        textWriter.AddWriter(messageText2, messageToWrite2.text,1f);
+        MyStruct myStruct = list[writerIndex];
+
+        myStruct.textWriter.AddWriter(myStruct.text,myStruct.message.text,myStruct.timePerCharacter,this);
+    }
+
+    public void Continue()
+    {
+        writerIndex++;
+        if (writerIndex >= list.Count)
+        {
+            skipButton.SetActive(true);
+            return;
+        }
+        
+        MyStruct myStruct = list[writerIndex];
+        myStruct.textWriter.AddWriter(myStruct.text,myStruct.message.text,myStruct.timePerCharacter,this);
     }
 }
