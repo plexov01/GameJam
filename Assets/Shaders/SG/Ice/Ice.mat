@@ -48,11 +48,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _NoiseScale: 2.9
+    - _NoiseScale: 10.27
     - _Normal_Power: 0.012
     - _QueueControl: 0
     - _QueueOffset: 0
     - _WhiteBorder_Power: -4.8
     m_Colors:
-    - _BaseColor: {r: 0.32203948, g: 0.82746255, b: 0.8542992, a: 1}
+    - _BaseColor: {r: 0.32203948, g: 0.82746255, b: 0.8542992, a: 0.3764706}
   m_BuildTextureStacks: []
