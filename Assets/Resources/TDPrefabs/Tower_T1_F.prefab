@@ -553,7 +553,6 @@ MonoBehaviour:
   bulletPrefab: {fileID: 4891562107793611798, guid: db458b8c4861b92419a7c7dd807dba97, type: 3}
   firePoint: {fileID: 208669609709417889}
   barrel: {fileID: 2574627767611357851}
-  barrelHolder: {fileID: 4092115806681075644}
   tier: 1
 --- !u!135 &6188860362110591349
 SphereCollider:

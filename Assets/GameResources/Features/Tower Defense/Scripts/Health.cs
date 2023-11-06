@@ -31,7 +31,7 @@ public class Health : MonoBehaviour, IDamageable
 
                 foreach (GameObject enemy in enemies)
                 {
-                    if (enemy != null)
+                    if (enemy != null && transform.GetComponent<IDamageable>() != null)
                     {
                         if (enemy.transform.GetChild(0).GetComponent<Attack>().damageable == transform.GetComponent<IDamageable>())
                         {
