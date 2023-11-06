@@ -478,7 +478,7 @@ public class TDManager : MonoBehaviour
         // node.position + new Vector3(0, meteorHeight, 0);
         
         position.y += meteorHeight;
-        GameObject meteor = Instantiate(meteorPrefab, spawnPosition, transform.rotation);
+        GameObject meteor = Instantiate(meteorPrefab, position, transform.rotation);
     }
 
     public void ChangeTurretTier(bool upgrade)

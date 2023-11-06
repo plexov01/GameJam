@@ -12188,7 +12188,7 @@ MonoBehaviour:
   - {fileID: 71526330}
   - {fileID: 1635695242}
   - {fileID: 1700027672}
-  meteorHeight: 45
+  meteorHeight: 150
   meteorPrefab: {fileID: 4964905279176150626, guid: 687f808ff9409734c9298c3ca11056a9, type: 3}
   meteorDamage: 500
 --- !u!1001 &777786655
