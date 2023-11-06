@@ -91,8 +91,8 @@ public class TDManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Keypad6))
         {
-            //FreezeEnemies(3f);
-            LavaFloor(3f);
+            FreezeEnemies(3f);
+            //LavaFloor(3f);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad7))
