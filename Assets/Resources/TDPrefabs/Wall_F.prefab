@@ -123,7 +123,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f45236226c0a3a940a459602b45e36ad, type: 2}
+  - {fileID: 2100000, guid: c9bf374fa9f1c354e94cc6b3d8526556, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -180,7 +180,7 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 0
-  path: 0
+  path: 1
 --- !u!1 &5729892650897629252
 GameObject:
   m_ObjectHideFlags: 0
