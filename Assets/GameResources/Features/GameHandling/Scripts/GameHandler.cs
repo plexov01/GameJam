@@ -160,6 +160,11 @@ public class GameHandler : MonoBehaviour
         return currentState is State.SecondStage or State.ThirdStage;
     }
     
+    public bool IsSecondStageActive()
+    {
+        return currentState is State.SecondStage;
+    }
+    
     public bool IsThirdStateActive()
     {
         return currentState is State.ThirdStage;

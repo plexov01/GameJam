@@ -9589,13 +9589,14 @@ GameObject:
   m_Component:
   - component: {fileID: 745934644}
   - component: {fileID: 745934643}
+  - component: {fileID: 745934645}
   m_Layer: 0
   m_Name: MusicManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!82 &745934643
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9606,7 +9607,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e990e300fe0802b42ae8dc1bbea4364b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: d0a68998d4ef7d34f8bdf3a8b10375cc, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.5
   m_Pitch: 1
@@ -9707,6 +9708,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &745934645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 745934642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb5e14dc6d3ddf429576aaa584c6abd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstStageSong: {fileID: 8300000, guid: d0a68998d4ef7d34f8bdf3a8b10375cc, type: 3}
+  secondStageSong: {fileID: 8300000, guid: 4fe2df05f4fc2854b96409a5374ab2b0, type: 3}
+  thirdStageSong: {fileID: 8300000, guid: 7d93e058646b27542a604118b31fab21, type: 3}
 --- !u!1 &748508551
 GameObject:
   m_ObjectHideFlags: 0
@@ -17047,13 +17063,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1212404639}
+  - component: {fileID: 1212404640}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1212404639
 Transform:
   m_ObjectHideFlags: 0
@@ -17069,6 +17086,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1212404640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212404638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb5e14dc6d3ddf429576aaa584c6abd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstStageSong: {fileID: 0}
+  secondStageSong: {fileID: 0}
+  thirdStageSong: {fileID: 0}
 --- !u!1001 &1214013819
 PrefabInstance:
   m_ObjectHideFlags: 0
