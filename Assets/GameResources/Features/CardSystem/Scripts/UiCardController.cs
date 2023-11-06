@@ -28,6 +28,11 @@ namespace GameJam.Features.CardSystem
 
         public void ShowCards(List<AbstractCard> cards)
         {
+            for (int i = 0; i < _currentButtons.Count; i++)
+            {
+                _currentButtons[i].gameObject.SetActive(false);
+            }
+            
             for (int i = 0; i < cards.Count; i++)
             {
                 _currentButtons[i].SetNameCard(cards[i].name);
