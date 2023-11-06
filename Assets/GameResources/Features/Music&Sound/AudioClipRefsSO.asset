@@ -24,4 +24,9 @@ MonoBehaviour:
   breakTheWall: {fileID: 8300000, guid: fb8bb32b77759f6428e15b191387c3bf, type: 3}
   increaseThePressure: {fileID: 8300000, guid: 4788e44490fabd446a292bd7903b061d, type: 3}
   tma: {fileID: 8300000, guid: ff5545d2b6184d940989aa6521010e9a, type: 3}
-  meteor: {fileID: 0}
+  meteor: {fileID: 8300000, guid: 4d80adf4865873f4c87265bad25ee5fe, type: 3}
+  cuircut: {fileID: 8300000, guid: 7a4da8f36b1d28644bcac5d5361501ef, type: 3}
+  freeze: {fileID: 8300000, guid: f28de9ec94de8bc40bda4f548fe14642, type: 3}
+  buildWall: {fileID: 8300000, guid: 8103652f16833144db89ea00bbefe430, type: 3}
+  Bomb: {fileID: 8300000, guid: 7145eae966dc415448166ce4882c6a1d, type: 3}
+  Upgrade: {fileID: 8300000, guid: 8103652f16833144db89ea00bbefe430, type: 3}

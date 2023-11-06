@@ -59,6 +59,8 @@
 					Destroy(rats[i]);
 				}	
 			}
+			SoundManager soundManager = SoundManager.Instance;
+			soundManager.PlaySound(soundManager.audioClipRefsSo.cuircut, Camera.main.transform.position);
 
 		}
 	}

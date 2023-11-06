@@ -11,6 +11,9 @@ namespace GameJam.Features.CardSystem
         {
             base.ActivateCard();
             TDManager.instance.ChangeTurretTier(true);
+            
+            SoundManager soundManager = SoundManager.Instance;
+            soundManager.PlaySound(soundManager.audioClipRefsSo.Upgrade, Camera.main.transform.position);
         }
     }
 }

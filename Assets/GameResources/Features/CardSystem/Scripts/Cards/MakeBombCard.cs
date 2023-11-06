@@ -9,6 +9,10 @@
 		{
 			base.ActivateCard();
 			TDManager.instance.BuildMine();
+			
+			SoundManager soundManager = SoundManager.Instance;
+			
+			soundManager.PlaySound(soundManager.audioClipRefsSo.Bomb, Camera.main.transform.position);
 		}
 	}
 }
