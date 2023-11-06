@@ -17,29 +17,37 @@ public class Turret : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint;
     [SerializeField] private Transform barrel;
-    [SerializeField] private Transform barrelHolder;
+
+    public GameObject impactEffect;
+
+    public int tier;
 
     private bool isFrozen = false;
     
     private void Awake()
     {
-        GetComponent<SphereCollider>().radius = range / transform.localScale.y;
+        GetComponent<SphereCollider>().radius = range / 4;
         // _basefireRate = fireRate;
         tempfireRate = fireRate;
         tempturnSpeed = turnSpeed;
     }
 
+    private void Start()
+    {
+        fireCountdown = 0.25f;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (target == null && other.CompareTag("Enemy"))
+        if (target == null && other.CompareTag("EnemyTrigger"))
         {
-            target = other.transform;
+            target = other.transform.parent;
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (target == null)
+        if (target == null && other.CompareTag("EnemyTrigger"))
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
 
@@ -70,35 +78,44 @@ public class Turret : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
-
-        float shortestDistance = float.MaxValue;
-        GameObject nearestEnemy = null;
-
-        foreach (GameObject enemy in enemies)
+        print("exit trigger: " + other.tag);
+        if (other.CompareTag("EnemyTrigger"))
         {
-            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+            print("exit trigger");
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
 
-            if (distanceToEnemy < shortestDistance)
+            float shortestDistance = float.MaxValue;
+            GameObject nearestEnemy = null;
+
+            foreach (GameObject enemy in enemies)
             {
-                shortestDistance = distanceToEnemy;
-                nearestEnemy = enemy;
-            }
-        }
+                float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
 
-        if (nearestEnemy != null && shortestDistance <= range)
-        {
-            target = nearestEnemy.transform;
-        }
-        else
-        {
-            target = null;
+                if (distanceToEnemy < shortestDistance)
+                {
+                    shortestDistance = distanceToEnemy;
+                    nearestEnemy = enemy;
+                }
+            }
+
+            if (nearestEnemy != null && shortestDistance <= range)
+            {
+                target = nearestEnemy.transform;
+            }
+            else
+            {
+                target = null;
+            }
         }
     }
 
     private void Update()
     {
-        if (isFrozen) return;
+        if (isFrozen)
+        {
+            target = null;
+            return;
+        }
         
         if (target == null)
         {
@@ -111,11 +128,7 @@ public class Turret : MonoBehaviour
         Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation * Quaternion.Euler(0, -90f, 0), Time.deltaTime * turnSpeed).eulerAngles;
         partToRotate.rotation = Quaternion.Euler(0, rotation.y, 0);
 
-        barrelHolder.LookAt(new Vector3(target.position.x, target.position.y, barrel.position.z));
-
-        //print(barrelHolder.localEulerAngles.z);
-
-        barrel.localEulerAngles = new Vector3(0, 0, -barrelHolder.localEulerAngles.x);
+        barrel.localEulerAngles = new Vector3(0, 0, -30f);
 
         if (fireCountdown <= 0f)
         {
@@ -131,7 +144,11 @@ public class Turret : MonoBehaviour
         GameObject bulletGameObject = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         bulletGameObject.transform.parent = transform;
         Bullet bullet = bulletGameObject.GetComponent<Bullet>();
-        
+
+        GameObject effect = Instantiate(impactEffect, firePoint.position, partToRotate.rotation * Quaternion.Euler(90f, 0, 0));
+
+        Destroy(effect, 1f);
+
         if (bullet != null)
         {
             bullet.Seek(target);

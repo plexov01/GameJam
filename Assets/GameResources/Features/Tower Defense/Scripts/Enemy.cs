@@ -28,6 +28,8 @@ public class Enemy : MonoBehaviour
     public bool attacking = false;
     public bool reachedEnd = false;
 
+    public bool isFrozen = false;
+
     private void Awake()
     {
         //agent = GetComponent<NavMeshAgent>();

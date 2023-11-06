@@ -7,7 +7,7 @@ public static class SceneLoader
 {
     public enum Scene
     {
-        Main,
+        Menu,
         Loading,
         TowerDefense,
     }

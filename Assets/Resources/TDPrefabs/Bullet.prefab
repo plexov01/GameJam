@@ -113,3 +113,4 @@ MonoBehaviour:
   target: {fileID: 0}
   damage: 15
   speed: 70
+  impactEffect: {fileID: 8528089137093792720, guid: 7f5a7de9e06206b4daf3befeb37029c0, type: 3}
