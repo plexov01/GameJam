@@ -480,7 +480,7 @@ public class TDManager : MonoBehaviour
                     Transform node = tier1Turrets[0].transform.parent.parent;
 
                     GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(2);
-                    Destroy(tier1Turrets[0]);
+                    Destroy(tier1Turrets[0].transform.parent.gameObject);
                     Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
                 }
                 else
@@ -491,7 +491,7 @@ public class TDManager : MonoBehaviour
                     Transform node = tier2Turrets[0].transform.parent.parent;
 
                     GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(3);
-                    Destroy(tier2Turrets[0]);
+                    Destroy(tier2Turrets[0].transform.parent.gameObject);
                     Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
                 }
             }
@@ -503,7 +503,7 @@ public class TDManager : MonoBehaviour
                 Transform node = tier1Turrets[0].transform.parent.parent;
 
                 GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(2);
-                Destroy(tier1Turrets[0]);
+                Destroy(tier1Turrets[0].transform.parent.gameObject);
                 Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
             }
             else if (tier1Turrets.Count == 0 && tier2Turrets.Count > 0)
@@ -514,7 +514,7 @@ public class TDManager : MonoBehaviour
                 Transform node = tier2Turrets[0].transform.parent.parent;
 
                 GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(3);
-                Destroy(tier2Turrets[0]);
+                Destroy(tier2Turrets[0].transform.parent.gameObject);
                 Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
             }
         }
@@ -551,7 +551,7 @@ public class TDManager : MonoBehaviour
                     Transform node = tier2Turrets[0].transform.parent.parent;
 
                     GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(1);
-                    Destroy(tier2Turrets[0]);
+                    Destroy(tier2Turrets[0].transform.parent.gameObject);
                     Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
                 }
                 else
@@ -562,7 +562,7 @@ public class TDManager : MonoBehaviour
                     Transform node = tier3Turrets[0].transform.parent.parent;
 
                     GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(2);
-                    Destroy(tier3Turrets[0]);
+                    Destroy(tier3Turrets[0].transform.parent.gameObject);
                     Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
                 }
             }
@@ -574,7 +574,7 @@ public class TDManager : MonoBehaviour
                 Transform node = tier2Turrets[0].transform.parent.parent;
 
                 GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(1);
-                Destroy(tier2Turrets[0]);
+                Destroy(tier2Turrets[0].transform.parent.gameObject);
                 Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
             }
             else if (tier2Turrets.Count == 0 && tier3Turrets.Count > 0)
@@ -585,7 +585,7 @@ public class TDManager : MonoBehaviour
                 Transform node = tier3Turrets[0].transform.parent.parent;
 
                 GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(2);
-                Destroy(tier3Turrets[0]);
+                Destroy(tier3Turrets[0].transform.parent.gameObject);
                 Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
             }
         }
