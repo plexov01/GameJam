@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Holo
-  m_Shader: {fileID: -6465566751694194690, guid: 56857d75786005d4da7e7aecbaced339,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 56857d75786005d4da7e7aecbaced339, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 2
@@ -57,7 +56,7 @@ Material:
     - _QueueOffset: 0
     - _ScrollSpeed: 0.05
     m_Colors:
-    - _FresnelColor: {r: 0, g: 2.3178961, b: 2.670157, a: 0}
+    - _FresnelColor: {r: 2.6701574, g: 1.2653314, b: 0, a: 0}
     - _HoloTiling: {r: 64, g: 64, b: 0, a: 0}
-    - _MainColor: {r: 0, g: 2.3178961, b: 2.670157, a: 0}
+    - _MainColor: {r: 2.6701574, g: 1.5561867, b: 0, a: 0}
   m_BuildTextureStacks: []

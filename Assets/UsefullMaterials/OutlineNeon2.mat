@@ -13,7 +13,6 @@ Material:
   - _EMISSION
   - _HALFTONESHAPE_DOT
   - _OUTLINE
-  - _TOON_SHADING_ON
   m_InvalidKeywords:
   - _STEPVIARAMPTEXTURE_ON
   m_LightmapFlags: 2
@@ -277,7 +276,7 @@ Material:
     - _TextureBlendingMode: 0
     - _TextureImpact: 1
     - _ToonBlending: 1
-    - _ToonEnabled: 1
+    - _ToonEnabled: 0
     - _UVSec: 0
     - _UnityShadowMode: 0
     - _UnityShadowOcclusion: 0
@@ -297,7 +296,7 @@ Material:
     - _ColorDimExtra: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _ColorDimSteps: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _ColorGradient: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
-    - _EmissionColor: {r: 0.8207547, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 3.796079, g: 0, b: 0, a: 1}
     - _FaceFrontDirection: {r: 0, g: 0, b: 1, a: 0}
     - _FaceRightDirection: {r: 1, g: 0, b: 0, a: 0}
     - _FlatGlitterColor: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
