@@ -62,53 +62,53 @@ public class TDManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            BuildTurret();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad2))
-        {
-            BuildWall();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad3))
-        {
-            BuildMine();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad4))
-        {
-            CoolnessScaleController.Instance.AddCoolness(-100);
-            //Repair();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad5))
-        {
-            CoolnessScaleController.Instance.AddCoolness(100);
-            StartCoroutine(SpawnEnemies(1));
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad6))
-        {
-            //FreezeEnemies(3f);
-            LavaFloor(3f);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad7))
-        {
-            ChangeTurretTier(true);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad8))
-        {
-            ChangeTurretTier(false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad9))
-        {
-            ChangeEnemiesStats(0, 50, 1.5f, 1.5f, 5, 3);
-        }
+        // if (Input.GetKeyDown(KeyCode.Keypad1))
+        // {
+        //     BuildTurret();
+        // }
+        //
+        // if (Input.GetKeyDown(KeyCode.Keypad2))
+        // {
+        //     BuildWall();
+        // }
+        //
+        // if (Input.GetKeyDown(KeyCode.Keypad3))
+        // {
+        //     BuildMine();
+        // }
+        //
+        // if (Input.GetKeyDown(KeyCode.Keypad4))
+        // {
+        //     CoolnessScaleController.Instance.AddCoolness(-100);
+        //     //Repair();
+        // }
+        //
+        // if (Input.GetKeyDown(KeyCode.Keypad5))
+        // {
+        //     CoolnessScaleController.Instance.AddCoolness(100);
+        //     StartCoroutine(SpawnEnemies(1));
+        // }
+        //
+        // if (Input.GetKeyDown(KeyCode.Keypad6))
+        // {
+        //     //FreezeEnemies(3f);
+        //     LavaFloor(3f);
+        // }
+        //
+        // if (Input.GetKeyDown(KeyCode.Keypad7))
+        // {
+        //     ChangeTurretTier(true);
+        // }
+        //
+        // if (Input.GetKeyDown(KeyCode.Keypad8))
+        // {
+        //     ChangeTurretTier(false);
+        // }
+        //
+        // if (Input.GetKeyDown(KeyCode.Keypad9))
+        // {
+        //     ChangeEnemiesStats(0, 50, 1.5f, 1.5f, 5, 3);
+        // }
     }
 
     public void BuildTurret()

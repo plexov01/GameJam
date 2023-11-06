@@ -131,8 +131,8 @@ namespace GameJam.Features.CardSystem
                 {
                     cards = GetRandomCards(2);
                     
-                    // Добавление 1 карты с 15% шансом
-                    if (Random.Range(0, 100)<15)
+                    // Добавление 1 карты с 40% шансом
+                    if (Random.Range(0, 100)<40)
                     {
                         cards.Add(_abstractSpecialCards[Random.Range(0, _abstractSpecialCards.Count)]);
                     }
