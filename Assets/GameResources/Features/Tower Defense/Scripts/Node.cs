@@ -2,9 +2,14 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-    public Color startColor;
-    public Color hoverColor;
-    public Color unhoverColor;
+    public Color nodeStartColor;
+    public Color nodeHoverColor;
+    public Color nodeUnhoverColor;
+
+    public Color pathStartColor;
+    public Color pathHoverColor;
+    public Color pathUnhoverColor;
+
     public Renderer rend;
 
     private GameObject turret;
@@ -14,11 +19,16 @@ public class Node : MonoBehaviour
 
     public LayerMask enemyMask;
 
+    public bool path;
+
     private void Awake()
     {
         rend = GetComponent<Renderer>();
-        startColor = rend.material.color;
-        unhoverColor = startColor;
+        nodeStartColor = rend.material.color;
+        nodeUnhoverColor = nodeStartColor;
+
+        pathStartColor = rend.material.GetColor("_FloorColor");
+        pathUnhoverColor = pathStartColor;
     }
 
     private void Start()
@@ -32,30 +42,37 @@ public class Node : MonoBehaviour
 
         if (buildManager.buildMode == BuildManager.BuildMode.Turret && transform.CompareTag("NodeForTurret"))
         {
-            rend.material.color = hoverColor;
+            if (rend.material.color != null)
+            {
+                rend.material.color = nodeHoverColor;
+            }
         }
 
         if (buildManager.buildMode == BuildManager.BuildMode.Wall && transform.CompareTag("NodeForWall"))
         {
-            rend.material.color = hoverColor;
+            rend.material.SetColor("_FloorColor", pathHoverColor);
         }
 
         if (buildManager.buildMode == BuildManager.BuildMode.Mine && transform.CompareTag("NodeForWall"))
         {
-            rend.material.color = hoverColor;
+            rend.material.SetColor("_FloorColor", pathHoverColor);
         }
 
         if (buildManager.buildMode == BuildManager.BuildMode.Repair && (transform.CompareTag("WallBlock") || transform.CompareTag("MainBase")))
         {
-            rend.material.color = hoverColor;
+            rend.material.SetColor("_FloorColor", pathHoverColor);
         }
     }
 
     private void OnMouseExit()
     {
-        if (rend.material.color != unhoverColor)
+        if (path)
         {
-            rend.material.color = unhoverColor;
+            rend.material.SetColor("_FloorColor", pathUnhoverColor);
+        }
+        else
+        {
+            //
         }
     }
 
@@ -76,7 +93,29 @@ public class Node : MonoBehaviour
                 turret = Instantiate(turretToBuild, transform.position + new Vector3(0, 2f, 0), transform.rotation, transform);
                 buildManager.buildMode = BuildManager.BuildMode.None;
                 buildManager.turretCount++;
-                rend.material.color = unhoverColor;
+
+                if (path)
+                {
+                    rend.material.SetColor("_FloorColor", pathUnhoverColor);
+                }
+                else
+                {
+                    //
+                }
+
+                if (GameHandler.Instance.IsFirstStageActive())
+                {
+                    if (Random.value < 0.5f)
+                    {
+                        SoundManager soundManager = SoundManager.Instance;
+                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
+                    }
+                }
+                else
+                {
+                    SoundManager soundManager = SoundManager.Instance;
+                    soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
+                }
             }
         }
 
@@ -104,7 +143,37 @@ public class Node : MonoBehaviour
                 wall = Instantiate(wallToBuild, transform.position + new Vector3(0, 2.5f, 0), transform.rotation, EnemyManager.instance.surface.transform);
                 buildManager.buildMode = BuildManager.BuildMode.None;
                 buildManager.wallCount++;
-                rend.material.color = unhoverColor;
+
+                if (path)
+                {
+                    rend.material.SetColor("_FloorColor", pathUnhoverColor);
+                }
+                else
+                {
+                    //
+                }
+
+                if (GameHandler.Instance.IsFirstStageActive())
+                {
+                    if (Random.value < 0.5f)
+                    {
+                        SoundManager soundManager = SoundManager.Instance;
+                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
+                    }
+                }
+                else
+                {
+                    SoundManager soundManager = SoundManager.Instance;
+                    if (Random.value < 0.5f)
+                    {
+                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
+                    }
+                    else
+                    {
+                        soundManager.PlaySound(soundManager.audioClipRefsSo.stopRats, Camera.main.transform.position);
+                    }
+
+                }
             }
         }
 
@@ -121,7 +190,29 @@ public class Node : MonoBehaviour
                 GameObject mineToBuild = BuildManager.instance.GetMineToBuild();
                 mine = Instantiate(mineToBuild, transform.position + new Vector3(0, 0.6f, 0), transform.rotation, EnemyManager.instance.surface.transform);
                 buildManager.buildMode = BuildManager.BuildMode.None;
-                rend.material.color = unhoverColor;
+
+                if (path)
+                {
+                    rend.material.SetColor("_FloorColor", pathUnhoverColor);
+                }
+                else
+                {
+                    //
+                }
+
+                if (GameHandler.Instance.IsFirstStageActive())
+                {
+                    if (Random.value < 0.5f)
+                    {
+                        SoundManager soundManager = SoundManager.Instance;
+                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
+                    }
+                }
+                else
+                {
+                    SoundManager soundManager = SoundManager.Instance;
+                    soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
+                }
             }
         }
 
@@ -132,7 +223,15 @@ public class Node : MonoBehaviour
                 Health health = transform.GetChild(0).GetComponent<Health>();
                 health.currentHealth = health.baseHealth;
                 buildManager.buildMode = BuildManager.BuildMode.None;
-                rend.material.color = unhoverColor;
+
+                if (path)
+                {
+                    rend.material.SetColor("_FloorColor", pathUnhoverColor);
+                }
+                else
+                {
+                    //
+                }
             }
             else
             {

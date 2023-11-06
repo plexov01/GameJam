@@ -16,6 +16,8 @@ public class CoolnessScaleController : MonoBehaviour
     
     [SerializeField] private int coolnessMax = 1000;
     [SerializeField] private int currentCoolness = 500;
+
+    public bool isDark;
     
     private void Awake()
     {
@@ -32,6 +34,12 @@ public class CoolnessScaleController : MonoBehaviour
     {
         return (float)currentCoolness / coolnessMax;
     }
+
+    public bool IsDarkness()
+    {
+        return isDark;
+    }
+    
 
 
 }
