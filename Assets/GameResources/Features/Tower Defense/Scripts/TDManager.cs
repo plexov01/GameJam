@@ -79,11 +79,13 @@ public class TDManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Keypad4))
         {
-            Repair();
+            CoolnessScaleController.Instance.AddCoolness(-100);
+            //Repair();
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad5))
         {
+            CoolnessScaleController.Instance.AddCoolness(100);
             StartCoroutine(SpawnEnemies(1));
         }
 
@@ -206,7 +208,7 @@ public class TDManager : MonoBehaviour
                 modifier += 0.01f;
             }
             
-            GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], Vector3.zero, Quaternion.identity, transform.GetChild(0));
+            GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], transform.position, Quaternion.identity, transform.GetChild(0));
             mob.transform.GetChild(0).GetComponent<Enemy>().UpgradeEnemy(modifier);
 
             yield return new WaitForSeconds(spawanDelay);
@@ -226,7 +228,7 @@ public class TDManager : MonoBehaviour
                 modifier += 0.01f;
             }
             
-            GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], Vector3.zero, Quaternion.identity, transform.GetChild(0));
+            GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], transform.position, Quaternion.identity, transform.GetChild(0));
             mob.transform.GetChild(0).GetComponent<Enemy>().UpgradeEnemy(modifier);
 
             yield return new WaitForSeconds(spawanDelay);
@@ -295,6 +297,7 @@ public class TDManager : MonoBehaviour
                 Health health = aim.GetComponentInChildren<Health>();
 
                 health.currentHealth = health.baseHealth * 2;
+                health.ice.SetActive(true);
             }
 
             yield return new WaitForSeconds(duration);
@@ -311,6 +314,8 @@ public class TDManager : MonoBehaviour
                 {
                     health.currentHealth = health.baseHealth * 0.65f;
                 }
+
+                health.ice.SetActive(false);
             }
 
         }
@@ -326,6 +331,7 @@ public class TDManager : MonoBehaviour
                 {
                     enemy.GetComponent<Enemy>().isFrozen = true;
                     enemy.GetComponent<Enemy>().speed = 0f;
+                    enemy.GetComponentInChildren<Health>().ice.SetActive(true);
                 }
             }
             
@@ -337,6 +343,7 @@ public class TDManager : MonoBehaviour
                 {
                     enemy.GetComponent<Enemy>().isFrozen = false;
                     enemy.GetComponent<Enemy>().speed = enemy.GetComponent<Enemy>().baseSpeed;
+                    enemy.GetComponentInChildren<Health>().ice.SetActive(false);
                 }
             }
             
@@ -357,7 +364,7 @@ public class TDManager : MonoBehaviour
         }
     }
 
-    public void ChangeEnemiesStats(int enemyType = 0, float deltaHealth = 0, float speedDivider = 0, float size = 1, float deltaDamage = 0, float deltaAttackSpeed = 0)
+    public void ChangeEnemiesStats(int enemyType = 0, float deltaHealth = 0, float speedDivider = 0, float sizeMultiplier = 1, float deltaDamage = 0, float deltaAttackSpeed = 0)
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTriggerTag);
 
@@ -367,10 +374,19 @@ public class TDManager : MonoBehaviour
             {
                 Enemy stats = enemy.transform.parent.GetComponent<Enemy>();
                 stats.health += deltaHealth;
-                stats.speed /= speedDivider;
-                stats.size = size;
+
+                if (stats.speed / speedDivider > 4f)
+                {
+                    stats.speed /= speedDivider;
+                }
+
+                if (stats.size * sizeMultiplier < 5f)
+                {
+                    stats.size *= sizeMultiplier;
+                }
+
                 stats.damage += deltaDamage;
-                stats.attackSpeed *= deltaAttackSpeed;
+                stats.attackSpeed += deltaAttackSpeed;
 
                 stats.UpdateStats();
             }
