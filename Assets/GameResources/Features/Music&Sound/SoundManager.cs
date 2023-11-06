@@ -5,21 +5,19 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    [SerializeField] private AudioClipRefsSO audioClipRefsSo;
+    public static SoundManager Instance { get; private set; }    
     
-    private void Start()
+    [SerializeField] public AudioClipRefsSO audioClipRefsSo;
+
+
+    private void Awake()
     {
-        //addlistener to event
+        Instance = this;
     }
 
-    private void SomeOne_OnSomething(object sender, EventArgs e)
-    {
-        //need to make sound 3D
-        PlaySound(audioClipRefsSo.someSound, Camera.main.transform.position);
-    }
-
-    private void PlaySound(AudioClip audioClip, Vector3 position, float volume = 1f)
+    public void PlaySound(AudioClip audioClip, Vector3 position, float volume = .15f)
     {
         AudioSource.PlayClipAtPoint(audioClip, position, volume);
     }
+    
 }

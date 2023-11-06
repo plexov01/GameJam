@@ -66,6 +66,7 @@ public class Health : MonoBehaviour, IDamageable
             }
 
             Destroy(objectToDestroy);
+            
         }
     }
 

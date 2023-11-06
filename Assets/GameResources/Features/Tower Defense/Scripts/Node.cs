@@ -77,6 +77,20 @@ public class Node : MonoBehaviour
                 buildManager.buildMode = BuildManager.BuildMode.None;
                 buildManager.turretCount++;
                 rend.material.color = unhoverColor;
+                
+                if (GameHandler.Instance.IsFirstStageActive())
+                {
+                    if (Random.value < 0.5f)
+                    {
+                        SoundManager soundManager = SoundManager.Instance;
+                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
+                    }
+                }
+                else
+                {
+                    SoundManager soundManager = SoundManager.Instance;
+                    soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
+                }
             }
         }
 
@@ -105,6 +119,20 @@ public class Node : MonoBehaviour
                 buildManager.buildMode = BuildManager.BuildMode.None;
                 buildManager.wallCount++;
                 rend.material.color = unhoverColor;
+                
+                if (GameHandler.Instance.IsFirstStageActive())
+                {
+                    if (Random.value < 0.5f)
+                    {
+                        SoundManager soundManager = SoundManager.Instance;
+                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
+                    }
+                }
+                else
+                {
+                    SoundManager soundManager = SoundManager.Instance;
+                    soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
+                }
             }
         }
 
@@ -122,6 +150,20 @@ public class Node : MonoBehaviour
                 mine = Instantiate(mineToBuild, transform.position + new Vector3(0, 0.6f, 0), transform.rotation, EnemyManager.instance.surface.transform);
                 buildManager.buildMode = BuildManager.BuildMode.None;
                 rend.material.color = unhoverColor;
+                
+                if (GameHandler.Instance.IsFirstStageActive())
+                {
+                    if (Random.value < 0.5f)
+                    {
+                        SoundManager soundManager = SoundManager.Instance;
+                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
+                    }
+                }
+                else
+                {
+                    SoundManager soundManager = SoundManager.Instance;
+                    soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
+                }
             }
         }
 
