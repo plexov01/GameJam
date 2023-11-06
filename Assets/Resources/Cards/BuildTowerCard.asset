@@ -15,6 +15,6 @@ MonoBehaviour:
   Name: "\u0411\u0430\u0448\u043D\u044F"
   Description: 
   Special: 0
-  Coolness: -25
+  Coolness: -20
   CardSprite: {fileID: 21300000, guid: 348aedc9cffc6254ab6cba97343bb84d, type: 3}
   EventSound: {fileID: 0}
