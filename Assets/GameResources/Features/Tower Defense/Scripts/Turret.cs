@@ -18,11 +18,15 @@ public class Turret : MonoBehaviour
     public Transform firePoint;
     [SerializeField] private Transform barrel;
     [SerializeField] private Transform barrelHolder;
+
+    private bool isFrozen = false;
     
     private void Awake()
     {
         GetComponent<SphereCollider>().radius = range / transform.localScale.y;
         // _basefireRate = fireRate;
+        tempfireRate = fireRate;
+        tempturnSpeed = turnSpeed;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -94,6 +98,8 @@ public class Turret : MonoBehaviour
 
     private void Update()
     {
+        if (isFrozen) return;
+        
         if (target == null)
         {
             barrel.localEulerAngles = new Vector3(0, 0, 0);
@@ -131,19 +137,43 @@ public class Turret : MonoBehaviour
             bullet.Seek(target);
         }
     }
+    private Coroutine freezeCoroutine = null;
+    private float tempfireRate;
+    private float tempturnSpeed;
+    
+    public void Freeze(float duration)
+    {
+        
+        if (freezeCoroutine != null)
+        {
+            StopCoroutine(freezeCoroutine);
+            fireRate = tempfireRate;
+            turnSpeed = tempturnSpeed;
+            fireCountdown = 1f / fireRate;
+            isFrozen = false;
+        }
+
+        freezeCoroutine = StartCoroutine(FreezeTurretCoroutine(duration));
+    }
 
     /// <summary>
     /// Заморозить турель
     /// </summary>
+
     public IEnumerator FreezeTurretCoroutine(float time)
-    {   
-        float basefireRate = fireRate;
-        float baseturnSpeed = turnSpeed;
+    {
+        isFrozen = true;
+        tempfireRate = fireRate;
+        tempturnSpeed = turnSpeed;
+        
         fireRate = 0;
         turnSpeed = 0;
+        
         yield return new WaitForSeconds(time);
-        fireRate = basefireRate;
-        turnSpeed = baseturnSpeed;
+        fireRate = tempfireRate;
+        turnSpeed = tempturnSpeed;
+        fireCountdown = 1f / fireRate;
+        isFrozen = false;
     }
 
     private void OnDrawGizmos()

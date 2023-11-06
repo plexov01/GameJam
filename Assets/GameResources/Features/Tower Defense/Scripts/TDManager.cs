@@ -276,8 +276,7 @@ public class TDManager : MonoBehaviour
             foreach (GameObject aim in aims)
             {
                 Turret turret = aim.GetComponentInChildren<Turret>();
-                turret.StopAllCoroutines();
-                turret.StartCoroutine(turret.FreezeTurretCoroutine(duration));
+                turret.Freeze(duration);
             }
             
         }else if (coolness < 0.65f)
