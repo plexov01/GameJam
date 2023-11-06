@@ -24,7 +24,7 @@ public class Turret : MonoBehaviour
     
     private void Awake()
     {
-        GetComponent<SphereCollider>().radius = range / transform.localScale.y;
+        GetComponent<SphereCollider>().radius = range / 4;
         // _basefireRate = fireRate;
         tempfireRate = fireRate;
         tempturnSpeed = turnSpeed;
@@ -32,15 +32,15 @@ public class Turret : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (target == null && other.CompareTag("Enemy"))
+        if (target == null && other.CompareTag("EnemyTrigger"))
         {
-            target = other.transform;
+            target = other.transform.parent;
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (target == null)
+        if (target == null && other.CompareTag("EnemyTrigger"))
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
 
@@ -71,35 +71,44 @@ public class Turret : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
-
-        float shortestDistance = float.MaxValue;
-        GameObject nearestEnemy = null;
-
-        foreach (GameObject enemy in enemies)
+        print("exit trigger: " + other.tag);
+        if (other.CompareTag("EnemyTrigger"))
         {
-            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+            print("exit trigger");
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
 
-            if (distanceToEnemy < shortestDistance)
+            float shortestDistance = float.MaxValue;
+            GameObject nearestEnemy = null;
+
+            foreach (GameObject enemy in enemies)
             {
-                shortestDistance = distanceToEnemy;
-                nearestEnemy = enemy;
-            }
-        }
+                float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
 
-        if (nearestEnemy != null && shortestDistance <= range)
-        {
-            target = nearestEnemy.transform;
-        }
-        else
-        {
-            target = null;
+                if (distanceToEnemy < shortestDistance)
+                {
+                    shortestDistance = distanceToEnemy;
+                    nearestEnemy = enemy;
+                }
+            }
+
+            if (nearestEnemy != null && shortestDistance <= range)
+            {
+                target = nearestEnemy.transform;
+            }
+            else
+            {
+                target = null;
+            }
         }
     }
 
     private void Update()
     {
-        if (isFrozen) return;
+        if (isFrozen)
+        {
+            target = null;
+            return;
+        }
         
         if (target == null)
         {

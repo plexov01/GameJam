@@ -35,7 +35,10 @@ public class Attack : MonoBehaviour
 
         while (damageable != null)
         {
-            damageable.TakeDamage(damage);
+            if (!transform.parent.GetComponent<Enemy>().isFrozen)
+            {
+                damageable.TakeDamage(damage);
+            }
 
             yield return new WaitForSeconds(1f/ attackSpeed);
         }
