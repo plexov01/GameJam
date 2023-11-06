@@ -3,6 +3,8 @@ namespace GameJam.Features.UI
     using System;
     using System.Collections;
     using UnityEngine;
+    using Random = UnityEngine.Random;
+
     /// <summary>
     /// Контроллер управления темнотой
     /// </summary>
@@ -18,10 +20,11 @@ namespace GameJam.Features.UI
 
         private IEnumerator DarkActive(float time)
         {
-            _darkUiController.SetAlpha(1);
+            _darkUiController.SetAlpha(0.99f);
             _coroutineShowLightning = StartCoroutine(LightningActive(LightingFrequencyTime));
             yield return new WaitForSecondsRealtime(time);
             StopCoroutine(_coroutineShowLightning);
+            _darkUiController.StopAnimation();
             _darkUiController.SetAlpha(0);
         }
         
@@ -30,7 +33,7 @@ namespace GameJam.Features.UI
             while (true)
             {
                 _darkUiController.ShowLightning();
-                yield return new WaitForSeconds(time);
+                yield return new WaitForSeconds(time + Random.Range(-time/5, time/2));
             }
             
         }

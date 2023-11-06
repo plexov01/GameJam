@@ -39,6 +39,13 @@ namespace GameJam.Features.UI
         /// Показать молниюю
         /// </summary>
         public void ShowLightning() => _lightning.Play();
+        /// <summary>
+        /// Остановить проигрывание анимации
+        /// </summary>
+        public void StopAnimation()
+        {
+            _lightning.Stop();
+        }
     }
 }
 
