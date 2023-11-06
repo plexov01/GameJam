@@ -9854,7 +9854,9 @@ MonoBehaviour:
   turretToBuild: {fileID: 0}
   wallToBuild: {fileID: 0}
   mineToBuild: {fileID: 0}
-  standardTurretPrefab: {fileID: 3035193617540019639, guid: 09dc1d6134babd948ad1870817ffe6a9, type: 3}
+  turretPrefab_T1: {fileID: 3035193617540019639, guid: 09dc1d6134babd948ad1870817ffe6a9, type: 3}
+  turretPrefab_T2: {fileID: 4038501304412208745, guid: 57ac12f3349b5654aaf9000d1999ce86, type: 3}
+  turretPrefab_T3: {fileID: 4478343905516491596, guid: a3647930843d9f541aedd603775b4740, type: 3}
   wallPrefab: {fileID: 6792631582812006100, guid: dcbd22ebe2283ce43aa34350f3ebf777, type: 3}
   minePrefab: {fileID: 1387924229312095131, guid: ac5f8ce51eadf9348aa59c312364c9d0, type: 3}
   walkableNodes:
@@ -9948,6 +9950,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fdf213515eb3ac4ca68ce9287d9525d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turretTier: 1
   nodesForMeteor:
   - {fileID: 1763492557815367635}
   - {fileID: 572053974}
@@ -16317,7 +16320,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1194891241}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

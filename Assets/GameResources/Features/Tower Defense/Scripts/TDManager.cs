@@ -86,16 +86,17 @@ public class TDManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Keypad6))
         {
             FreezeEnemies(3f);
+            //LavaFloor(3f);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad7))
         {
-            SpawnMeteor(new Vector3(0,0,0));
+            ChangeTurretTier(true);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad8))
         {
-            LavaFloor(3f);
+            ChangeTurretTier(false);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad9))
@@ -430,5 +431,55 @@ public class TDManager : MonoBehaviour
         
         position.y += meteorHeight;
         GameObject meteor = Instantiate(meteorPrefab, spawnPosition, transform.rotation);
+    }
+
+    public void ChangeTurretTier(bool upgrade)
+    {
+        List<GameObject> turrets = GameObject.FindGameObjectsWithTag(turretTag).ToList();
+
+        Shuffle(turrets);
+
+        int turretIndex = 0;
+        int lowestTier = int.MaxValue;
+        int highestTier = 0;
+
+        for (int i = 0; i < turrets.Count; i++)
+        {
+            if (upgrade)
+            {
+                if (turrets[i] != null && turrets[i].GetComponent<Turret>().tier < lowestTier)
+                {
+                    lowestTier = turrets[i].GetComponent<Turret>().tier;
+                    turretIndex = i;
+                }
+            }
+            else
+            {
+                if (turrets[i] != null && turrets[i].GetComponent<Turret>().tier > highestTier)
+                {
+                    highestTier = turrets[i].GetComponent<Turret>().tier;
+                    turretIndex = i;
+                }
+            }
+        }
+
+        Vector3 turretPosition = turrets[turretIndex].transform.position;
+        int turretTier = turrets[turretIndex].GetComponent<Turret>().tier;
+        Transform turretNode = turrets[turretIndex].transform.parent.parent;
+
+        GameObject turretToBuild;
+
+        if (upgrade && turretTier <= 2)
+        {
+            turretToBuild = BuildManager.instance.GetTurretToBuild(turretTier + 1);
+            Destroy(turrets[turretIndex]);
+            Instantiate(turretToBuild, turretPosition + new Vector3(0, 0, 0), transform.rotation, turretNode);
+        }
+        else if (!upgrade && turretTier > 1)
+        {
+            turretToBuild = BuildManager.instance.GetTurretToBuild(turretTier - 1);
+            Destroy(turrets[turretIndex]);
+            Instantiate(turretToBuild, turretPosition + new Vector3(0, 0, 0), transform.rotation, turretNode);
+        }
     }
 }
