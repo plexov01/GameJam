@@ -8,8 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Floor
-  m_Shader: {fileID: -6465566751694194690, guid: 8e9b7c6b3ea0c574d91f0b058f4012f5,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 8e9b7c6b3ea0c574d91f0b058f4012f5, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 2
@@ -38,7 +37,7 @@ Material:
     - _Metallic: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _SmoothSpawn: 0
+    - _SmoothSpawn: 1
     - _Smoothness: 0.5
     - _VoronoiAngelOffset: 7.22
     - _VoronoiCeilDensity: 5

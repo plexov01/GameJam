@@ -10238,7 +10238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefabs:
-  - {fileID: 3705598697728490055, guid: dfb5d25985387d44caa821478e32462a, type: 3}
+  - {fileID: 6471479555840823038, guid: 9e2f880afeb290c4ebe141baf172ce31, type: 3}
   enemyOrder: 000000000000000000000000
   end: {fileID: 376542664}
   surface: {fileID: 1453136347}
