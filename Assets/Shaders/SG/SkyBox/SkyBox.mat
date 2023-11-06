@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SkyBox
-  m_Shader: {fileID: -6465566751694194690, guid: 3817997444862bd46b200ae31fcf4710,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 3817997444862bd46b200ae31fcf4710, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -54,15 +53,15 @@ Material:
     m_Floats:
     - _Blinking: 5
     - _Brightness: 24
-    - _Glitter_Offset: 0.644
-    - _Horizontal_Line: 0.3
+    - _Glitter_Offset: 0.752
+    - _Horizontal_Line: 0.29
     - _NoiseRotation_speed: 8
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _StarScale: 51
+    - _StarScale: 17.4
     m_Colors:
     - _Bottom_Color: {r: 0.26503608, g: 0.15859735, b: 0.33962256, a: 0}
     - _GlitterColor: {r: 1, g: 1, b: 1, a: 0}
-    - _Tilling: {r: 5.2, g: 2.29, b: 0, a: 0}
+    - _Tilling: {r: 5.17, g: 2.29, b: 0, a: 0}
     - _Top_Color: {r: 0.21181917, g: 0.47394663, b: 0.5283019, a: 0}
   m_BuildTextureStacks: []
