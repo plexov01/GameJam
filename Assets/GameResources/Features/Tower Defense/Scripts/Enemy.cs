@@ -53,6 +53,9 @@ public class Enemy : MonoBehaviour
         size = enemy.localScale.x;
         damage = attackScript.damage;
         attackSpeed = attackScript.attackSpeed;
+
+        enemy.LookAt(new Vector3(Waypoints.waypoints[waypointIndex].position.x, transform.position.y, Waypoints.waypoints[waypointIndex].position.z));
+
     }
 
     private void Update()
@@ -89,6 +92,13 @@ public class Enemy : MonoBehaviour
 
         waypointIndex++;
         target = Waypoints.waypoints[waypointIndex];
+
+        //Vector3 dir = target.position - enemy.position;
+        //Quaternion lookRotation = Quaternion.LookRotation(dir);
+        //Vector3 rotation = lookRotation.eulerAngles;
+        //enemy.rotation = lookRotation;
+
+        enemy.LookAt(new Vector3(Waypoints.waypoints[waypointIndex].position.x, transform.position.y, Waypoints.waypoints[waypointIndex].position.z));
     }
 
     public void UpdateStats()
