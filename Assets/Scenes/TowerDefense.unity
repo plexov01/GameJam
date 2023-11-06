@@ -19250,7 +19250,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7350549199777495665, guid: c9ce63b98bb3a5c4090fc87f67207b6b, type: 3}
       propertyPath: m_Color.a
-      value: 0
+      value: 0.30588236
       objectReference: {fileID: 0}
     - target: {fileID: 7350549199777495676, guid: c9ce63b98bb3a5c4090fc87f67207b6b, type: 3}
       propertyPath: m_Pivot.x
