@@ -91,8 +91,8 @@ public class TDManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Keypad6))
         {
-            FreezeEnemies(3f);
-            //LavaFloor(3f);
+            //FreezeEnemies(3f);
+            LavaFloor(3f);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad7))
@@ -415,8 +415,8 @@ public class TDManager : MonoBehaviour
 
         foreach (Node node in buildManager.walkableNodes)
         {
-            node.rend.material.color = buildManager.lavaColor;
-            node.unhoverColor = buildManager.lavaColor;
+            node.rend.material.SetFloat("_SmoothSpawn", 0f);
+            node.pathUnhoverColor = Color.black;
         }
 
         while (timer < duration)
@@ -447,8 +447,8 @@ public class TDManager : MonoBehaviour
 
         foreach (Node node in buildManager.walkableNodes)
         {
-            node.rend.material.color = node.startColor;
-            node.unhoverColor = node.startColor;
+            node.rend.material.SetFloat("_SmoothSpawn", 1f);
+            node.pathUnhoverColor = node.pathStartColor;
         }
     }
 
