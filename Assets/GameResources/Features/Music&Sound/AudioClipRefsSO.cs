@@ -20,9 +20,15 @@ public class AudioClipRefsSO : ScriptableObject
 
     public AudioClip tma;
     public AudioClip meteor;
-    
-    
-    
+    public AudioClip cuircut;
+    public AudioClip freeze;
+    public AudioClip buildWall;
+
+    public AudioClip Bomb;
+    public AudioClip Upgrade;
+
+
+
 
 
 }

@@ -40,6 +40,10 @@
 			
 			TDManager.instance.SpawnMeteor(aim.transform.position);
 			
+			SoundManager soundManager = SoundManager.Instance;
+			soundManager.PlaySound(soundManager.audioClipRefsSo.meteor, Camera.main.transform.position);
+			// soundManager.PlaySound(soundManager.audioClipRefsSo.attackRats,Camera.main.transform.position);
+			
 		}
 	}
 }

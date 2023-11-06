@@ -18,6 +18,9 @@
 			
 			TDManager.instance.FreezeEnemies(Duration);
 			
+			SoundManager soundManager = SoundManager.Instance;
+			soundManager.PlaySound(soundManager.audioClipRefsSo.freeze, Camera.main.transform.position);
+			
 		}
 	}
 }
