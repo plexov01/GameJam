@@ -1,7 +1,6 @@
 ﻿namespace GameJam.Features.CardSystem
 {
 	using UnityEngine;
-	using UnityEngine.Serialization;
 
 	[CreateAssetMenu(fileName = "MarioPowerCard", menuName = "Cards/MarioPowerCard")]
 	public class MarioPowerCard: AbstractCard

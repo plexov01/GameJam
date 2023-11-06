@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 667724718733ffe47b15534472eda71c, type: 3}
   m_Name: UpgradeTowerCard
   m_EditorClassIdentifier: 
-  Name: "\u0410\u043F\u0433\u0440\u0435\u0439\u0434 \u0431\u0430\u0448\u0435\u043D"
+  Name: "\u0423\u043B\u0443\u0447\u0448\u0435\u043D\u0438\u0435 \u0431\u0430\u0448\u0435\u043D"
   Description: 
   Special: 0
   Coolness: -50
-  CardSprite: {fileID: 21300000, guid: f7c1c0db66c0ef742a84abce21611f49, type: 3}
+  CardSprite: {fileID: 21300000, guid: 85e98697352a75b4587528704f372082, type: 3}
   EventSound: {fileID: 0}

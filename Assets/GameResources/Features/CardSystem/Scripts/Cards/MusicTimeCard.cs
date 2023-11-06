@@ -1,14 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
-using GameJam.Features.CardSystem;
-using UnityEngine;
-
-[CreateAssetMenu(fileName = "BuildTowerCard", menuName = "Cards/MusicTimeCard")]
-public class MusicTimeCard : AbstractCard
+namespace GameJam.Features.CardSystem
 {
-    public override void ActivateCard()
+    using UnityEngine;
+    
+    [CreateAssetMenu(fileName = "BuildTowerCard", menuName = "Cards/MusicTimeCard")]
+    public class MusicTimeCard : AbstractCard
     {
-        base.ActivateCard();
-
+        public override void ActivateCard()
+        {
+            base.ActivateCard();
+    
+        }
     }
+
 }

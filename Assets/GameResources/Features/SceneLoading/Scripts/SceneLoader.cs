@@ -9,6 +9,7 @@ public static class SceneLoader
     {
         Menu,
         Loading,
+        Cutscene,
         TowerDefense,
     }
 
