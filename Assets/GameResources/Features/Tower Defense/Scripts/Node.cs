@@ -24,11 +24,15 @@ public class Node : MonoBehaviour
     private void Awake()
     {
         rend = GetComponent<Renderer>();
-        nodeStartColor = rend.material.color;
+        nodeStartColor = Color.white;
+        nodeHoverColor = Color.gray;
         nodeUnhoverColor = nodeStartColor;
 
-        pathStartColor = rend.material.GetColor("_FloorColor");
-        pathUnhoverColor = pathStartColor;
+        if (path)
+        {
+            pathStartColor = rend.material.GetColor("_FloorColor");
+            pathUnhoverColor = pathStartColor;
+        }
     }
 
     private void Start()
@@ -42,7 +46,11 @@ public class Node : MonoBehaviour
 
         if (buildManager.buildMode == BuildManager.BuildMode.Turret && transform.CompareTag("NodeForTurret"))
         {
-            if (rend.material.color != null)
+            if (path)
+            {
+                rend.material.SetColor("_FloorColor", pathHoverColor);
+            }
+            else
             {
                 rend.material.color = nodeHoverColor;
             }
@@ -50,17 +58,38 @@ public class Node : MonoBehaviour
 
         if (buildManager.buildMode == BuildManager.BuildMode.Wall && transform.CompareTag("NodeForWall"))
         {
-            rend.material.SetColor("_FloorColor", pathHoverColor);
+            if (path)
+            {
+                rend.material.SetColor("_FloorColor", pathHoverColor);
+            }
+            else
+            {
+                //
+            }
         }
 
         if (buildManager.buildMode == BuildManager.BuildMode.Mine && transform.CompareTag("NodeForWall"))
         {
-            rend.material.SetColor("_FloorColor", pathHoverColor);
+            if (path)
+            {
+                rend.material.SetColor("_FloorColor", pathHoverColor);
+            }
+            else
+            {
+                //
+            }
         }
 
         if (buildManager.buildMode == BuildManager.BuildMode.Repair && (transform.CompareTag("WallBlock") || transform.CompareTag("MainBase")))
         {
-            rend.material.SetColor("_FloorColor", pathHoverColor);
+            if (path)
+            {
+                rend.material.SetColor("_FloorColor", pathHoverColor);
+            }
+            else
+            {
+                //
+            }
         }
     }
 
@@ -72,7 +101,7 @@ public class Node : MonoBehaviour
         }
         else
         {
-            //
+            rend.material.color = nodeUnhoverColor;
         }
     }
 
@@ -100,7 +129,7 @@ public class Node : MonoBehaviour
                 }
                 else
                 {
-                    //
+                    rend.material.color = nodeUnhoverColor;
                 }
 
                 if (GameHandler.Instance.IsFirstStageActive())
@@ -150,7 +179,7 @@ public class Node : MonoBehaviour
                 }
                 else
                 {
-                    //
+                    rend.material.color = nodeUnhoverColor;
                 }
 
                 if (GameHandler.Instance.IsFirstStageActive())
@@ -197,7 +226,7 @@ public class Node : MonoBehaviour
                 }
                 else
                 {
-                    //
+                    rend.material.color = nodeUnhoverColor;
                 }
 
                 if (GameHandler.Instance.IsFirstStageActive())
@@ -230,7 +259,7 @@ public class Node : MonoBehaviour
                 }
                 else
                 {
-                    //
+                    rend.material.color = nodeUnhoverColor;
                 }
             }
             else
