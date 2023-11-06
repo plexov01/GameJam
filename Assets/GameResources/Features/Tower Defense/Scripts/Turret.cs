@@ -18,10 +18,11 @@ public class Turret : MonoBehaviour
     public Transform firePoint;
     [SerializeField] private Transform barrel;
     [SerializeField] private Transform barrelHolder;
-
+    
     private void Awake()
     {
         GetComponent<SphereCollider>().radius = range / transform.localScale.y;
+        // _basefireRate = fireRate;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -129,6 +130,20 @@ public class Turret : MonoBehaviour
         {
             bullet.Seek(target);
         }
+    }
+
+    /// <summary>
+    /// Заморозить турель
+    /// </summary>
+    public IEnumerator FreezeTurretCoroutine(float time)
+    {   
+        float basefireRate = fireRate;
+        float baseturnSpeed = turnSpeed;
+        fireRate = 0;
+        turnSpeed = 0;
+        yield return new WaitForSeconds(time);
+        fireRate = basefireRate;
+        turnSpeed = baseturnSpeed;
     }
 
     private void OnDrawGizmos()

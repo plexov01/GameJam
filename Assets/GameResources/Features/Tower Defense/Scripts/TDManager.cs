@@ -267,37 +267,67 @@ public class TDManager : MonoBehaviour
 
     private IEnumerator FreezeEnemiesCoroutine(float duration)
     {
-        print("freeze coroutine");
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
-
-        foreach (GameObject enemy in enemies)
+        float coolness = CoolnessScaleController.Instance.GetCoolness();
+        
+        List<GameObject> aims = new List<GameObject>();
+        if (coolness<0.35f)
         {
-            if (enemy != null)
+            aims = GameObject.FindGameObjectsWithTag("Turret").ToList();
+            foreach (GameObject aim in aims)
             {
-                //NavMeshAgent agent = enemy.transform.parent.GetComponent<NavMeshAgent>();
-
-                //enemy.transform.parent.GetComponent<NavMeshAgent>().speed = 0;
-                //agent.velocity = Vector3.zero;
-
-                enemy.GetComponent<Enemy>().speed = 0f;
+                Turret turret = aim.GetComponentInChildren<Turret>();
+                turret.StopAllCoroutines();
+                turret.StartCoroutine(turret.FreezeTurretCoroutine(duration));
             }
-        }
-
-        yield return new WaitForSeconds(duration);
-
-        foreach (GameObject enemy in enemies)
+            
+        }else if (coolness < 0.65f)
         {
-            if (enemy != null)
+            aims = GameObject.FindGameObjectsWithTag("Wall").ToList();
+            aims.AddRange(GameObject.FindGameObjectsWithTag("MainBase").ToList());
+            
+            foreach (GameObject aim in aims)
             {
-                //NavMeshAgent agent = enemy.transform.parent.GetComponent<NavMeshAgent>();
-
-                //agent.speed = enemy.transform.parent.GetComponent<Enemy>().baseSpeed;
-
-                enemy.GetComponent<Enemy>().speed = enemy.GetComponent<Enemy>().baseSpeed;
+                aim.GetComponentInChildren<Health>().currentHealth *= 2;
             }
+            
         }
-
-        freezeCoroutine = null;
+        else
+        {
+            aims = GameObject.FindGameObjectsWithTag("Enemy").ToList();
+            print("freeze coroutine");
+                    GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+            
+                    foreach (GameObject enemy in enemies)
+                    {
+                        if (enemy != null)
+                        {
+                            //NavMeshAgent agent = enemy.transform.parent.GetComponent<NavMeshAgent>();
+            
+                            //enemy.transform.parent.GetComponent<NavMeshAgent>().speed = 0;
+                            //agent.velocity = Vector3.zero;
+            
+                            enemy.GetComponent<Enemy>().speed = 0f;
+                        }
+                    }
+            
+                    yield return new WaitForSeconds(duration);
+            
+                    foreach (GameObject enemy in enemies)
+                    {
+                        if (enemy != null)
+                        {
+                            //NavMeshAgent agent = enemy.transform.parent.GetComponent<NavMeshAgent>();
+            
+                            //agent.speed = enemy.transform.parent.GetComponent<Enemy>().baseSpeed;
+            
+                            enemy.GetComponent<Enemy>().speed = enemy.GetComponent<Enemy>().baseSpeed;
+                        }
+                    }
+            
+                    freezeCoroutine = null;
+        }
+        
+        
     }
 
     public void IncreaseEnemiesHP(int enemyType, float amount)
@@ -340,6 +370,12 @@ public class TDManager : MonoBehaviour
             StopCoroutine(lavaFloorCoroutine);
         }
 
+        if (freezeCoroutine != null)
+        {
+            StopCoroutine(freezeCoroutine);
+        }
+        
+        
         lavaFloorCoroutine = StartCoroutine(LavaFloorCoroutine(duration, damage, damageRate));
     }
 
