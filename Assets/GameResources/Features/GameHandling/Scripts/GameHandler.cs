@@ -40,6 +40,11 @@ public class GameHandler : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+        }
+        
         Instance = this;
         
         DontDestroyOnLoad(this);
@@ -49,7 +54,7 @@ public class GameHandler : MonoBehaviour
 
     private void Start()
     {
-        // OnStateChanged += GameHandler_OnStateChanged;
+        OnStateChanged += GameHandler_OnStateChanged;
         CoolnessScaleController.OnCoolnessChanged += CoolnessScaleController_OnCoolnessChanged;
     }
 
@@ -89,18 +94,19 @@ public class GameHandler : MonoBehaviour
         canFinishGame = true;
     }
 
-    // private void OnDestroy()
-    // {
-    //     OnStateChanged -= GameHandler_OnStateChanged;
-    // }
+    private void OnDestroy()
+    {
+        OnStateChanged -= GameHandler_OnStateChanged;
+    }
 
-    // private void GameHandler_OnStateChanged(object sender, EventArgs e)
-    // {
-    //     if (IsGameOver())
-    //     {
-    //         Time.timeScale = 0;
-    //     }
-    // }
+    private void GameHandler_OnStateChanged(object sender, EventArgs e)
+    {
+        if (currentState == State.WaitingForStart)
+        {
+            Time.timeScale = 1;
+            Reset();
+        }
+    }
 
     private void Update()
     {
@@ -134,6 +140,7 @@ public class GameHandler : MonoBehaviour
     {
         Time.timeScale = 1f;
         ChangeState(State.FirstStage);
+        Reset();
         SceneLoader.LoadScene(SceneLoader.Scene.TowerDefense);
     }
 
@@ -166,5 +173,14 @@ public class GameHandler : MonoBehaviour
     public Ending GetEnding()
     {
         return ending;
+    }
+
+    private void Reset()
+    {
+        ending = Ending.Ending_B;
+        wasAnyExtremePointReached = false;
+        hasImmortality = true;
+        canFinishGame = true;
+        secondStageTimer = 0f;
     }
 }
