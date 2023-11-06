@@ -17,7 +17,8 @@ public class Turret : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint;
     [SerializeField] private Transform barrel;
-    [SerializeField] private Transform barrelHolder;
+
+    public int tier;
 
     private bool isFrozen = false;
     
@@ -111,11 +112,7 @@ public class Turret : MonoBehaviour
         Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation * Quaternion.Euler(0, -90f, 0), Time.deltaTime * turnSpeed).eulerAngles;
         partToRotate.rotation = Quaternion.Euler(0, rotation.y, 0);
 
-        barrelHolder.LookAt(new Vector3(target.position.x, target.position.y, barrel.position.z));
-
-        //print(barrelHolder.localEulerAngles.z);
-
-        barrel.localEulerAngles = new Vector3(0, 0, -barrelHolder.localEulerAngles.x);
+        barrel.localEulerAngles = new Vector3(0, 0, -30f);
 
         if (fireCountdown <= 0f)
         {

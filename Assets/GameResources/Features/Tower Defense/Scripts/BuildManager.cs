@@ -8,7 +8,9 @@ public class BuildManager : MonoBehaviour
     [HideInInspector] public GameObject wallToBuild;
     [HideInInspector] public GameObject mineToBuild;
 
-    public GameObject standardTurretPrefab;
+    public GameObject turretPrefab_T1;
+    public GameObject turretPrefab_T2;
+    public GameObject turretPrefab_T3;
     public GameObject wallPrefab;
     public GameObject minePrefab;
 
@@ -38,13 +40,27 @@ public class BuildManager : MonoBehaviour
     {
         buildMode = BuildMode.None;
 
-        turretToBuild = standardTurretPrefab;
         wallToBuild = wallPrefab;
         mineToBuild = minePrefab;
     }
 
-    public GameObject GetTurretToBuild()
+    public GameObject GetTurretToBuild(int tier)
     {
+        switch (tier)
+        {
+            case 1:
+                turretToBuild = turretPrefab_T1;
+                break;
+            case 2:
+                turretToBuild = turretPrefab_T2;
+                break;
+            case 3:
+                turretToBuild = turretPrefab_T3;
+                break;
+            default:
+                break;
+        }
+
         return turretToBuild;
     }
 

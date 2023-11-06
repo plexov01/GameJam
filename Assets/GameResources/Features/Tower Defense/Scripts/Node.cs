@@ -65,15 +65,15 @@ public class Node : MonoBehaviour
 
         if (buildManager.buildMode == BuildManager.BuildMode.Turret && transform.CompareTag("NodeForTurret"))
         {
-            if (turret != null)
+            if (turret != null || transform.childCount != 0)
             {
                 Debug.Log("Can't build turret there!");
                 return;
             }
             else
             {
-                GameObject turrentToBuild = BuildManager.instance.GetTurretToBuild();
-                turret = Instantiate(turrentToBuild, transform.position + new Vector3(0, 0.5f, 0), transform.rotation);
+                GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(1);
+                turret = Instantiate(turretToBuild, transform.position + new Vector3(0, 2f, 0), transform.rotation, transform);
                 buildManager.buildMode = BuildManager.BuildMode.None;
                 buildManager.turretCount++;
                 rend.material.color = unhoverColor;
