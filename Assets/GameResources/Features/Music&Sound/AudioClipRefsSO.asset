@@ -12,4 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4004f855c0ce354580c3f4d2b4275d2, type: 3}
   m_Name: AudioClipRefsSO
   m_EditorClassIdentifier: 
-  someSound: {fileID: 0}
+  thatsIt: {fileID: 8300000, guid: 271ef0e4fbd2dcf438a2d617010a186b, type: 3}
+  cheeseAltarBrothers: {fileID: 8300000, guid: 343b6bdc8048d1746ae72c66c6e8ba00, type: 3}
+  gameStartMouse: {fileID: 8300000, guid: 71ce02057b3109f40b7d7eb34a4a11ab, type: 3}
+  stopRats: {fileID: 8300000, guid: 81f1f9aae97a1314c88fb42018d6613c, type: 3}
+  auuuu: {fileID: 8300000, guid: 1b123da52ced50c438678a7ed569aa80, type: 3}
+  attackRats: {fileID: 8300000, guid: ef284e122207f9b4999bca38943ba8ad, type: 3}
+  lesgo: {fileID: 8300000, guid: b58cf979c758d5c4bb401937b2829eee, type: 3}
+  gameStartRat: {fileID: 8300000, guid: 22d0fc5f8b1c1da4988642b5eb23a83a, type: 3}
+  stealCheese: {fileID: 8300000, guid: bc2c1a5fc0c3b7e42b301a48e1fc44a8, type: 3}
+  breakTheWall: {fileID: 8300000, guid: fb8bb32b77759f6428e15b191387c3bf, type: 3}
+  increaseThePressure: {fileID: 8300000, guid: 4788e44490fabd446a292bd7903b061d, type: 3}

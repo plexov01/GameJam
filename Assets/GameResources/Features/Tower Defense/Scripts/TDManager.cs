@@ -218,6 +218,21 @@ public class TDManager : MonoBehaviour
 
     public IEnumerator SpawnEnemies(int numberToSpawn, int enemyType = 0, float spawanDelay = 1f)
     {
+        SoundManager soundManager = SoundManager.Instance;
+
+        int rndm = Random.Range(0, 2);
+        switch (rndm)
+        {
+            case 0:
+                soundManager.PlaySound(soundManager.audioClipRefsSo.attackRats,Camera.main.transform.position);
+                break;
+            case 1:
+                soundManager.PlaySound(soundManager.audioClipRefsSo.lesgo,Camera.main.transform.position);
+                break;
+        }
+        
+        
+        
         for (int i = 0; i < numberToSpawn; i++)
         {
             modifier += 0.02f;
@@ -391,6 +406,9 @@ public class TDManager : MonoBehaviour
                 stats.UpdateStats();
             }
         }
+        
+        SoundManager soundManager = SoundManager.Instance;
+        soundManager.PlaySound(soundManager.audioClipRefsSo.increaseThePressure,Camera.main.transform.position);
     }
 
     public void LavaFloor(float duration, float damage = 5f, float damageRate = 0.5f)
@@ -465,6 +483,9 @@ public class TDManager : MonoBehaviour
 
     public void ChangeTurretTier(bool upgrade)
     {
+        // SoundManager soundManager = SoundManager.Instance;
+        // soundManager.PlaySound(soundManager.audioClipRefsSo.stopRats,Camera.main.transform.position);
+        
         List<GameObject> turrets = GameObject.FindGameObjectsWithTag(turretTag).ToList();
 
         if (upgrade)

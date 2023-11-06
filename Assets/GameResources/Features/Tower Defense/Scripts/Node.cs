@@ -104,6 +104,23 @@ public class Node : MonoBehaviour
                 }
             }
         }
+                rend.material.color = unhoverColor;
+                
+                if (GameHandler.Instance.IsFirstStageActive())
+                {
+                    if (Random.value < 0.5f)
+                    {
+                        SoundManager soundManager = SoundManager.Instance;
+                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
+                    }
+                }
+                else
+                {
+                    SoundManager soundManager = SoundManager.Instance;
+                    soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
+                }
+            }
+        }
 
         if (buildManager.buildMode == BuildManager.BuildMode.Wall && transform.CompareTag("NodeForWall"))
         {
@@ -141,6 +158,32 @@ public class Node : MonoBehaviour
             }
         }
 
+                rend.material.color = unhoverColor;
+                
+                if (GameHandler.Instance.IsFirstStageActive())
+                {
+                    if (Random.value < 0.5f)
+                    {
+                        SoundManager soundManager = SoundManager.Instance;
+                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
+                    }
+                }
+                else
+                {
+                    SoundManager soundManager = SoundManager.Instance;
+                    if (Random.value < 0.5f)
+                    {
+                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
+                    }
+                    else
+                    {
+                        soundManager.PlaySound(soundManager.audioClipRefsSo.stopRats,Camera.main.transform.position);
+                    }
+                    
+                }
+            }
+        }
+
         if (buildManager.buildMode == BuildManager.BuildMode.Mine && transform.CompareTag("NodeForWall"))
         {
             if (wall != null || mine != null)
@@ -162,6 +205,21 @@ public class Node : MonoBehaviour
                 else
                 {
                     //
+                }
+                rend.material.color = unhoverColor;
+                
+                if (GameHandler.Instance.IsFirstStageActive())
+                {
+                    if (Random.value < 0.5f)
+                    {
+                        SoundManager soundManager = SoundManager.Instance;
+                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
+                    }
+                }
+                else
+                {
+                    SoundManager soundManager = SoundManager.Instance;
+                    soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
                 }
             }
         }
