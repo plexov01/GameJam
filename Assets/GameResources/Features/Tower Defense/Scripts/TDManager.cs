@@ -411,7 +411,7 @@ public class TDManager : MonoBehaviour
         soundManager.PlaySound(soundManager.audioClipRefsSo.increaseThePressure,Camera.main.transform.position);
     }
 
-    public void LavaFloor(float duration, float damage = 5f, float damageRate = 0.5f)
+    public void LavaFloor(float duration, float damage = 10f, float damageRate = 0.5f)
     {
         if (lavaFloorCoroutine != null)
         {
