@@ -50,9 +50,13 @@ public class TDManager : MonoBehaviour
 
     private void GameHandler_OnStateChanged(object sender, EventArgs e)
     {
-        if (GameHandler.Instance.IsSecondOrThirdStageActive())
+        if (GameHandler.Instance.IsSecondStageActive())
         {
             StartCoroutine(StartSpawningEnemies(0, 2f));
+        }
+        if (GameHandler.Instance.IsThirdStateActive())
+        {
+            StartCoroutine(StartSpawningEnemies(0, 1f));
         }
     }
 

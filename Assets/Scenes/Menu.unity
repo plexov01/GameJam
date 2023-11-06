@@ -266,9 +266,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb5e14dc6d3ddf429576aaa584c6abd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstStageSong: {fileID: 8300000, guid: d0a68998d4ef7d34f8bdf3a8b10375cc, type: 3}
-  secondStageSong: {fileID: 8300000, guid: 4fe2df05f4fc2854b96409a5374ab2b0, type: 3}
-  thirdStageSong: {fileID: 8300000, guid: 7d93e058646b27542a604118b31fab21, type: 3}
+  firstStageSong: {fileID: 8300000, guid: 6b66dd30dd8e1c845a65c8a3d68c64dd, type: 3}
+  secondStageSong: {fileID: 8300000, guid: 9740ace34d503f948862308af3434de1, type: 3}
+  thirdStageSong: {fileID: 8300000, guid: 03abb0252a3df7b4895bbcb8fd87b2a3, type: 3}
 --- !u!82 &28677150
 AudioSource:
   m_ObjectHideFlags: 0
@@ -279,7 +279,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d0a68998d4ef7d34f8bdf3a8b10375cc, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 6b66dd30dd8e1c845a65c8a3d68c64dd, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.2
   m_Pitch: 1
@@ -399,6 +399,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &273629203 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4497011382197506919, guid: 2fdeb47b3f113ec4eaa629e8f21f8cfc, type: 3}
+  m_PrefabInstance: {fileID: 619715788}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &273629210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 273629203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 0.09803922}
+  m_EffectDistance: {x: 20, y: 20}
+  m_UseGraphicAlpha: 1
 --- !u!1 &290877092
 GameObject:
   m_ObjectHideFlags: 0
@@ -565,6 +585,59 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2058759439}
     m_Modifications:
+    - target: {fileID: 4497011382197506916, guid: 2fdeb47b3f113ec4eaa629e8f21f8cfc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497011382197506916, guid: 2fdeb47b3f113ec4eaa629e8f21f8cfc, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497011382197506916, guid: 2fdeb47b3f113ec4eaa629e8f21f8cfc, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497011382197506916, guid: 2fdeb47b3f113ec4eaa629e8f21f8cfc, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497011383310708460, guid: 2fdeb47b3f113ec4eaa629e8f21f8cfc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497011383310708460, guid: 2fdeb47b3f113ec4eaa629e8f21f8cfc, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497011383310708460, guid: 2fdeb47b3f113ec4eaa629e8f21f8cfc, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497011383310708460, guid: 2fdeb47b3f113ec4eaa629e8f21f8cfc, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497011383627156535, guid: 2fdeb47b3f113ec4eaa629e8f21f8cfc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497011383627156535, guid: 2fdeb47b3f113ec4eaa629e8f21f8cfc, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497011383627156535, guid: 2fdeb47b3f113ec4eaa629e8f21f8cfc, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497011383627156535, guid: 2fdeb47b3f113ec4eaa629e8f21f8cfc, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497011383629473460, guid: 2fdeb47b3f113ec4eaa629e8f21f8cfc, type: 3}
+      propertyPath: m_text
+      value: "\u041F\u043E\u0433\u0440\u0443\u0437\u0438\u0442\u044C\u0441\u044F
+        \n\u0432 \u0438\u0441\u0442\u043E\u0440\u0438\u044E"
+      objectReference: {fileID: 0}
     - target: {fileID: 7418806558128536776, guid: 2fdeb47b3f113ec4eaa629e8f21f8cfc, type: 3}
       propertyPath: m_Name
       value: MainPanel
@@ -1071,6 +1144,46 @@ Transform:
   m_Father: {fileID: 975372772}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1991109509 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4497011383627156532, guid: 2fdeb47b3f113ec4eaa629e8f21f8cfc, type: 3}
+  m_PrefabInstance: {fileID: 619715788}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1991109516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1991109509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 0.09803922}
+  m_EffectDistance: {x: 20, y: 20}
+  m_UseGraphicAlpha: 1
+--- !u!1 &2028085976 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4497011383310708463, guid: 2fdeb47b3f113ec4eaa629e8f21f8cfc, type: 3}
+  m_PrefabInstance: {fileID: 619715788}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2028085983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2028085976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 0.09803922}
+  m_EffectDistance: {x: 20, y: 20}
+  m_UseGraphicAlpha: 1
 --- !u!1 &2058759438
 GameObject:
   m_ObjectHideFlags: 0
