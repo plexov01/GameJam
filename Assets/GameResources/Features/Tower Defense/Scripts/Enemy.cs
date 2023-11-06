@@ -50,7 +50,7 @@ public class Enemy : MonoBehaviour
 
         health = healthScript.baseHealth;
         speed = baseSpeed;
-        size = 1f;
+        size = enemy.localScale.x;
         damage = attackScript.damage;
         attackSpeed = attackScript.attackSpeed;
     }
@@ -94,9 +94,8 @@ public class Enemy : MonoBehaviour
     public void UpdateStats()
     {
         healthScript.currentHealth = health;
-        //agent.speed = speed;
         baseSpeed = speed;
-        enemy.localScale = sizeVector * size;
+        enemy.localScale = new Vector3(size, size, size);
         attackScript.damage = damage;
         attackScript.attackSpeed = attackSpeed;
     }
