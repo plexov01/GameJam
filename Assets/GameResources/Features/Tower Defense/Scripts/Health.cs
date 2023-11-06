@@ -11,9 +11,13 @@ public class Health : MonoBehaviour, IDamageable
     private string gatesTag = "MainBase";
     private string turretTag = "Turret";
 
+    public GameObject ice;
+
     private void Awake()
     {
         currentHealth = baseHealth;
+
+        ice.SetActive(false);
     }
 
     public void TakeDamage(float damage)

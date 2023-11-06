@@ -1,15 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using GameJam.Features.CardSystem;
-using UnityEngine;
-
-[CreateAssetMenu(fileName = "BuildTowerCard", menuName = "Cards/UpgradeTowerCard")]
-public class UpgradeTowerCard : AbstractCard
+namespace GameJam.Features.CardSystem
 {
-    public override void ActivateCard()
+    using UnityEngine;
+    /// <summary>
+    /// Карта изменения башни
+    /// </summary>
+    [CreateAssetMenu(fileName = "UpgradeTowerCard", menuName = "Cards/UpgradeTowerCard")]
+    public class UpgradeTowerCard : AbstractCard
     {
-        base.ActivateCard();
-        TDManager.instance.ChangeTurretTier(true);
+        public override void ActivateCard()
+        {
+            base.ActivateCard();
+            TDManager.instance.ChangeTurretTier(true);
+        }
     }
 }

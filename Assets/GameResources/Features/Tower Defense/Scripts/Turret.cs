@@ -18,7 +18,8 @@ public class Turret : MonoBehaviour
     public Transform firePoint;
     [SerializeField] private Transform barrel;
 
-    public GameObject impactEffect;
+    public ParticleSystem partSys;
+    private Health health;
 
     public int tier;
 
@@ -30,6 +31,9 @@ public class Turret : MonoBehaviour
         // _basefireRate = fireRate;
         tempfireRate = fireRate;
         tempturnSpeed = turnSpeed;
+        partSys.Stop();
+
+        health = GetComponent<Health>();
     }
 
     private void Start()
@@ -145,9 +149,11 @@ public class Turret : MonoBehaviour
         bulletGameObject.transform.parent = transform;
         Bullet bullet = bulletGameObject.GetComponent<Bullet>();
 
-        GameObject effect = Instantiate(impactEffect, firePoint.position, partToRotate.rotation * Quaternion.Euler(90f, 0, 0));
+        //GameObject effect = Instantiate(impactEffect, firePoint.position, partToRotate.rotation * Quaternion.Euler(90f, 0, 0));
 
-        Destroy(effect, 1f);
+        //Destroy(effect, 1f);
+
+        partSys.Play();
 
         if (bullet != null)
         {
@@ -179,6 +185,8 @@ public class Turret : MonoBehaviour
 
     public IEnumerator FreezeTurretCoroutine(float time)
     {
+        health.ice.SetActive(true);
+
         isFrozen = true;
         tempfireRate = fireRate;
         tempturnSpeed = turnSpeed;
@@ -191,6 +199,8 @@ public class Turret : MonoBehaviour
         turnSpeed = tempturnSpeed;
         fireCountdown = 1f / fireRate;
         isFrozen = false;
+
+        health.ice.SetActive(false);
     }
 
     private void OnDrawGizmos()

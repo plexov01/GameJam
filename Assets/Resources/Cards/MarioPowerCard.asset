@@ -20,6 +20,6 @@ MonoBehaviour:
   EventSound: {fileID: 0}
   DeltaHealth: 50
   SpeedDivider: 1.5
-  Size: 2
+  SizeMultiplier: 1.5
   DeltaDamage: 5
   DeltaAttackSpeed: 0

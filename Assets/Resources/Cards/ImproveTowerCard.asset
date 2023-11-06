@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 667724718733ffe47b15534472eda71c, type: 3}
-  m_Name: UpgradeTowerCard
+  m_Script: {fileID: 11500000, guid: f2d5a3e5041642a8a97f040287605833, type: 3}
+  m_Name: ImproveTowerCard
   m_EditorClassIdentifier: 
-  Name: "\u0423\u043B\u0443\u0447\u0448\u0435\u043D\u0438\u0435 \u0431\u0430\u0448\u0435\u043D"
+  Name: 
   Description: 
   Special: 0
-  Coolness: -50
-  CardSprite: {fileID: 21300000, guid: 85e98697352a75b4587528704f372082, type: 3}
+  Coolness: 0
+  CardSprite: {fileID: 21300000, guid: 2168363dc86e163408b87498979cb7c9, type: 3}
   EventSound: {fileID: 0}
