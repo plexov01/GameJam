@@ -107,14 +107,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3643536588481529342}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 1.1649474, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8603589264270440076}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1 &4478343905516491596
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,10 +260,10 @@ MonoBehaviour:
   fireRate: 1
   partToRotate: {fileID: 8276893961519824481}
   turnSpeed: 10
-  bulletPrefab: {fileID: 4891562107793611798, guid: db458b8c4861b92419a7c7dd807dba97, type: 3}
+  bulletPrefab: {fileID: 8927981542334459953, guid: 81f440eb4061ed04b9e276ffe0a9c733, type: 3}
   firePoint: {fileID: 1091156881779123801}
   barrel: {fileID: 8603589264270440076}
-  barrelHolder: {fileID: 4820238813718868999}
+  impactEffect: {fileID: 8528089137093792720, guid: ab0de1aca7567974face76aab04fc871, type: 3}
   tier: 3
 --- !u!135 &785230062480894320
 SphereCollider:

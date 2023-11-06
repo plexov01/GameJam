@@ -551,10 +551,10 @@ MonoBehaviour:
   fireRate: 1
   partToRotate: {fileID: 6519908896710804670}
   turnSpeed: 10
-  bulletPrefab: {fileID: 4891562107793611798, guid: db458b8c4861b92419a7c7dd807dba97, type: 3}
+  bulletPrefab: {fileID: 4891562107793611798, guid: 267e878c9b589944594dc67d5d2fbc9c, type: 3}
   firePoint: {fileID: 5273032971212605994}
   barrel: {fileID: 6166283923595009068}
-  barrelHolder: {fileID: 8778847091943073004}
+  impactEffect: {fileID: 8528089137093792720, guid: ab0de1aca7567974face76aab04fc871, type: 3}
   tier: 2
 --- !u!135 &6002741075169192903
 SphereCollider:

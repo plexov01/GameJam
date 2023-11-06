@@ -18,6 +18,8 @@ public class Turret : MonoBehaviour
     public Transform firePoint;
     [SerializeField] private Transform barrel;
 
+    public GameObject impactEffect;
+
     public int tier;
 
     private bool isFrozen = false;
@@ -28,6 +30,11 @@ public class Turret : MonoBehaviour
         // _basefireRate = fireRate;
         tempfireRate = fireRate;
         tempturnSpeed = turnSpeed;
+    }
+
+    private void Start()
+    {
+        fireCountdown = 0.25f;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -137,7 +144,11 @@ public class Turret : MonoBehaviour
         GameObject bulletGameObject = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         bulletGameObject.transform.parent = transform;
         Bullet bullet = bulletGameObject.GetComponent<Bullet>();
-        
+
+        GameObject effect = Instantiate(impactEffect, firePoint.position, partToRotate.rotation * Quaternion.Euler(90f, 0, 0));
+
+        Destroy(effect, 1f);
+
         if (bullet != null)
         {
             bullet.Seek(target);
