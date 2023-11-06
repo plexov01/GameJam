@@ -58,13 +58,21 @@ public class Health : MonoBehaviour, IDamageable
             }
             else if (objectToDestroy.transform.GetChild(0).CompareTag(enemyTag))
             {
-                CoolnessScaleController.Instance.AddCoolness(-1);
+                if (CoolnessScaleController.Instance.isDark)
+                {
+                    CoolnessScaleController.Instance.AddCoolness(+2);
+                }
+                else
+                {
+                    CoolnessScaleController.Instance.AddCoolness(-2);
+                }
+
             }
             else if (objectToDestroy.transform.GetChild(0).CompareTag(turretTag))
             {
                 BuildManager.instance.turretCount--;
             }
-
+            
             Destroy(objectToDestroy);
             
         }

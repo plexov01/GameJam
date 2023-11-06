@@ -20,12 +20,14 @@ namespace GameJam.Features.UI
 
         private IEnumerator DarkActive(float time)
         {
+            CoolnessScaleController.Instance.isDark = true;
             _darkUiController.SetAlpha(0.99f);
             _coroutineShowLightning = StartCoroutine(LightningActive(LightingFrequencyTime));
             yield return new WaitForSecondsRealtime(time);
             StopCoroutine(_coroutineShowLightning);
             _darkUiController.StopAnimation();
             _darkUiController.SetAlpha(0);
+            CoolnessScaleController.Instance.isDark = false;
         }
         
         private IEnumerator LightningActive(float time)

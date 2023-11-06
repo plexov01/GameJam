@@ -23,3 +23,5 @@ MonoBehaviour:
   stealCheese: {fileID: 8300000, guid: bc2c1a5fc0c3b7e42b301a48e1fc44a8, type: 3}
   breakTheWall: {fileID: 8300000, guid: fb8bb32b77759f6428e15b191387c3bf, type: 3}
   increaseThePressure: {fileID: 8300000, guid: 4788e44490fabd446a292bd7903b061d, type: 3}
+  tma: {fileID: 8300000, guid: ff5545d2b6184d940989aa6521010e9a, type: 3}
+  meteor: {fileID: 0}
