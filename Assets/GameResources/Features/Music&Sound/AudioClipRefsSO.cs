@@ -17,6 +17,9 @@ public class AudioClipRefsSO : ScriptableObject
     public AudioClip stealCheese;
     public AudioClip breakTheWall;
     public AudioClip increaseThePressure;
+
+    public AudioClip tma;
+    public AudioClip meteor;
     
     
     
