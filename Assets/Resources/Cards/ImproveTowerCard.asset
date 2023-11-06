@@ -9,17 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a82fe43a7d3749f29a0a8a8be86a3236, type: 3}
-  m_Name: MarioPowerCard
+  m_Script: {fileID: 11500000, guid: f2d5a3e5041642a8a97f040287605833, type: 3}
+  m_Name: ImproveTowerCard
   m_EditorClassIdentifier: 
-  Name: "\u0421\u0438\u043B\u0430 \u041C\u0430\u0440\u0438\u043E"
+  Name: 
   Description: 
   Special: 0
-  Coolness: 100
-  CardSprite: {fileID: 21300000, guid: 5e787833a378d6142b076c8a578f301e, type: 3}
+  Coolness: 0
+  CardSprite: {fileID: 21300000, guid: 2168363dc86e163408b87498979cb7c9, type: 3}
   EventSound: {fileID: 0}
-  DeltaHealth: 45
-  DeltaSpeed: -5
-  Size: 2
-  DeltaDamage: 0
-  DeltaAttackSpeed: 0
