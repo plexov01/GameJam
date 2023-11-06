@@ -1927,7 +1927,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6fde35a2de68f0429316dab3586c278, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondStageTimerMax: 20
+  secondStageTimerMax: 180
 --- !u!4 &2076369169
 Transform:
   m_ObjectHideFlags: 0

@@ -25,7 +25,8 @@ namespace GameJam.Features.Moving
         
         void Update()
         {
-            
+            if (!GameHandler.Instance.IsSecondStageActive()) return;
+
             float step =  speed * Time.deltaTime; 
             transform.position = Vector3.MoveTowards(transform.position, EndPoint.position, step);
         }

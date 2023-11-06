@@ -22,7 +22,7 @@ public class Mine : MonoBehaviour
             
             CoolnessScaleController.Instance.AddCoolness(40);
 
-            Destroy(gameObject);
+            Destroy(gameObject.transform.parent.gameObject);
         }
     }
 
