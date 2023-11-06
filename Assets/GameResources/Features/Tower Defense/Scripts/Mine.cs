@@ -19,6 +19,8 @@ public class Mine : MonoBehaviour
                     enemy.GetComponent<IDamageable>().TakeDamage(damage);
                 }
             }
+            
+            CoolnessScaleController.Instance.AddCoolness(40);
 
             Destroy(gameObject);
         }
