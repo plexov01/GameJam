@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   col: {fileID: 6931819981451288617}
-  radius: 4
+  radius: 2.5
 --- !u!1 &5830010800790770286
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,7 +308,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 4
+  m_Radius: 1.49
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3683267813976707285
 MonoBehaviour:
