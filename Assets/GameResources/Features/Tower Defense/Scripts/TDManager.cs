@@ -667,7 +667,7 @@ public class TDManager : MonoBehaviour
             }
         }
 
-        //main base не уничтожается
+        //main base РЅРµ СѓРЅРёС‡С‚РѕР¶Р°РµС‚СЃСЏ
         // List<GameObject> mainBase = GameObject.FindGameObjectsWithTag("MainBase").ToList();
         // for (int i = 0; i < walls.Count; i++)
         // {

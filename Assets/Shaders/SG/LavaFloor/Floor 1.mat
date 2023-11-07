@@ -34,13 +34,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Metallic: 0
+    - _Metallic: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SmoothSpawn: 0
     - _Smoothness: 0.5
-    - _VoronoiAngelOffset: 7.22
-    - _VoronoiCeilDensity: 5
+    - _VoronoiAngelOffset: 9.22
+    - _VoronoiCeilDensity: 24.22
     m_Colors:
     - _FloorColor: {r: 0.2264151, g: 0.18426651, b: 0.03524386, a: 0}
     - _LavaCoor: {r: 3.9999995, g: 0.116300344, b: 0, a: 0}
