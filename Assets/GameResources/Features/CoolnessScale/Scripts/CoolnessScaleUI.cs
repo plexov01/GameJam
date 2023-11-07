@@ -23,6 +23,15 @@ public class CoolnessScaleUI : MonoBehaviour
     {
         scaleSlider = GetComponent<Slider>();
         handleImage = scaleSlider.handleRect.GetComponent<Image>();
+        GameHandler.OnStateChanged += GameHandlerOnOnStateChanged;
+    }
+
+    private void GameHandlerOnOnStateChanged(object sender, EventArgs e)
+    {
+        if (GameHandler.Instance.IsThirdStateActive())
+        {
+            Hide();
+        }
     }
 
     private void Start()
@@ -67,6 +76,11 @@ public class CoolnessScaleUI : MonoBehaviour
         CoolnessScaleController.OnCoolnessChanged -= UpdateUI;
     }
 
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
     
     
 }
