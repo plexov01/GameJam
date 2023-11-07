@@ -60,6 +60,8 @@ public class GameHandler : MonoBehaviour
 
     private void CoolnessScaleController_OnCoolnessChanged(object sender, CoolnessScaleController.OnCoolnessChangedEventArgs e)
     {
+        if (IsThirdStateActive()) return;
+        
         if (e.coolness > 0.05f && e.coolness < 0.95)
         {
             hasImmortality = true;

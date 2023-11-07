@@ -60,11 +60,11 @@ public class Health : MonoBehaviour, IDamageable
             {
                 if (CoolnessScaleController.Instance.isDark)
                 {
-                    CoolnessScaleController.Instance.AddCoolness(+2);
+                    CoolnessScaleController.Instance.AddCoolness(+5);
                 }
                 else
                 {
-                    CoolnessScaleController.Instance.AddCoolness(-2);
+                    CoolnessScaleController.Instance.AddCoolness(-5);
                 }
 
             }

@@ -240,7 +240,7 @@ public class Node : MonoBehaviour
                 else
                 {
                     SoundManager soundManager = SoundManager.Instance;
-                    soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
+                    soundManager.PlaySound(soundManager.audioClipRefsSo.stopRats,Camera.main.transform.position);
                 }
             }
         }
@@ -261,6 +261,10 @@ public class Node : MonoBehaviour
                 {
                     rend.material.color = nodeUnhoverColor;
                 }
+                
+                SoundManager soundManager = SoundManager.Instance;
+			
+                soundManager.PlaySound(soundManager.audioClipRefsSo.Upgrade, Camera.main.transform.position);
             }
             else
             {

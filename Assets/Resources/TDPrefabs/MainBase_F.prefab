@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9ba6d3a8c822cf40a9889dc11c1e185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 500
+  baseHealth: 3000
   currentHealth: 500
   objectToDestroy: {fileID: 8603722715243756908}
   ice: {fileID: 5749504192839470146}

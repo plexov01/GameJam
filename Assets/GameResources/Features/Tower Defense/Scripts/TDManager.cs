@@ -30,6 +30,9 @@ public class TDManager : MonoBehaviour
     [Header("Scaling")]
     float modifier = 1f;
 
+    private float lastStandModifier = 1f;
+    
+
     private void Awake()
     {
         instance = this;
@@ -56,7 +59,8 @@ public class TDManager : MonoBehaviour
         }
         if (GameHandler.Instance.IsThirdStateActive())
         {
-            StartCoroutine(StartSpawningEnemies(0, 1f));
+            StartCoroutine(StartSpawningEnemies(0, 0.5f));
+            lastStandModifier = 2f;
         }
     }
 
@@ -200,16 +204,16 @@ public class TDManager : MonoBehaviour
     {
         while (true)
         {
-            modifier += 0.02f;
+            modifier += 0.05f;
             
             float coolness = CoolnessScaleController.Instance.GetCoolness();
             if (coolness <= 0.3f)
             {
-                modifier += 0.01f;
+                modifier += 0.03f;
             }
             
             GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], transform.position, Quaternion.identity, transform.GetChild(0));
-            mob.transform.GetChild(0).GetComponent<Enemy>().UpgradeEnemy(modifier);
+            mob.transform.GetChild(0).GetComponent<Enemy>().UpgradeEnemy(modifier * lastStandModifier);
 
             yield return new WaitForSeconds(spawanDelay);
         }
@@ -235,16 +239,16 @@ public class TDManager : MonoBehaviour
         
         for (int i = 0; i < numberToSpawn; i++)
         {
-            modifier += 0.02f;
+            modifier += 0.05f;
             
             float coolness = CoolnessScaleController.Instance.GetCoolness();
             if (coolness <= 0.3f)
             {
-                modifier += 0.01f;
+                modifier += 0.03f;
             }
             
             GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], transform.position, Quaternion.identity, transform.GetChild(0));
-            mob.transform.GetChild(0).GetComponent<Enemy>().UpgradeEnemy(modifier);
+            mob.transform.GetChild(0).GetComponent<Enemy>().UpgradeEnemy(modifier * lastStandModifier);
 
             yield return new WaitForSeconds(spawanDelay);
         }

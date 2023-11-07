@@ -56,6 +56,7 @@
 			{
 				if (Random.Range(0f,1f) < coolness)
 				{
+					rats[i].GetComponentInChildren<Health>().TakeDamage(1000000);
 					Destroy(rats[i]);
 				}	
 			}

@@ -27,6 +27,10 @@ public class Meteor : MonoBehaviour
     {
         col.enabled = true;
         yield return new WaitForSeconds(0.25f);
+        
+        SoundManager soundManager = SoundManager.Instance;
+			
+        soundManager.PlaySound(soundManager.audioClipRefsSo.meteor, Camera.main.transform.position);
         Destroy(gameObject);
     }
 }

@@ -21,6 +21,10 @@ public class Mine : MonoBehaviour
             }
             
             CoolnessScaleController.Instance.AddCoolness(40);
+            
+            SoundManager soundManager = SoundManager.Instance;
+			
+            soundManager.PlaySound(soundManager.audioClipRefsSo.Bomb, Camera.main.transform.position);
 
             Destroy(gameObject.transform.parent.gameObject);
         }
