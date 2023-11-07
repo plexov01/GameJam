@@ -8516,6 +8516,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CoolnessScale
       objectReference: {fileID: 0}
+    - target: {fileID: 1261329098505682379, guid: e57eed520658d4d44b5407cc3db91955, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e57eed520658d4d44b5407cc3db91955, type: 3}
 --- !u!224 &581543804 stripped
