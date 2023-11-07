@@ -10370,6 +10370,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameOverUI
       objectReference: {fileID: 0}
+    - target: {fileID: 6288782387063846916, guid: 7f9c89f73a0041948bf0729aa0fc658d, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6288782387063846918, guid: 7f9c89f73a0041948bf0729aa0fc658d, type: 3}
       propertyPath: m_IsActive
       value: 0
