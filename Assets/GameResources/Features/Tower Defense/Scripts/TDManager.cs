@@ -66,15 +66,15 @@ public class TDManager : MonoBehaviour
 
     private void Update()
     {
-        // if (Input.GetKeyDown(KeyCode.Keypad1))
-        // {
-        //     BuildTurret();
-        // }
-        //
-        // if (Input.GetKeyDown(KeyCode.Keypad2))
-        // {
-        //     BuildWall();
-        // }
+        /*if (Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            SpawnMeteor(new Vector3(37, 0, -45));
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            ShortCircuit();
+        }*/
         //
         // if (Input.GetKeyDown(KeyCode.Keypad3))
         // {
@@ -632,6 +632,58 @@ public class TDManager : MonoBehaviour
                 GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(2);
                 Destroy(tier3Turrets[0].transform.parent.gameObject);
                 Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
+            }
+        }
+    }
+
+    public void ShortCircuit()
+    {
+        float coolness = CoolnessScaleController.Instance.GetCoolness();
+
+        List<GameObject> walls = GameObject.FindGameObjectsWithTag("WallBlock").ToList();
+        for (int i = 0; i < walls.Count; i++)
+        {
+            if (Random.Range(0f, 1f) > coolness)
+            {
+                walls[i].GetComponentInChildren<IDamageable>().TakeDamage(1000000f);
+            }
+        }
+
+        List<GameObject> turrets = GameObject.FindGameObjectsWithTag("Turret").ToList();
+        for (int i = 0; i < turrets.Count; i++)
+        {
+            if (Random.Range(0f, 1f) > coolness)
+            {
+                turrets[i].GetComponent<IDamageable>().TakeDamage(1000000f);
+            }
+        }
+
+        List<GameObject> bomb = GameObject.FindGameObjectsWithTag("Bomb").ToList();
+        for (int i = 0; i < bomb.Count; i++)
+        {
+            if (Random.Range(0f, 1f) > coolness)
+            {
+                Destroy(bomb[i].transform.parent.gameObject);
+            }
+        }
+
+        //main base не уничтожается
+        // List<GameObject> mainBase = GameObject.FindGameObjectsWithTag("MainBase").ToList();
+        // for (int i = 0; i < walls.Count; i++)
+        // {
+        // 	if (Random.Range(0f,1f) > coolness)
+        // 	{
+        // 		Destroy(mainBase[i]);
+        // 	}	
+        // }
+
+        List<GameObject> rats = GameObject.FindGameObjectsWithTag("EnemyTrigger").ToList();
+
+        for (int i = 0; i < rats.Count; i++)
+        {
+            if (Random.Range(0f, 1f) < coolness)
+            {
+                rats[i].GetComponent<IDamageable>().TakeDamage(1000000f);
             }
         }
     }
