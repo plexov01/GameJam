@@ -53,63 +53,46 @@ public class Turret : MonoBehaviour
     {
         if (target == null && other.CompareTag("EnemyTrigger"))
         {
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
-
-            float shortestDistance = float.MaxValue;
-            GameObject nearestEnemy = null;
-
-            foreach (GameObject enemy in enemies)
-            {
-                float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-
-                if (distanceToEnemy < shortestDistance)
-                {
-                    shortestDistance = distanceToEnemy;
-                    nearestEnemy = enemy;
-                }
-            }
-
-            if (nearestEnemy != null && shortestDistance <= range)
-            {
-                target = nearestEnemy.transform;
-            }
-            else
-            {
-                target = null;
-            }
+            UpdateTarget();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        print("exit trigger: " + other.tag);
-        if (other.CompareTag("EnemyTrigger"))
+        //print("exit trigger: " + other.tag);
+        if (other.CompareTag("EnemyTrigger") && target != null && Vector3.Distance(transform.position, target.position) > range)
         {
-            print("exit trigger");
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+            target = null;
+        }
+    }
 
-            float shortestDistance = float.MaxValue;
-            GameObject nearestEnemy = null;
+    private void UpdateTarget()
+    {
+        //print("update target");
 
-            foreach (GameObject enemy in enemies)
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+
+        float shortestDistance = float.MaxValue;
+        GameObject nearestEnemy = null;
+
+        foreach (GameObject enemy in enemies)
+        {
+            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+
+            if (distanceToEnemy < shortestDistance)
             {
-                float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+                shortestDistance = distanceToEnemy;
+                nearestEnemy = enemy;
+            }
+        }
 
-                if (distanceToEnemy < shortestDistance)
-                {
-                    shortestDistance = distanceToEnemy;
-                    nearestEnemy = enemy;
-                }
-            }
-
-            if (nearestEnemy != null && shortestDistance <= range)
-            {
-                target = nearestEnemy.transform;
-            }
-            else
-            {
-                target = null;
-            }
+        if (nearestEnemy != null && shortestDistance <= range)
+        {
+            target = nearestEnemy.transform;
+        }
+        else
+        {
+            target = null;
         }
     }
 
@@ -123,7 +106,7 @@ public class Turret : MonoBehaviour
         
         if (target == null)
         {
-            barrel.localEulerAngles = new Vector3(0, 0, 0);
+            //barrel.localEulerAngles = new Vector3(0, 0, 0);
             return;
         }
 
@@ -132,7 +115,15 @@ public class Turret : MonoBehaviour
         Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation * Quaternion.Euler(0, -90f, 0), Time.deltaTime * turnSpeed).eulerAngles;
         partToRotate.rotation = Quaternion.Euler(0, rotation.y, 0);
 
-        barrel.localEulerAngles = new Vector3(0, 0, -30f);
+        //barrel.localEulerAngles = new Vector3(0, 0, -30f);
+
+
+        Vector3 dir2 = target.position - barrel.position;
+        Quaternion lookRotation2 = Quaternion.LookRotation(dir2.normalized);
+        Vector3 barrelRotation = Quaternion.Lerp(barrel.rotation, lookRotation2, Time.deltaTime * turnSpeed).eulerAngles;
+        //print("old " + barrel.rotation);
+        barrel.localRotation = Quaternion.Euler(0, 0, barrelRotation.z);
+        //print("new " + barrel.rotation);
 
         if (fireCountdown <= 0f)
         {

@@ -169,7 +169,7 @@ public class Node : MonoBehaviour
                 }*/
 
                 GameObject wallToBuild = BuildManager.instance.GetWallToBuild();
-                wall = Instantiate(wallToBuild, transform.position + new Vector3(0, 2.5f, 0), transform.rotation, EnemyManager.instance.surface.transform);
+                wall = Instantiate(wallToBuild, transform.position + new Vector3(0, transform.localScale.y, 0), transform.rotation, transform);
                 buildManager.buildMode = BuildManager.BuildMode.None;
                 buildManager.wallCount++;
 
@@ -217,7 +217,7 @@ public class Node : MonoBehaviour
             else
             {
                 GameObject mineToBuild = BuildManager.instance.GetMineToBuild();
-                mine = Instantiate(mineToBuild, transform.position + new Vector3(0, 0.6f, 0), transform.rotation, EnemyManager.instance.surface.transform);
+                mine = Instantiate(mineToBuild, transform.position + new Vector3(0, transform.localScale.y, 0), transform.rotation, transform);
                 buildManager.buildMode = BuildManager.BuildMode.None;
 
                 if (path)

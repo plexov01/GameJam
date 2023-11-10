@@ -68,18 +68,18 @@ public class TDManager : MonoBehaviour
     {
         /*if (Input.GetKeyDown(KeyCode.Keypad1))
         {
-            SpawnMeteor(new Vector3(37, 0, -45));
+            FreezeEnemies(3f);
         }
-        
+
         if (Input.GetKeyDown(KeyCode.Keypad2))
         {
-            ShortCircuit();
+            LavaFloor(3f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            FindObjectOfType<GameJam.Features.UI.DarkController>()?.ShowDark();
         }*/
-        //
-        // if (Input.GetKeyDown(KeyCode.Keypad3))
-        // {
-        //     BuildMine();
-        // }
         //
         // if (Input.GetKeyDown(KeyCode.Keypad4))
         // {
@@ -305,7 +305,8 @@ public class TDManager : MonoBehaviour
                 turret.Freeze(duration);
             }
             
-        }else if (coolness < 0.65f)
+        }
+        else if (coolness < 0.65f)
         {
             print("freeze walls");
             aims = GameObject.FindGameObjectsWithTag("WallBlock").ToList();
@@ -313,30 +314,36 @@ public class TDManager : MonoBehaviour
             
             foreach (GameObject aim in aims)
             {
-                Health health = aim.GetComponentInChildren<Health>();
+                if (aim != null)
+                {
+                    Health health = aim.GetComponentInChildren<Health>();
 
-                health.currentHealth = health.baseHealth * 2;
-                health.ice.SetActive(true);
+                    health.currentHealth = health.baseHealth * 2;
+                    health.ice.SetActive(true);
+                }
             }
 
             yield return new WaitForSeconds(duration);
 
             foreach (GameObject aim in aims)
             {
-                Health health = aim.GetComponentInChildren<Health>();
-
-                if (health.currentHealth > health.baseHealth)
+                if (aim != null)
                 {
-                    health.currentHealth = health.baseHealth;
-                }
-                else
-                {
-                    health.currentHealth = health.baseHealth * 0.65f;
-                }
+                    Health health = aim.GetComponentInChildren<Health>();
 
-                health.ice.SetActive(false);
+                    if (health.currentHealth > health.baseHealth)
+                    {
+                        health.currentHealth = health.baseHealth;
+                    }
+                    else
+                    {
+                        health.currentHealth = health.baseHealth * 0.65f;
+                    }
+
+                    //print("remove ice from " + aim.tag);
+                    health.ice.SetActive(false);
+                }
             }
-
         }
         else
         {
@@ -365,9 +372,9 @@ public class TDManager : MonoBehaviour
                     enemy.GetComponentInChildren<Health>().ice.SetActive(false);
                 }
             }
-            
-            freezeCoroutine = null;
         }
+
+        freezeCoroutine = null;
     }
 
     public void IncreaseEnemiesHP(int enemyType, float amount)
@@ -421,12 +428,6 @@ public class TDManager : MonoBehaviour
         {
             StopCoroutine(lavaFloorCoroutine);
         }
-
-        if (freezeCoroutine != null)
-        {
-            StopCoroutine(freezeCoroutine);
-        }
-        
         
         lavaFloorCoroutine = StartCoroutine(LavaFloorCoroutine(duration, damage, damageRate));
     }
@@ -472,6 +473,8 @@ public class TDManager : MonoBehaviour
             node.rend.material.SetFloat("_SmoothSpawn", 1f);
             node.pathUnhoverColor = node.pathStartColor;
         }
+
+        lavaFloorCoroutine = null;
     }
 
     public void SpawnMeteor(Vector3 position)

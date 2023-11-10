@@ -11,28 +11,10 @@ public class EnemyManager : MonoBehaviour
     public List<int> enemyOrder;
 
     public Transform end;
-    public NavMeshSurface surface;
+    //public NavMeshSurface surface;
 
     private void Awake()
     {
         instance = this;
     }
-
-    void Start()
-    {
-        surface.BuildNavMesh();
-    }
-
-    /*public void UpdateMesh()
-    {
-        print("update mesh");
-        StartCoroutine(BuildNavMesh());
-    }
-
-    private IEnumerator BuildNavMesh()
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        surface.BuildNavMesh();
-    }*/
 }

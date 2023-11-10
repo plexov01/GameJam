@@ -28,6 +28,7 @@ namespace GameJam.Features.UI
             _darkUiController.StopAnimation();
             _darkUiController.SetAlpha(0);
             CoolnessScaleController.Instance.isDark = false;
+            _coroutineShowDark = null;
         }
         
         private IEnumerator LightningActive(float time)
@@ -52,7 +53,7 @@ namespace GameJam.Features.UI
             if (_coroutineShowDark != null)
             {
                 StopCoroutine(_coroutineShowDark);
-                _coroutineShowDark = null;
+                StopCoroutine(_coroutineShowLightning);
             }
             
             _coroutineShowDark = StartCoroutine(DarkActive(TimeShowDark));
