@@ -57,7 +57,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.95, y: 0.95, z: 0.95}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4215411871612788126
 GameObject:
@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 4215411871612788099}
   - component: {fileID: 4215411871612788124}
   - component: {fileID: 5680072207378631948}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: wall
   m_TagString: WallBlock
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ MonoBehaviour:
   nodeHoverColor: {r: 0, g: 0, b: 0, a: 0}
   nodeUnhoverColor: {r: 0, g: 0, b: 0, a: 0}
   pathStartColor: {r: 0, g: 0, b: 0, a: 0}
-  pathHoverColor: {r: 0, g: 0, b: 0, a: 0}
+  pathHoverColor: {r: 0, g: 0, b: 0, a: 1}
   pathUnhoverColor: {r: 0, g: 0, b: 0, a: 0}
   rend: {fileID: 0}
   enemyMask:

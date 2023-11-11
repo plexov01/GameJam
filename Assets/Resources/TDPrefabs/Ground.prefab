@@ -114,7 +114,7 @@ MonoBehaviour:
   nodeHoverColor: {r: 0, g: 0, b: 0, a: 0}
   nodeUnhoverColor: {r: 0, g: 0, b: 0, a: 0}
   pathStartColor: {r: 0, g: 0, b: 0, a: 0}
-  pathHoverColor: {r: 0.31132078, g: 0.30397832, b: 0.30397832, a: 0}
+  pathHoverColor: {r: 0.31132078, g: 0.30397832, b: 0.30397832, a: 1}
   pathUnhoverColor: {r: 0, g: 0, b: 0, a: 0}
   rend: {fileID: 0}
   enemyMask:

@@ -31,6 +31,7 @@ public class Node : MonoBehaviour
         if (path)
         {
             pathStartColor = rend.material.GetColor("_FloorColor");
+            //pathHoverColor = Color.black;
             pathUnhoverColor = pathStartColor;
         }
     }
@@ -211,7 +212,7 @@ public class Node : MonoBehaviour
             if (wall != null || mine != null)
             {
                 Debug.Log("Can't build mine there!");
-                print(mine);
+                //print(mine);
                 return;
             }
             else

@@ -66,20 +66,31 @@ public class TDManager : MonoBehaviour
 
     private void Update()
     {
+        /*if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 100))
+            {
+                Debug.Log(hit.transform.gameObject.name);
+            }
+        }*/
+
         /*if (Input.GetKeyDown(KeyCode.Keypad1))
         {
-            FreezeEnemies(3f);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad2))
-        {
-            LavaFloor(3f);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad3))
-        {
-            FindObjectOfType<GameJam.Features.UI.DarkController>()?.ShowDark();
+            Repair();
         }*/
+
+        /* if (Input.GetKeyDown(KeyCode.Keypad2))
+         {
+             LavaFloor(3f);
+         }
+
+         if (Input.GetKeyDown(KeyCode.Keypad3))
+         {
+             FindObjectOfType<GameJam.Features.UI.DarkController>()?.ShowDark();
+         }*/
         //
         // if (Input.GetKeyDown(KeyCode.Keypad4))
         // {
