@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Wall : MonoBehaviour, IDamageable
@@ -7,11 +5,15 @@ public class Wall : MonoBehaviour, IDamageable
     public float baseHealth;
     public float currentHealth;
 
-    [SerializeField] private Transform objectToDestroy;
+    [SerializeField] private GameObject objectToDestroy;
+    public GameObject ice;
 
-    public Transform GetTransform()
+    private string wallTag = "Wall";
+    private string mainBaseTag = "MainBase";
+
+    private void Start()
     {
-        return transform;
+        currentHealth = baseHealth;
     }
 
     public void TakeDamage(float damage)
@@ -20,19 +22,24 @@ public class Wall : MonoBehaviour, IDamageable
 
         if (currentHealth <= 0 && objectToDestroy != null)
         {
-            Destroy(objectToDestroy);
+            Death();
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void Death()
     {
-        
-    }
+        TDManager.instance.walls.Remove(transform);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (transform.CompareTag(wallTag))
+        {
+            CoolnessScaleController.Instance.AddCoolness(40);
+        }
+        else if (transform.CompareTag(mainBaseTag))
+        {
+            CoolnessScaleController.Instance.AddCoolness(200);
+            print("gates destoyed");
+        }
+
+        Destroy(objectToDestroy);
     }
 }

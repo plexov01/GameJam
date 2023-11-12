@@ -12,14 +12,16 @@ public class Node : MonoBehaviour
 
     public Renderer rend;
 
-    private GameObject turret;
-    private GameObject wall;
-    private GameObject mine;
     private BuildManager buildManager;
 
     public LayerMask enemyMask;
 
     public bool path;
+
+    private string towerNodeTag = "TowerNode";
+    private string pathNodeTag = "PathNode";
+    private string wallTag = "Wall";
+    private string mainBaseTag = "MainBase";
 
     private void Awake()
     {
@@ -43,54 +45,58 @@ public class Node : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (buildManager.buildMode == BuildManager.BuildMode.None) return;
-
-        if (buildManager.buildMode == BuildManager.BuildMode.Turret && transform.CompareTag("NodeForTurret"))
+        switch (buildManager.buildMode)
         {
-            if (path)
-            {
-                rend.material.SetColor("_FloorColor", pathHoverColor);
-            }
-            else
-            {
-                rend.material.color = nodeHoverColor;
-            }
-        }
+            case BuildManager.BuildMode.None:
+                
+                return;
 
-        if (buildManager.buildMode == BuildManager.BuildMode.Wall && transform.CompareTag("NodeForWall"))
-        {
-            if (path)
-            {
-                rend.material.SetColor("_FloorColor", pathHoverColor);
-            }
-            else
-            {
-                //
-            }
-        }
+            case BuildManager.BuildMode.Tower:
+                
+                if (transform.CompareTag(towerNodeTag))
+                {
+                    if (path)
+                    {
+                        rend.material.SetColor("_FloorColor", pathHoverColor);
+                    }
+                    else
+                    {
+                        rend.material.color = nodeHoverColor;
+                    }
+                }
 
-        if (buildManager.buildMode == BuildManager.BuildMode.Mine && transform.CompareTag("NodeForWall"))
-        {
-            if (path)
-            {
-                rend.material.SetColor("_FloorColor", pathHoverColor);
-            }
-            else
-            {
-                //
-            }
-        }
+                break;
 
-        if (buildManager.buildMode == BuildManager.BuildMode.Repair && (transform.CompareTag("WallBlock") || transform.CompareTag("MainBase")))
-        {
-            if (path)
-            {
-                rend.material.SetColor("_FloorColor", pathHoverColor);
-            }
-            else
-            {
-                //
-            }
+            case BuildManager.BuildMode.Wall:
+                
+                if (transform.CompareTag(pathNodeTag) && path)
+                {
+                    rend.material.SetColor("_FloorColor", pathHoverColor);
+                }
+
+                break;
+
+            case BuildManager.BuildMode.Mine:
+                
+                if (transform.CompareTag(pathNodeTag) && path)
+                {
+                    rend.material.SetColor("_FloorColor", pathHoverColor);
+                }
+
+                break;
+
+            case BuildManager.BuildMode.Repair:
+
+                if ((transform.CompareTag(wallTag) || transform.CompareTag(mainBaseTag)) && path)
+                {
+                    rend.material.SetColor("_FloorColor", pathHoverColor);
+                }
+
+                break;
+
+            default:
+
+                break;
         }
     }
 
@@ -108,204 +114,188 @@ public class Node : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (buildManager.buildMode == BuildManager.BuildMode.None) return;
-
-        if (buildManager.buildMode == BuildManager.BuildMode.Turret && transform.CompareTag("NodeForTurret"))
+        switch (buildManager.buildMode)
         {
-            if (turret != null || transform.childCount != 0)
-            {
-                Debug.Log("Can't build turret there!");
+            case BuildManager.BuildMode.None:
+                
                 return;
-            }
-            else
-            {
-                GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(1);
-                turret = Instantiate(turretToBuild, transform.position + new Vector3(0, 2f, 0), transform.rotation, transform);
-                buildManager.buildMode = BuildManager.BuildMode.None;
-                buildManager.turretCount++;
 
-                if (path)
-                {
-                    rend.material.SetColor("_FloorColor", pathUnhoverColor);
-                }
-                else
-                {
-                    rend.material.color = nodeUnhoverColor;
-                }
+            case BuildManager.BuildMode.Tower:
 
-                if (GameHandler.Instance.IsFirstStageActive())
+                if (transform.CompareTag(towerNodeTag))
                 {
-                    if (Random.value < 0.5f)
+                    if (transform.childCount != 0)
                     {
-                        SoundManager soundManager = SoundManager.Instance;
-                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
-                    }
-                }
-                else
-                {
-                    SoundManager soundManager = SoundManager.Instance;
-                    soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
-                }
-            }
-        }
-
-        if (buildManager.buildMode == BuildManager.BuildMode.Wall && transform.CompareTag("NodeForWall"))
-        {
-            if (wall != null || mine != null || Physics.BoxCast(transform.position, new Vector3(2f, 1f, 2f), Vector3.up, Quaternion.identity, 20f, enemyMask))
-            {
-                Debug.Log("Can't build wall there!");
-                return;
-            }
-            else
-            {
-                /*print(Physics.BoxCast(transform.position + new Vector3(0f, 2.5f, 0f), new Vector3(2f, 2f, 2f), Vector3.up, Quaternion.identity, 20f, enemyMask));
-
-                RaycastHit[] hits = Physics.BoxCastAll(transform.position + new Vector3(0f, 2.5f, 0f), new Vector3(2f, 2f, 2f), Vector3.up, Quaternion.identity, 20f, enemyMask);
-
-                print("hits length: " + hits.Length);
-
-                for (int i = 0; i < hits.Length; i++)
-                {
-                    print(hits[i]);
-                }*/
-
-                GameObject wallToBuild = BuildManager.instance.GetWallToBuild();
-                wall = Instantiate(wallToBuild, transform.position + new Vector3(0, transform.localScale.y, 0), transform.rotation, transform);
-                buildManager.buildMode = BuildManager.BuildMode.None;
-                buildManager.wallCount++;
-
-                if (path)
-                {
-                    rend.material.SetColor("_FloorColor", pathUnhoverColor);
-                }
-                else
-                {
-                    rend.material.color = nodeUnhoverColor;
-                }
-
-                if (GameHandler.Instance.IsFirstStageActive())
-                {
-                    if (Random.value < 0.5f)
-                    {
-                        SoundManager soundManager = SoundManager.Instance;
-                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
-                    }
-                }
-                else
-                {
-                    SoundManager soundManager = SoundManager.Instance;
-                    if (Random.value < 0.5f)
-                    {
-                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
+                        Debug.Log("Can't build turret there!");
+                        return;
                     }
                     else
                     {
-                        soundManager.PlaySound(soundManager.audioClipRefsSo.stopRats, Camera.main.transform.position);
+                        GameObject towerToBuild = BuildManager.instance.GetTowerToBuild(1);
+                        GameObject tower = Instantiate(towerToBuild, transform.position + new Vector3(0, 2f, 0), transform.rotation, transform);
+                        buildManager.buildMode = BuildManager.BuildMode.None;
+                        TDManager.instance.turrets.Add(tower.transform.GetChild(0));
+
+                        if (path)
+                        {
+                            rend.material.SetColor("_FloorColor", pathUnhoverColor);
+                        }
+                        else
+                        {
+                            rend.material.color = nodeUnhoverColor;
+                        }
+
+                        if (GameHandler.Instance.IsFirstStageActive())
+                        {
+                            if (Random.value < 0.5f)
+                            {
+                                SoundManager soundManager = SoundManager.Instance;
+                                soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
+                            }
+                        }
+                        else
+                        {
+                            SoundManager soundManager = SoundManager.Instance;
+                            soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
+                        }
                     }
-
-                }
-            }
-        }
-
-        if (buildManager.buildMode == BuildManager.BuildMode.Mine && transform.CompareTag("NodeForWall"))
-        {
-            if (wall != null || mine != null)
-            {
-                Debug.Log("Can't build mine there!");
-                //print(mine);
-                return;
-            }
-            else
-            {
-                GameObject mineToBuild = BuildManager.instance.GetMineToBuild();
-                mine = Instantiate(mineToBuild, transform.position + new Vector3(0, transform.localScale.y, 0), transform.rotation, transform);
-                buildManager.buildMode = BuildManager.BuildMode.None;
-
-                if (path)
-                {
-                    rend.material.SetColor("_FloorColor", pathUnhoverColor);
-                }
-                else
-                {
-                    rend.material.color = nodeUnhoverColor;
                 }
 
-                if (GameHandler.Instance.IsFirstStageActive())
+                break;
+
+            case BuildManager.BuildMode.Wall:
+
+                if (transform.CompareTag(pathNodeTag))
                 {
-                    if (Random.value < 0.5f)
+                    if (transform.childCount != 0 || Physics.BoxCast(transform.position, new Vector3(2f, 1f, 2f), Vector3.up, Quaternion.identity, 20f, enemyMask))
                     {
-                        SoundManager soundManager = SoundManager.Instance;
-                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt,Camera.main.transform.position);
+                        Debug.Log("Can't build wall there!");
+                        return;
+                    }
+                    else
+                    {
+                        /*print(Physics.BoxCast(transform.position + new Vector3(0f, 2.5f, 0f), new Vector3(2f, 2f, 2f), Vector3.up, Quaternion.identity, 20f, enemyMask));
+                        RaycastHit[] hits = Physics.BoxCastAll(transform.position + new Vector3(0f, 2.5f, 0f), new Vector3(2f, 2f, 2f), Vector3.up, Quaternion.identity, 20f, enemyMask);
+                        print("hits length: " + hits.Length);
+                        for (int i = 0; i < hits.Length; i++)
+                        {
+                            print(hits[i]);
+                        }*/
+
+                        GameObject wallToBuild = BuildManager.instance.GetWallToBuild();
+                        GameObject wall = Instantiate(wallToBuild, transform.position + new Vector3(0, transform.localScale.y, 0), transform.rotation, transform);
+                        buildManager.buildMode = BuildManager.BuildMode.None;
+                        TDManager.instance.walls.Add(wall.transform.GetChild(0));
+
+                        if (path)
+                        {
+                            rend.material.SetColor("_FloorColor", pathUnhoverColor);
+                        }
+                        else
+                        {
+                            rend.material.color = nodeUnhoverColor;
+                        }
+
+                        if (GameHandler.Instance.IsFirstStageActive())
+                        {
+                            if (Random.value < 0.5f)
+                            {
+                                SoundManager soundManager = SoundManager.Instance;
+                                soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
+                            }
+                        }
+                        else
+                        {
+                            SoundManager soundManager = SoundManager.Instance;
+                            if (Random.value < 0.5f)
+                            {
+                                soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
+                            }
+                            else
+                            {
+                                soundManager.PlaySound(soundManager.audioClipRefsSo.stopRats, Camera.main.transform.position);
+                            }
+
+                        }
                     }
                 }
-                else
+
+                break;
+
+            case BuildManager.BuildMode.Mine:
+
+                if (transform.CompareTag(pathNodeTag))
                 {
+                    if (transform.childCount != 0)
+                    {
+                        Debug.Log("Can't build mine there!");
+                        return;
+                    }
+                    else
+                    {
+                        GameObject mineToBuild = BuildManager.instance.GetMineToBuild();
+                        GameObject mine = Instantiate(mineToBuild, transform.position + new Vector3(0, transform.localScale.y, 0), transform.rotation, transform);
+                        buildManager.buildMode = BuildManager.BuildMode.None;
+                        TDManager.instance.mines.Add(mine.transform.GetChild(0));
+
+                        if (path)
+                        {
+                            rend.material.SetColor("_FloorColor", pathUnhoverColor);
+                        }
+                        else
+                        {
+                            rend.material.color = nodeUnhoverColor;
+                        }
+
+                        if (GameHandler.Instance.IsFirstStageActive())
+                        {
+                            if (Random.value < 0.5f)
+                            {
+                                SoundManager soundManager = SoundManager.Instance;
+                                soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
+                            }
+                        }
+                        else
+                        {
+                            SoundManager soundManager = SoundManager.Instance;
+                            soundManager.PlaySound(soundManager.audioClipRefsSo.stopRats, Camera.main.transform.position);
+                        }
+                    }
+                }
+
+                break;
+
+            case BuildManager.BuildMode.Repair:
+
+                if (transform.CompareTag(wallTag) || transform.CompareTag(mainBaseTag))
+                {
+                    Wall wall = transform.GetComponent<Wall>();
+                    wall.currentHealth = wall.baseHealth;
+                    buildManager.buildMode = BuildManager.BuildMode.None;
+
+                    if (path)
+                    {
+                        rend.material.SetColor("_FloorColor", pathUnhoverColor);
+                    }
+                    else
+                    {
+                        rend.material.color = nodeUnhoverColor;
+                    }
+
                     SoundManager soundManager = SoundManager.Instance;
-                    soundManager.PlaySound(soundManager.audioClipRefsSo.stopRats,Camera.main.transform.position);
-                }
-            }
-        }
 
-        if (buildManager.buildMode == BuildManager.BuildMode.Repair)
-        {
-            if (transform.CompareTag("WallBlock") || transform.CompareTag("MainBase"))
-            {
-                Health health = transform.GetChild(0).GetComponent<Health>();
-                health.currentHealth = health.baseHealth;
-                buildManager.buildMode = BuildManager.BuildMode.None;
-
-                if (path)
-                {
-                    rend.material.SetColor("_FloorColor", pathUnhoverColor);
+                    soundManager.PlaySound(soundManager.audioClipRefsSo.Upgrade, Camera.main.transform.position);
                 }
                 else
                 {
-                    rend.material.color = nodeUnhoverColor;
+                    Debug.Log("Can't repair there!");
                 }
-                
-                SoundManager soundManager = SoundManager.Instance;
-			
-                soundManager.PlaySound(soundManager.audioClipRefsSo.Upgrade, Camera.main.transform.position);
-            }
-            else
-            {
-                Debug.Log("Can't repair there!");
-            }
-        }
 
-        /*if (wall != null && buildManager.buildMode == BuildManager.BuildMode.Wall)
-        {
-            Debug.Log("Can't build wall there!");
-            return;
-        }
-        else if (transform.CompareTag("NodeForWall"))
-        {
-            GameObject wallToBuild = BuildManager.instance.GetWallToBuild();
-            wall = Instantiate(wallToBuild, transform.position + new Vector3(0, 2.5f, 0), transform.rotation, EnemyManager.instance.surface.transform);
-            buildManager.buildMode = BuildManager.BuildMode.None;
-            buildManager.wallCount++;
-            rend.material.color = startColor;
-        }
+                break;
 
-        if (mine != null && buildManager.buildMode == BuildManager.BuildMode.Mine)
-        {
-            Debug.Log("Can't build mine there!");
-            return;
+            default:
+                break;
         }
-        else if (transform.CompareTag("NodeForWall"))
-        {
-            GameObject mineToBuild = BuildManager.instance.GetMineToBuild();
-            mine = Instantiate(mineToBuild, transform.position + new Vector3(0, 0.6f, 0), transform.rotation, EnemyManager.instance.surface.transform);
-            buildManager.buildMode = BuildManager.BuildMode.None;
-            rend.material.color = startColor;
-        }
-
-        if (wall != null && buildManager.buildMode == BuildManager.BuildMode.Repair && transform.CompareTag("NodeForWall"))
-        {
-            print("repair wall");
-            buildManager.buildMode = BuildManager.BuildMode.None;
-            rend.material.color = startColor;
-        }*/
     }
 
     /*private void OnDrawGizmosSelected()

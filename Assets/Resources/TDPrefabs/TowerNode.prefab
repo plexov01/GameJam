@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8225102261505759128
+--- !u!1 &1563155269728197486
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3968503340646773853}
-  - component: {fileID: 8951155018229010648}
-  - component: {fileID: 8532775555777642980}
-  - component: {fileID: 8493828861173711404}
-  - component: {fileID: 3279583060742147611}
-  m_Layer: 2
-  m_Name: Mine
-  m_TagString: Bomb
+  - component: {fileID: 3143732834926274122}
+  - component: {fileID: 8117484326291737389}
+  - component: {fileID: 2856522601048751075}
+  - component: {fileID: 1750275087987047212}
+  - component: {fileID: -8915747295039342321}
+  m_Layer: 0
+  m_Name: TowerNode
+  m_TagString: TowerNode
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3968503340646773853
+--- !u!4 &3143732834926274122
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8225102261505759128}
+  m_GameObject: {fileID: 1563155269728197486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 0.1, z: 2}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &8951155018229010648
+--- !u!33 &8117484326291737389
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8225102261505759128}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &8532775555777642980
+  m_GameObject: {fileID: 1563155269728197486}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &2856522601048751075
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8225102261505759128}
+  m_GameObject: {fileID: 1563155269728197486}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2d48654b3cd777e48a644566a761016b, type: 2}
+  - {fileID: 2100000, guid: 60026f1e7270217419c1cd70959ba014, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,31 +85,39 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &8493828861173711404
-CapsuleCollider:
+--- !u!65 &1750275087987047212
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8225102261505759128}
+  m_GameObject: {fileID: 1563155269728197486}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 35.39375
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 7.6968136, z: -0.00000011920929}
---- !u!114 &3279583060742147611
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-8915747295039342321
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8225102261505759128}
+  m_GameObject: {fileID: 1563155269728197486}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41c34112cccd38a4c81716f2ff9c4567, type: 3}
+  m_Script: {fileID: 11500000, guid: c86cb3d35c450a54bad35712e76c875a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 15
-  damage: 50
+  nodeStartColor: {r: 0, g: 0, b: 0, a: 0}
+  nodeHoverColor: {r: 0, g: 0, b: 0, a: 0}
+  nodeUnhoverColor: {r: 0, g: 0, b: 0, a: 0}
+  pathStartColor: {r: 0, g: 0, b: 0, a: 0}
+  pathHoverColor: {r: 0, g: 0, b: 0, a: 0}
+  pathUnhoverColor: {r: 0, g: 0, b: 0, a: 0}
+  rend: {fileID: 0}
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 4096
+  path: 0

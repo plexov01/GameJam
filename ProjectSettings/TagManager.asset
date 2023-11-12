@@ -5,8 +5,6 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
-  - NodeForTurret
-  - NodeForWall
   - Wall
   - EnemyTrigger
   - Turret
@@ -14,6 +12,8 @@ TagManager:
   - MainBase
   - Meteor
   - Bomb
+  - PathNode
+  - TowerNode
   layers:
   - Default
   - TransparentFX

@@ -2,29 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Turret : MonoBehaviour
+public class NewTurret : MonoBehaviour, IDamageable
 {
-    public Transform target = null;
+    [Header("Turret")]
+    public int tier;
+    [SerializeField] private GameObject objectToDestroy;
 
+    [Header("Health")]
+    public float baseHealth;
+    public float currentHealth;
+
+    [Header("Shooting")]
+    public float damage = 100f;
+    public float bulletSpeed = 70f;
+    private Transform target = null;
     public float range = 15f;
     public float fireRate = 1f;
-    private float fireCountdown = 0f;
-
+    private float fireCountdown = 0.25f;
     private string enemyTag = "Enemy";
-    public Transform partToRotate;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private ParticleSystem partSys;
+
+    [Header("Rotation")]
+    [SerializeField] private Transform partToRotate;
+    [SerializeField] private Transform barrel;
     [SerializeField] private float turnSpeed = 10f;
 
-    public GameObject bulletPrefab;
-    public Transform firePoint;
-    [SerializeField] private Transform barrel;
+    [Header("Freeze")]
+    public bool isFrozen = false;
+    public GameObject ice;
 
-    public ParticleSystem partSys;
-    private Health health;
-
-    public int tier;
-
-    private bool isFrozen = false;
-    
     private void Awake()
     {
         GetComponent<SphereCollider>().radius = range / 4;
@@ -32,26 +40,24 @@ public class Turret : MonoBehaviour
         tempfireRate = fireRate;
         tempturnSpeed = turnSpeed;
         partSys.Stop();
-
-        health = GetComponent<Health>();
     }
 
     private void Start()
     {
-        fireCountdown = 0.25f;
+        currentHealth = baseHealth;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (target == null && other.CompareTag("EnemyTrigger"))
+        if (target == null && other.CompareTag(enemyTag))
         {
-            target = other.transform.parent;
+            target = other.transform;
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (target == null && other.CompareTag("EnemyTrigger"))
+        if (target == null && other.CompareTag(enemyTag))
         {
             UpdateTarget();
         }
@@ -59,8 +65,7 @@ public class Turret : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        //print("exit trigger: " + other.tag);
-        if (other.CompareTag("EnemyTrigger") && target != null && Vector3.Distance(transform.position, target.position) > range)
+        if (other.CompareTag(enemyTag) && target != null && Vector3.Distance(transform.position, target.position) > range)
         {
             target = null;
         }
@@ -68,8 +73,6 @@ public class Turret : MonoBehaviour
 
     private void UpdateTarget()
     {
-        //print("update target");
-
         GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
 
         float shortestDistance = float.MaxValue;
@@ -103,10 +106,9 @@ public class Turret : MonoBehaviour
             target = null;
             return;
         }
-        
+
         if (target == null)
         {
-            //barrel.localEulerAngles = new Vector3(0, 0, 0);
             return;
         }
 
@@ -115,15 +117,10 @@ public class Turret : MonoBehaviour
         Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation * Quaternion.Euler(0, -90f, 0), Time.deltaTime * turnSpeed).eulerAngles;
         partToRotate.rotation = Quaternion.Euler(0, rotation.y, 0);
 
-        //barrel.localEulerAngles = new Vector3(0, 0, -30f);
-
-
         Vector3 dir2 = target.position - barrel.position;
         Quaternion lookRotation2 = Quaternion.LookRotation(dir2.normalized);
         Vector3 barrelRotation = Quaternion.Lerp(barrel.rotation, lookRotation2, Time.deltaTime * turnSpeed).eulerAngles;
-        //print("old " + barrel.rotation);
         barrel.localRotation = Quaternion.Euler(0, 0, barrelRotation.z);
-        //print("new " + barrel.rotation);
 
         if (fireCountdown <= 0f)
         {
@@ -139,10 +136,8 @@ public class Turret : MonoBehaviour
         GameObject bulletGameObject = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         bulletGameObject.transform.parent = transform;
         Bullet bullet = bulletGameObject.GetComponent<Bullet>();
-
-        //GameObject effect = Instantiate(impactEffect, firePoint.position, partToRotate.rotation * Quaternion.Euler(90f, 0, 0));
-
-        //Destroy(effect, 1f);
+        bullet.damage = damage;
+        bullet.speed = bulletSpeed;
 
         partSys.Play();
 
@@ -154,10 +149,9 @@ public class Turret : MonoBehaviour
     private Coroutine freezeCoroutine = null;
     private float tempfireRate;
     private float tempturnSpeed;
-    
+
     public void Freeze(float duration)
     {
-        
         if (freezeCoroutine != null)
         {
             StopCoroutine(freezeCoroutine);
@@ -171,32 +165,49 @@ public class Turret : MonoBehaviour
     }
 
     /// <summary>
-    /// Р—Р°РјРѕСЂРѕР·РёС‚СЊ С‚СѓСЂРµР»СЊ
+    /// Заморозить турель
     /// </summary>
 
     public IEnumerator FreezeTurretCoroutine(float time)
     {
-        health.ice.SetActive(true);
+        ice.SetActive(true);
 
         isFrozen = true;
         tempfireRate = fireRate;
         tempturnSpeed = turnSpeed;
-        
+
         fireRate = 0;
         turnSpeed = 0;
-        
+
         yield return new WaitForSeconds(time);
         fireRate = tempfireRate;
         turnSpeed = tempturnSpeed;
         fireCountdown = 1f / fireRate;
         isFrozen = false;
 
-        health.ice.SetActive(false);
+        ice.SetActive(false);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+
+        if (currentHealth <= 0 && objectToDestroy != null)
+        {
+            Death();
+        }
+    }
+
+    public void Death()
+    {
+        TDManager.instance.turrets.Remove(transform);
+
+        Destroy(objectToDestroy);
     }
 }

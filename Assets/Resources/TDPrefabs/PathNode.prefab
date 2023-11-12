@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: -2263164371248843865}
   - component: {fileID: -5108197948780197509}
   m_Layer: 9
-  m_Name: Ground
-  m_TagString: NodeForWall
+  m_Name: PathNode
+  m_TagString: PathNode
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

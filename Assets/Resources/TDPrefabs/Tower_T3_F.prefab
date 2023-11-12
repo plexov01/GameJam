@@ -5039,7 +5039,7 @@ GameObject:
   - component: {fileID: 8566218354239996971}
   - component: {fileID: 7684319258308841721}
   m_Layer: 16
-  m_Name: TriggerForMeteor
+  m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5085,7 +5085,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad570e5f2b101d44eb4c43d1da81a27a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: {fileID: 0}
+  health: {fileID: 6840355810201238546}
 --- !u!1 &6171624679537813160
 GameObject:
   m_ObjectHideFlags: 0
@@ -5095,9 +5095,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6840355810201238546}
-  - component: {fileID: 9013542222745258297}
+  - component: {fileID: 2992600739880313602}
   - component: {fileID: 785230062480894320}
-  - component: {fileID: 2089279965742520393}
   m_Layer: 2
   m_Name: Tower_T3
   m_TagString: Turret
@@ -5122,7 +5121,7 @@ Transform:
   m_Father: {fileID: 4478343905516491597}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9013542222745258297
+--- !u!114 &2992600739880313602
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5131,19 +5130,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 6171624679537813160}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b0bf1e2841249d49a6ebfafc1493954, type: 3}
+  m_Script: {fileID: 11500000, guid: 78d0df84c5ee7274986c183ab43057c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  range: 15
-  fireRate: 2
-  partToRotate: {fileID: 8276893961519824481}
-  turnSpeed: 10
-  bulletPrefab: {fileID: 8927981542334459953, guid: 81f440eb4061ed04b9e276ffe0a9c733, type: 3}
-  firePoint: {fileID: 1091156881779123801}
-  barrel: {fileID: 8603589264270440076}
-  partSys: {fileID: 7583447299519717992}
   tier: 3
+  objectToDestroy: {fileID: 4478343905516491596}
+  baseHealth: 500
+  currentHealth: 0
+  damage: 300
+  bulletSpeed: 70
+  range: 15
+  fireRate: 1
+  firePoint: {fileID: 1091156881779123801}
+  bulletPrefab: {fileID: 8927981542334459953, guid: 81f440eb4061ed04b9e276ffe0a9c733, type: 3}
+  partSys: {fileID: 7583447299519717992}
+  partToRotate: {fileID: 8276893961519824481}
+  barrel: {fileID: 8603589264270440076}
+  turnSpeed: 10
+  isFrozen: 0
+  ice: {fileID: 7973015640658798650}
 --- !u!135 &785230062480894320
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5152,27 +5157,11 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6171624679537813160}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 3.75
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2089279965742520393
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6171624679537813160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9ba6d3a8c822cf40a9889dc11c1e185, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseHealth: 500
-  currentHealth: 0
-  objectToDestroy: {fileID: 4478343905516491596}
-  ice: {fileID: 7973015640658798650}
 --- !u!1 &6215367461131295955
 GameObject:
   m_ObjectHideFlags: 0
@@ -5259,37 +5248,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &6430476408606244716
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4820238813718868999}
-  m_Layer: 0
-  m_Name: BarrelHolder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4820238813718868999
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6430476408606244716}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8276893961519824481}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7264703455134083600
 GameObject:
   m_ObjectHideFlags: 0
@@ -5410,7 +5368,6 @@ Transform:
   m_Children:
   - {fileID: 1138200746910252306}
   - {fileID: 8603589264270440076}
-  - {fileID: 4820238813718868999}
   m_Father: {fileID: 6840355810201238546}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -4,7 +4,7 @@ public class BuildManager : MonoBehaviour
 {
     public static BuildManager instance = null;
 
-    [HideInInspector] public GameObject turretToBuild;
+    [HideInInspector] public GameObject towerToBuild;
     [HideInInspector] public GameObject wallToBuild;
     [HideInInspector] public GameObject mineToBuild;
 
@@ -20,16 +20,13 @@ public class BuildManager : MonoBehaviour
     public enum BuildMode
     {
         None,
-        Turret,
+        Tower,
         Wall,
         Mine,
         Repair
     }
 
     public BuildMode buildMode;
-
-    public int turretCount = 0;
-    public int wallCount = 0;
 
     private void Awake()
     {
@@ -44,24 +41,24 @@ public class BuildManager : MonoBehaviour
         mineToBuild = minePrefab;
     }
 
-    public GameObject GetTurretToBuild(int tier)
+    public GameObject GetTowerToBuild(int tier)
     {
         switch (tier)
         {
             case 1:
-                turretToBuild = turretPrefab_T1;
+                towerToBuild = turretPrefab_T1;
                 break;
             case 2:
-                turretToBuild = turretPrefab_T2;
+                towerToBuild = turretPrefab_T2;
                 break;
             case 3:
-                turretToBuild = turretPrefab_T3;
+                towerToBuild = turretPrefab_T3;
                 break;
             default:
                 break;
         }
 
-        return turretToBuild;
+        return towerToBuild;
     }
 
     public GameObject GetWallToBuild()

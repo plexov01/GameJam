@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 9093198040458721218}
   - component: {fileID: 7422153012324231793}
   - component: {fileID: 6509498078382776684}
-  - component: {fileID: 4506455473681860964}
   m_Layer: 2
   m_Name: Meteor
   m_TagString: Meteor
@@ -118,20 +117,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4506455473681860964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4964905279176150626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6d915a3c6f350d45a1cb0aae9b7b818, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  col: {fileID: 6931819981451288617}
-  radius: 2.5
 --- !u!1 &5830010800790770286
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,7 +258,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7142726745259104331}
   - component: {fileID: 6931819981451288617}
-  - component: {fileID: 3683267813976707285}
+  - component: {fileID: 6761598843714799991}
   m_Layer: 16
   m_Name: Trigger
   m_TagString: Meteor
@@ -310,7 +295,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.49
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3683267813976707285
+--- !u!114 &6761598843714799991
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -319,8 +304,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 7537743650104865969}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8f9e72ee7e7b2449ac87361a633a5df, type: 3}
+  m_Script: {fileID: 11500000, guid: a6d915a3c6f350d45a1cb0aae9b7b818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 3
-  attackSpeed: 1
+  col: {fileID: 6931819981451288617}
+  radius: 2.5

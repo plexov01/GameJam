@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 public class TDManager : MonoBehaviour
@@ -13,25 +12,24 @@ public class TDManager : MonoBehaviour
     private BuildManager buildManager;
     private EnemyManager enemyManager;
 
-    private string turretTag = "Turret";
-    private string enemyTag = "Enemy";
-    private string enemyTriggerTag = "EnemyTrigger";
-    private string wallTag = "WallBlock";
-
     private Coroutine freezeCoroutine = null;
     private Coroutine lavaFloorCoroutine = null;
 
     [Header("Meteor")]
-    [SerializeField] private Transform[] nodesForMeteor;
     [SerializeField] private float meteorHeight;
     [SerializeField] private GameObject meteorPrefab;
     public float meteorDamage = 500f;
     
     [Header("Scaling")]
     float modifier = 1f;
-
     private float lastStandModifier = 1f;
-    
+
+    [Header("Objects")]
+    public List<Transform> enemies = new List<Transform>();
+    public List<Transform> turrets = new List<Transform>();
+    public List<Transform> walls = new List<Transform>();
+    public List<Transform> mines = new List<Transform>();
+    public Transform mainBase;
 
     private void Awake()
     {
@@ -77,82 +75,95 @@ public class TDManager : MonoBehaviour
             }
         }*/
 
-        /*if (Input.GetKeyDown(KeyCode.Keypad1))
+        if (Input.GetKeyDown(KeyCode.Keypad1))
         {
-            Repair();
-        }*/
+            LavaFloor(3f);
+        }
 
-        /* if (Input.GetKeyDown(KeyCode.Keypad2))
-         {
-             LavaFloor(3f);
-         }
+        if (Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            Freeze(3f);
+        }
 
-         if (Input.GetKeyDown(KeyCode.Keypad3))
-         {
-             FindObjectOfType<GameJam.Features.UI.DarkController>()?.ShowDark();
-         }*/
-        //
-        // if (Input.GetKeyDown(KeyCode.Keypad4))
-        // {
-        //     CoolnessScaleController.Instance.AddCoolness(-100);
-        //     //Repair();
-        // }
-        //
-        // if (Input.GetKeyDown(KeyCode.Keypad5))
-        // {
-        //     CoolnessScaleController.Instance.AddCoolness(100);
-        //     StartCoroutine(SpawnEnemies(1));
-        // }
-        //
-        // if (Input.GetKeyDown(KeyCode.Keypad6))
-        // {
-        //     //FreezeEnemies(3f);
-        //     LavaFloor(3f);
-        // }
-        //
-        // if (Input.GetKeyDown(KeyCode.Keypad7))
-        // {
-        //     ChangeTurretTier(true);
-        // }
-        //
-        // if (Input.GetKeyDown(KeyCode.Keypad8))
-        // {
-        //     ChangeTurretTier(false);
-        // }
-        //
-        // if (Input.GetKeyDown(KeyCode.Keypad9))
-        // {
-        //     ChangeEnemiesStats(0, 50, 1.5f, 1.5f, 5, 3);
-        // }
+        if (Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            FindObjectOfType<GameJam.Features.UI.DarkController>()?.ShowDark();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Keypad4))
+        {
+            //CoolnessScaleController.Instance.AddCoolness(-100);
+            DestroyTowers(2);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Keypad5))
+        {
+            CoolnessScaleController.Instance.AddCoolness(100);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Keypad6))
+        {
+            LavaFloor(3f);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Keypad7))
+        {
+            ChangeTurretTier(true);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Keypad8))
+        {
+            ChangeTurretTier(false);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Keypad9))
+        {
+            ShortCircuit();
+        }
     }
 
-    public void BuildTurret()
+    private void Shuffle<T>(List<T> inputList)
     {
-        buildManager.buildMode = BuildManager.BuildMode.Turret;
+        for (int i = 0; i < inputList.Count - 1; i++)
+        {
+            T temp = inputList[i];
+            int rand = Random.Range(i, inputList.Count);
+            inputList[i] = inputList[rand];
+            inputList[rand] = temp;
+        }
     }
 
-    public void DestroyTurrets(int numberToDestroy = 0)
+    public void BuildTower()
     {
+        buildManager.buildMode = BuildManager.BuildMode.Tower;
+    }
+
+    public void DestroyTowers(int numberToDestroy = 0)
+    {
+        List<Transform> towerList = new(turrets);
+
         if (numberToDestroy == 0)
         {
-            GameObject[] turrets = GameObject.FindGameObjectsWithTag(turretTag);
-
-            foreach (GameObject turret in turrets)
+            foreach (Transform tower in towerList)
             {
-                turret.GetComponent<IDamageable>().TakeDamage(10000f);
+                if (tower != null)
+                {
+                    tower.GetComponent<IDamageable>().Death();
+                }
             }
         }
         else
         {
-            if (buildManager.turretCount >= numberToDestroy)
+            if (towerList.Count >= numberToDestroy)
             {
-                List<GameObject> turrets = GameObject.FindGameObjectsWithTag(turretTag).ToList();
-
-                Shuffle(turrets);
+                Shuffle(towerList);
 
                 for (int i = 0; i < numberToDestroy; i++)
                 {
-                    turrets[i].GetComponent<IDamageable>().TakeDamage(10000f);
+                    if (towerList[i] != null)
+                    {
+                        towerList[i].GetComponent<IDamageable>().Death();
+                    }
                 }
             }
         }
@@ -165,39 +176,32 @@ public class TDManager : MonoBehaviour
 
     public void DestroyWalls(int numberToDestroy = 0)
     {
+        List<Transform> wallList = new(walls);
+
         if (numberToDestroy == 0)
         {
-            GameObject[] walls = GameObject.FindGameObjectsWithTag(wallTag);
-
-            foreach (GameObject wall in walls)
+            foreach (Transform wall in wallList)
             {
-                wall.transform.GetChild(0).GetComponent<IDamageable>().TakeDamage(10000f);
+                if (wall != null)
+                {
+                    wall.GetComponent<IDamageable>().Death();
+                }
             }
         }
         else
         {
-            if (buildManager.wallCount >= numberToDestroy)
+            if (wallList.Count >= numberToDestroy)
             {
-                List<GameObject> walls = GameObject.FindGameObjectsWithTag(wallTag).ToList();
-
-                Shuffle(walls);
+                Shuffle(wallList);
 
                 for (int i = 0; i < numberToDestroy; i++)
                 {
-                    walls[i].transform.GetChild(0).GetComponent<IDamageable>().TakeDamage(10000f);
+                    if (wallList[i] != null)
+                    {
+                        wallList[i].GetComponent<IDamageable>().Death();
+                    }
                 }
             }
-        }
-    }
-
-    private void Shuffle<T>(List<T> inputList)
-    {
-        for (int i = 0; i < inputList.Count - 1; i++)
-        {
-            T temp = inputList[i];
-            int rand = Random.Range(i, inputList.Count);
-            inputList[i] = inputList[rand];
-            inputList[rand] = temp;
         }
     }
 
@@ -224,7 +228,8 @@ public class TDManager : MonoBehaviour
             }
             
             GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], transform.position, Quaternion.identity, transform.GetChild(0));
-            mob.transform.GetChild(0).GetComponent<Enemy>().UpgradeEnemy(modifier * lastStandModifier);
+            mob.transform.GetChild(0).GetComponent<NewEnemy>().UpgradeEnemy(modifier * lastStandModifier);
+            enemies.Add(mob.transform.GetChild(0));
 
             yield return new WaitForSeconds(spawanDelay);
         }
@@ -236,6 +241,7 @@ public class TDManager : MonoBehaviour
         SoundManager soundManager = SoundManager.Instance;
 
         int rndm = Random.Range(0, 2);
+        
         switch (rndm)
         {
             case 0:
@@ -245,8 +251,6 @@ public class TDManager : MonoBehaviour
                 soundManager.PlaySound(soundManager.audioClipRefsSo.lesgo,Camera.main.transform.position);
                 break;
         }
-        
-        
         
         for (int i = 0; i < numberToSpawn; i++)
         {
@@ -259,13 +263,14 @@ public class TDManager : MonoBehaviour
             }
             
             GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], transform.position, Quaternion.identity, transform.GetChild(0));
-            mob.transform.GetChild(0).GetComponent<Enemy>().UpgradeEnemy(modifier * lastStandModifier);
+            mob.transform.GetChild(0).GetComponent<NewEnemy>().UpgradeEnemy(modifier * lastStandModifier);
+            enemies.Add(mob.transform.GetChild(0));
 
             yield return new WaitForSeconds(spawanDelay);
         }
     }
 
-    public IEnumerator SpawnEnemies(List<int> enemyOrder)
+    /*public IEnumerator SpawnEnemies(List<int> enemyOrder)
     {
         for (int i = 0; i < enemyOrder.Count; i++)
         {
@@ -273,122 +278,125 @@ public class TDManager : MonoBehaviour
 
             yield return new WaitForSeconds(1f);
         }
-    }
+    }*/
 
     public void KillAllEnemies()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTriggerTag);
+        List<Transform> enemyList = new(enemies);
 
-        foreach (GameObject enemy in enemies)
+        foreach (Transform enemy in enemyList)
         {
-            enemy.GetComponent<IDamageable>().TakeDamage(10000f);
+            if (enemy != null)
+            {
+                enemy.GetComponent<IDamageable>().Death();
+            }
         }
     }
 
     public void DestroyEverything()
     {
         KillAllEnemies();
-        DestroyTurrets();
+        DestroyTowers();
         DestroyWalls();
     }
 
-    public void FreezeEnemies(float duration)
+    public void Freeze(float duration)
     {
         if (freezeCoroutine != null)
         {
             StopCoroutine(freezeCoroutine);
         }
 
-        freezeCoroutine = StartCoroutine(FreezeEnemiesCoroutine(duration));
+        freezeCoroutine = StartCoroutine(FreezeCoroutine(duration));
     }
 
-    private IEnumerator FreezeEnemiesCoroutine(float duration)
+    private IEnumerator FreezeCoroutine(float duration)
     {
         float coolness = CoolnessScaleController.Instance.GetCoolness();
         
-        List<GameObject> aims = new List<GameObject>();
-        if (coolness<0.35f)
+        if (coolness < 0.35f)
         {
-            aims = GameObject.FindGameObjectsWithTag("Turret").ToList();
-            foreach (GameObject aim in aims)
+            print("freeze towers");
+
+            List<Transform> turretList = new(turrets);
+
+            foreach (Transform turret in turretList)
             {
-                Turret turret = aim.GetComponentInChildren<Turret>();
-                turret.Freeze(duration);
+                if (turret != null)
+                {
+                    turret.GetComponent<NewTurret>().Freeze(duration);
+                }
             }
             
         }
         else if (coolness < 0.65f)
         {
             print("freeze walls");
-            aims = GameObject.FindGameObjectsWithTag("WallBlock").ToList();
-            aims.AddRange(GameObject.FindGameObjectsWithTag("MainBase").ToList());
-            
-            foreach (GameObject aim in aims)
-            {
-                if (aim != null)
-                {
-                    Health health = aim.GetComponentInChildren<Health>();
 
-                    health.currentHealth = health.baseHealth * 2;
-                    health.ice.SetActive(true);
+            List<Transform> wallList = new(walls);
+            wallList.Add(mainBase);
+            
+            foreach (Transform wall in wallList)
+            {
+                if (wall != null)
+                {
+                    Wall stats = wall.GetComponent<Wall>();
+
+                    stats.currentHealth = stats.baseHealth * 2;
+                    stats.ice.SetActive(true);
                 }
             }
 
             yield return new WaitForSeconds(duration);
 
-            foreach (GameObject aim in aims)
+            foreach (Transform wall in wallList)
             {
-                if (aim != null)
+                if (wall != null)
                 {
-                    Health health = aim.GetComponentInChildren<Health>();
+                    Wall stats = wall.GetComponent<Wall>();
 
-                    if (health.currentHealth > health.baseHealth)
+                    if (stats.currentHealth >= stats.baseHealth)
                     {
-                        health.currentHealth = health.baseHealth;
+                        stats.currentHealth = stats.baseHealth;
                     }
                     else
                     {
-                        health.currentHealth = health.baseHealth * 0.65f;
+                        stats.currentHealth = stats.baseHealth * 0.65f;
                     }
 
-                    //print("remove ice from " + aim.tag);
-                    health.ice.SetActive(false);
+                    stats.ice.SetActive(false);
                 }
             }
         }
         else
         {
-            aims = GameObject.FindGameObjectsWithTag("Enemy").ToList();
-            print("freeze coroutine");
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
-            
-            foreach (GameObject enemy in enemies)
+            print("freeze enemies");
+
+            List<Transform> enemyList = new(enemies);
+
+            foreach (Transform enemy in enemyList)
             {
-                if (enemy != null)
-                {
-                    enemy.GetComponent<Enemy>().isFrozen = true;
-                    enemy.GetComponent<Enemy>().speed = 0f;
-                    enemy.GetComponentInChildren<Health>().ice.SetActive(true);
-                }
+                NewEnemy stats = enemy.GetComponent<NewEnemy>();
+                stats.isFrozen = true;
+                stats.currentSpeed = 0f;
+                stats.ice.SetActive(true);
             }
             
             yield return new WaitForSeconds(duration);
             
-            foreach (GameObject enemy in enemies)
+            foreach (Transform enemy in enemyList)
             {
-                if (enemy != null)
-                {
-                    enemy.GetComponent<Enemy>().isFrozen = false;
-                    enemy.GetComponent<Enemy>().speed = enemy.GetComponent<Enemy>().baseSpeed;
-                    enemy.GetComponentInChildren<Health>().ice.SetActive(false);
-                }
+                NewEnemy stats = enemy.GetComponent<NewEnemy>();
+                stats.isFrozen = false;
+                stats.currentSpeed = stats.baseSpeed;
+                stats.ice.SetActive(false);
             }
         }
 
         freezeCoroutine = null;
     }
 
-    public void IncreaseEnemiesHP(int enemyType, float amount)
+    /*public void IncreaseEnemiesHP(int enemyType, float amount)
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTriggerTag);
 
@@ -399,22 +407,22 @@ public class TDManager : MonoBehaviour
                 enemy.GetComponent<Health>().currentHealth += amount;
             }
         }
-    }
+    }*/
 
     public void ChangeEnemiesStats(int enemyType = 0, float deltaHealth = 0, float speedDivider = 0, float sizeMultiplier = 1, float deltaDamage = 0, float deltaAttackSpeed = 0)
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTriggerTag);
+        List<Transform> enemyList = new(enemies);
 
-        foreach (GameObject enemy in enemies)
+        foreach (Transform enemy in enemyList)
         {
-            if (enemy != null && enemy.transform.parent.GetComponent<Enemy>().type == enemyType)
+            if (enemy != null && enemy.GetComponent<NewEnemy>().type == enemyType)
             {
-                Enemy stats = enemy.transform.parent.GetComponent<Enemy>();
-                stats.health += deltaHealth;
+                NewEnemy stats = enemy.GetComponent<NewEnemy>();
+                stats.currentHealth += deltaHealth;
 
-                if (stats.speed / speedDivider > 4f)
+                if (stats.currentSpeed / speedDivider > 4f)
                 {
-                    stats.speed /= speedDivider;
+                    stats.currentSpeed /= speedDivider;
                 }
 
                 if (stats.size * sizeMultiplier < 5f)
@@ -458,9 +466,9 @@ public class TDManager : MonoBehaviour
             yield return new WaitForSeconds(damageRate);
             timer += damageRate;
 
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTriggerTag);
+            List<Transform> enemyList = new(enemies);
 
-            foreach (GameObject enemy in enemies)
+            foreach (Transform enemy in enemyList)
             {
                 if (enemy != null)
                 {
@@ -468,13 +476,13 @@ public class TDManager : MonoBehaviour
                 }
             }
 
-            GameObject[] walls = GameObject.FindGameObjectsWithTag(wallTag);
+            List<Transform> wallList = new(walls);
 
-            foreach (GameObject wall in walls)
+            foreach (Transform wall in wallList)
             {
                 if (wall != null)
                 {
-                    wall.transform.GetChild(0).GetComponent<IDamageable>().TakeDamage(damage);
+                    wall.GetComponent<IDamageable>().TakeDamage(damage);
                 }
             }
         }
@@ -488,164 +496,190 @@ public class TDManager : MonoBehaviour
         lavaFloorCoroutine = null;
     }
 
-    public void SpawnMeteor(Vector3 position)
+    public void SpawnMeteor()
     {
-        Transform node = nodesForMeteor[Random.Range(0, nodesForMeteor.Length)];
+        float coolness = CoolnessScaleController.Instance.GetCoolness();
 
-        Vector3 spawnPosition = position;
-        // node.position + new Vector3(0, meteorHeight, 0);
-        
-        position.y += meteorHeight;
-        GameObject meteor = Instantiate(meteorPrefab, position, transform.rotation);
+        List<Transform> friendList = new List<Transform>();
+        Transform aim;
+
+        if (coolness < Random.Range(0f, 1f))
+        {
+            Debug.Log("����");
+            friendList.AddRange(walls);
+            friendList.AddRange(turrets);
+            friendList.AddRange(mines);
+            friendList.Add(mainBase);
+
+            aim = friendList[Random.Range(0, friendList.Count)];
+        }
+        else
+        {
+            aim = enemies[Random.Range(0, enemies.Count)];
+        }
+
+        Instantiate(meteorPrefab, new Vector3(aim.position.x, aim.position.y + meteorHeight, aim.position.z), Quaternion.identity);
     }
 
     public void ChangeTurretTier(bool upgrade)
     {
         // SoundManager soundManager = SoundManager.Instance;
         // soundManager.PlaySound(soundManager.audioClipRefsSo.stopRats,Camera.main.transform.position);
-        
-        List<GameObject> turrets = GameObject.FindGameObjectsWithTag(turretTag).ToList();
+
+        List<Transform> turretList = new(turrets);
 
         if (upgrade)
         {
-            List<GameObject> tier1Turrets = new List<GameObject>();
-            List<GameObject> tier2Turrets = new List<GameObject>();
+            List<Transform> tier1Turrets = new List<Transform>();
+            List<Transform> tier2Turrets = new List<Transform>();
 
-            for (int i = 0; i < turrets.Count; i++)
+            foreach (Transform turret in turretList)
             {
-                if (turrets[i] != null)
+                if (turret != null)
                 {
-                    if (turrets[i].GetComponent<Turret>().tier == 1)
+                    if (turret.GetComponent<NewTurret>().tier == 1)
                     {
-                        tier1Turrets.Add(turrets[i]);
+                        tier1Turrets.Add(turret);
                     }
-                    
-                    if (turrets[i].GetComponent<Turret>().tier == 2)
+
+                    if (turret.GetComponent<NewTurret>().tier == 2)
                     {
-                        tier2Turrets.Add(turrets[i]);
+                        tier2Turrets.Add(turret);
                     }
                 }
             }
 
             if (tier1Turrets.Count > 0 && tier2Turrets.Count > 0)
             {
-                int chooseTurret = Random.Range(0, 100);
-
-                if (chooseTurret < 70)
+                if (Random.Range(0, 100) < 70)
                 {
                     Shuffle(tier1Turrets);
 
-                    Vector3 position = tier1Turrets[0].transform.position;
-                    Transform node = tier1Turrets[0].transform.parent.parent;
+                    Vector3 position = tier1Turrets[0].position;
+                    Transform node = tier1Turrets[0].parent.parent;
 
-                    GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(2);
-                    Destroy(tier1Turrets[0].transform.parent.gameObject);
-                    Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
+                    GameObject turretToBuild = BuildManager.instance.GetTowerToBuild(2);
+                    turrets.Remove(tier1Turrets[0]);
+                    Destroy(tier1Turrets[0].parent.gameObject);
+                    GameObject newTurret = Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
+                    turrets.Add(newTurret.transform.GetChild(0));
                 }
                 else
                 {
                     Shuffle(tier2Turrets);
 
-                    Vector3 position = tier2Turrets[0].transform.position;
-                    Transform node = tier2Turrets[0].transform.parent.parent;
+                    Vector3 position = tier2Turrets[0].position;
+                    Transform node = tier2Turrets[0].parent.parent;
 
-                    GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(3);
-                    Destroy(tier2Turrets[0].transform.parent.gameObject);
-                    Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
+                    GameObject turretToBuild = BuildManager.instance.GetTowerToBuild(3);
+                    turrets.Remove(tier2Turrets[0]);
+                    Destroy(tier2Turrets[0].parent.gameObject);
+                    GameObject newTurret = Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
+                    turrets.Add(newTurret.transform.GetChild(0));
                 }
             }
             else if (tier1Turrets.Count > 0 && tier2Turrets.Count == 0)
             {
                 Shuffle(tier1Turrets);
 
-                Vector3 position = tier1Turrets[0].transform.position;
-                Transform node = tier1Turrets[0].transform.parent.parent;
+                Vector3 position = tier1Turrets[0].position;
+                Transform node = tier1Turrets[0].parent.parent;
 
-                GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(2);
-                Destroy(tier1Turrets[0].transform.parent.gameObject);
-                Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
+                GameObject turretToBuild = BuildManager.instance.GetTowerToBuild(2);
+                turrets.Remove(tier1Turrets[0]);
+                Destroy(tier1Turrets[0].parent.gameObject);
+                GameObject newTurret = Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
+                turrets.Add(newTurret.transform.GetChild(0));
             }
             else if (tier1Turrets.Count == 0 && tier2Turrets.Count > 0)
             {
                 Shuffle(tier2Turrets);
 
-                Vector3 position = tier2Turrets[0].transform.position;
-                Transform node = tier2Turrets[0].transform.parent.parent;
+                Vector3 position = tier2Turrets[0].position;
+                Transform node = tier2Turrets[0].parent.parent;
 
-                GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(3);
-                Destroy(tier2Turrets[0].transform.parent.gameObject);
-                Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
+                GameObject turretToBuild = BuildManager.instance.GetTowerToBuild(3);
+                turrets.Remove(tier2Turrets[0]);
+                Destroy(tier2Turrets[0].parent.gameObject);
+                GameObject newTurret = Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
+                turrets.Add(newTurret.transform.GetChild(0));
             }
         }
         else
         {
-            List<GameObject> tier2Turrets = new List<GameObject>();
-            List<GameObject> tier3Turrets = new List<GameObject>();
+            List<Transform> tier2Turrets = new List<Transform>();
+            List<Transform> tier3Turrets = new List<Transform>();
 
-            for (int i = 0; i < turrets.Count; i++)
+            foreach (Transform turret in turretList)
             {
-                if (turrets[i] != null)
+                if (turret != null)
                 {
-                    if (turrets[i].GetComponent<Turret>().tier == 2)
+                    if (turret.GetComponent<NewTurret>().tier == 2)
                     {
-                        tier2Turrets.Add(turrets[i]);
+                        tier2Turrets.Add(turret);
                     }
 
-                    if (turrets[i].GetComponent<Turret>().tier == 3)
+                    if (turret.GetComponent<NewTurret>().tier == 3)
                     {
-                        tier3Turrets.Add(turrets[i]);
+                        tier3Turrets.Add(turret);
                     }
                 }
             }
 
             if (tier2Turrets.Count > 0 && tier3Turrets.Count > 0)
             {
-                int chooseTurret = Random.Range(0, 100);
-
-                if (chooseTurret < 70)
+                if (Random.Range(0, 100) < 70)
                 {
                     Shuffle(tier2Turrets);
 
-                    Vector3 position = tier2Turrets[0].transform.position;
-                    Transform node = tier2Turrets[0].transform.parent.parent;
+                    Vector3 position = tier2Turrets[0].position;
+                    Transform node = tier2Turrets[0].parent.parent;
 
-                    GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(1);
-                    Destroy(tier2Turrets[0].transform.parent.gameObject);
-                    Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
+                    GameObject turretToBuild = BuildManager.instance.GetTowerToBuild(1);
+                    turrets.Remove(tier2Turrets[0]);
+                    Destroy(tier2Turrets[0].parent.gameObject);
+                    GameObject newTurret = Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
+                    turrets.Add(newTurret.transform.GetChild(0));
                 }
                 else
                 {
                     Shuffle(tier3Turrets);
 
-                    Vector3 position = tier3Turrets[0].transform.position;
-                    Transform node = tier3Turrets[0].transform.parent.parent;
+                    Vector3 position = tier3Turrets[0].position;
+                    Transform node = tier3Turrets[0].parent.parent;
 
-                    GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(2);
-                    Destroy(tier3Turrets[0].transform.parent.gameObject);
-                    Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
+                    GameObject turretToBuild = BuildManager.instance.GetTowerToBuild(2);
+                    turrets.Remove(tier3Turrets[0]);
+                    Destroy(tier3Turrets[0].parent.gameObject);
+                    GameObject newTurret = Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
+                    turrets.Add(newTurret.transform.GetChild(0));
                 }
             }
             else if (tier2Turrets.Count > 0 && tier3Turrets.Count == 0)
             {
                 Shuffle(tier2Turrets);
 
-                Vector3 position = tier2Turrets[0].transform.position;
-                Transform node = tier2Turrets[0].transform.parent.parent;
+                Vector3 position = tier2Turrets[0].position;
+                Transform node = tier2Turrets[0].parent.parent;
 
-                GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(1);
-                Destroy(tier2Turrets[0].transform.parent.gameObject);
-                Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
+                GameObject turretToBuild = BuildManager.instance.GetTowerToBuild(1);
+                turrets.Remove(tier2Turrets[0]);
+                Destroy(tier2Turrets[0].parent.gameObject);
+                GameObject newTurret = Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
+                turrets.Add(newTurret.transform.GetChild(0));
             }
             else if (tier2Turrets.Count == 0 && tier3Turrets.Count > 0)
             {
                 Shuffle(tier3Turrets);
 
-                Vector3 position = tier3Turrets[0].transform.position;
-                Transform node = tier3Turrets[0].transform.parent.parent;
+                Vector3 position = tier3Turrets[0].position;
+                Transform node = tier3Turrets[0].parent.parent;
 
-                GameObject turretToBuild = BuildManager.instance.GetTurretToBuild(2);
-                Destroy(tier3Turrets[0].transform.parent.gameObject);
-                Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
+                GameObject turretToBuild = BuildManager.instance.GetTowerToBuild(2);
+                turrets.Remove(tier3Turrets[0]);
+                Destroy(tier3Turrets[0].parent.gameObject);
+                GameObject newTurret = Instantiate(turretToBuild, position + new Vector3(0, 0, 0), transform.rotation, node);
+                turrets.Add(newTurret.transform.GetChild(0));
             }
         }
     }
@@ -654,50 +688,43 @@ public class TDManager : MonoBehaviour
     {
         float coolness = CoolnessScaleController.Instance.GetCoolness();
 
-        List<GameObject> walls = GameObject.FindGameObjectsWithTag("WallBlock").ToList();
-        for (int i = 0; i < walls.Count; i++)
+        List<Transform> wallList = new(walls);
+
+        foreach (Transform wall in wallList)
         {
-            if (Random.Range(0f, 1f) > coolness)
+            if (wall != null && Random.Range(0f, 1f) > coolness)
             {
-                walls[i].GetComponentInChildren<IDamageable>().TakeDamage(1000000f);
+                wall.GetComponent<IDamageable>().Death();
             }
         }
 
-        List<GameObject> turrets = GameObject.FindGameObjectsWithTag("Turret").ToList();
-        for (int i = 0; i < turrets.Count; i++)
+        List<Transform> turretList = new(turrets);
+
+        foreach (Transform turret in turretList)
         {
-            if (Random.Range(0f, 1f) > coolness)
+            if (turret != null && Random.Range(0f, 1f) > coolness)
             {
-                turrets[i].GetComponent<IDamageable>().TakeDamage(1000000f);
+                turret.GetComponent<IDamageable>().Death();
             }
         }
 
-        List<GameObject> bomb = GameObject.FindGameObjectsWithTag("Bomb").ToList();
-        for (int i = 0; i < bomb.Count; i++)
+        List<Transform> mineList = new(mines);
+
+        foreach (Transform mine in mineList)
         {
-            if (Random.Range(0f, 1f) > coolness)
+            if (mine != null && Random.Range(0f, 1f) > coolness)
             {
-                Destroy(bomb[i].transform.parent.gameObject);
+                Destroy(mine.parent.gameObject);
             }
         }
 
-        //main base не уничтожается
-        // List<GameObject> mainBase = GameObject.FindGameObjectsWithTag("MainBase").ToList();
-        // for (int i = 0; i < walls.Count; i++)
-        // {
-        // 	if (Random.Range(0f,1f) > coolness)
-        // 	{
-        // 		Destroy(mainBase[i]);
-        // 	}	
-        // }
+        List<Transform> enemyList = new(enemies);
 
-        List<GameObject> rats = GameObject.FindGameObjectsWithTag("EnemyTrigger").ToList();
-
-        for (int i = 0; i < rats.Count; i++)
+        foreach (Transform enemy in enemyList)
         {
-            if (Random.Range(0f, 1f) < coolness)
+            if (enemy != null && Random.Range(0f, 1f) < coolness)
             {
-                rats[i].GetComponent<IDamageable>().TakeDamage(1000000f);
+                enemy.GetComponent<IDamageable>().Death();
             }
         }
     }

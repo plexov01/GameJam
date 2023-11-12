@@ -10,7 +10,7 @@ namespace GameJam.Features.CardSystem
         public override void ActivateCard()
         {
             base.ActivateCard();
-            TDManager.instance.BuildTurret();
+            TDManager.instance.BuildTower();
         }
     }
 }

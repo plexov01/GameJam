@@ -8,7 +8,7 @@ public class GameEnd : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!enteredTrigger && other.CompareTag("EnemyTrigger"))
+        if (!enteredTrigger && other.CompareTag("Enemy"))
         {
             enteredTrigger = true;
             GameHandler.Instance.FinishGame();

@@ -66,7 +66,6 @@ Transform:
   m_Children:
   - {fileID: 2099348418288189432}
   - {fileID: 2574627767611357851}
-  - {fileID: 4092115806681075644}
   m_Father: {fileID: 7083133938667297955}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -121,37 +120,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &4763874100942199742
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4092115806681075644}
-  m_Layer: 0
-  m_Name: BarrelHolder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4092115806681075644
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4763874100942199742}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.000000029802322}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7411455909104248580}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4883706414207978040
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,7 +216,7 @@ GameObject:
   - component: {fileID: 5525923040275095833}
   - component: {fileID: 5525923040275095832}
   m_Layer: 16
-  m_Name: TriggerForMeteor
+  m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5385,11 +5353,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7083133938667297955}
-  - component: {fileID: 4954158801841617660}
+  - component: {fileID: 309963717226476433}
   - component: {fileID: 6188860362110591349}
-  - component: {fileID: 4693818083292028219}
   m_Layer: 2
-  m_Name: Tower_T1 1
+  m_Name: Tower_T1
   m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5412,7 +5379,7 @@ Transform:
   m_Father: {fileID: 3035193617540019638}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4954158801841617660
+--- !u!114 &309963717226476433
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5421,19 +5388,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 7568167673112512025}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b0bf1e2841249d49a6ebfafc1493954, type: 3}
+  m_Script: {fileID: 11500000, guid: 78d0df84c5ee7274986c183ab43057c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  tier: 1
+  objectToDestroy: {fileID: 3035193617540019639}
+  baseHealth: 500
+  currentHealth: 0
+  damage: 100
+  bulletSpeed: 70
   range: 15
   fireRate: 1
-  partToRotate: {fileID: 7411455909104248580}
-  turnSpeed: 10
-  bulletPrefab: {fileID: 4891562107793611798, guid: 9b34c222ecc42854ab9d5086090ba152, type: 3}
   firePoint: {fileID: 208669609709417889}
-  barrel: {fileID: 2574627767611357851}
+  bulletPrefab: {fileID: 4891562107793611798, guid: 9b34c222ecc42854ab9d5086090ba152, type: 3}
   partSys: {fileID: 8707532588890235333}
-  tier: 1
+  partToRotate: {fileID: 7411455909104248580}
+  barrel: {fileID: 2574627767611357851}
+  turnSpeed: 10
+  isFrozen: 0
+  ice: {fileID: 8490970050105805651}
 --- !u!135 &6188860362110591349
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5447,22 +5420,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 3.75
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4693818083292028219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7568167673112512025}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9ba6d3a8c822cf40a9889dc11c1e185, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseHealth: 500
-  currentHealth: 0
-  objectToDestroy: {fileID: 3035193617540019639}
-  ice: {fileID: 8490970050105805651}
 --- !u!1 &8490970050105805651
 GameObject:
   m_ObjectHideFlags: 0

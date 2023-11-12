@@ -10,7 +10,7 @@ public class Meteor : MonoBehaviour
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        rb = transform.parent.GetComponent<Rigidbody>();
         col.radius = radius;
         col.enabled = false;
     }
@@ -31,6 +31,6 @@ public class Meteor : MonoBehaviour
         SoundManager soundManager = SoundManager.Instance;
 			
         soundManager.PlaySound(soundManager.audioClipRefsSo.meteor, Camera.main.transform.position);
-        Destroy(gameObject);
+        Destroy(transform.parent.gameObject);
     }
 }
