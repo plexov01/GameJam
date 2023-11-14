@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 452080577}
   - component: {fileID: 452080576}
+  - component: {fileID: 452080578}
   m_Layer: 0
   m_Name: GridManager
   m_TagString: Untagged
@@ -152,9 +153,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8b5ac564bb47994183f04054ba13d20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridWidth: 18
+  gridWidth: 20
   gridHeight: 10
-  minPathLength: 35
+  minPathLength: 40
+  maxPathLength: 80
+  minLoops: 4
+  maxLoops: 6
   grid: {fileID: 1644041409}
   pathCellObjects:
   - {fileID: 0}
@@ -172,7 +176,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7ba03a45c7296964aa747bdccd0288bb, type: 2}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: fc7df3ee23f6c3043bf6dd2c592869ef, type: 2}
   sceneryCellObjects:
   - {fileID: 11400000, guid: 61eaa0129ee0fc94792488840da0cd06, type: 2}
   - {fileID: 11400000, guid: 9c831dc325815144f876861ca6f36a70, type: 2}
@@ -181,6 +185,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 361faa2861e30cc49b5d2a07b029d5bf, type: 2}
   - {fileID: 11400000, guid: f05ce2955619bf7459f24ecca8bbf385, type: 2}
   - {fileID: 11400000, guid: f81cff9557c0d9e4db5e51b8ff344603, type: 2}
+  addLoops: 1
 --- !u!4 &452080577
 Transform:
   m_ObjectHideFlags: 0
@@ -196,6 +201,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &452080578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 452080575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cafd955aee01c04e9a63a7ad473288c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyPrefabs:
+  - {fileID: 6471479555840823038, guid: 8860f266600886b45b5cc33c25677a8b, type: 3}
+  pathRoute: []
 --- !u!1 &1556514791
 GameObject:
   m_ObjectHideFlags: 0

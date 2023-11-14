@@ -6,7 +6,10 @@ public class GridManager : MonoBehaviour
 {
     public int gridWidth = 16;
     public int gridHeight = 8;
-    public int minPathLength = 30;
+    [SerializeField] private int minPathLength = 35;
+    [SerializeField] private int maxPathLength = 50;
+    [SerializeField] private int minLoops = 1;
+    [SerializeField] private int maxLoops = 4;
 
     public Transform grid;
 
@@ -14,19 +17,35 @@ public class GridManager : MonoBehaviour
     public GridCellObject[] sceneryCellObjects;
 
     private PathGenerator pathGenerator;
+    public bool addLoops;
+
+    private EnemyManager enemyManager;
 
     void Start()
     {
         pathGenerator = new PathGenerator(gridWidth, gridHeight);
+        enemyManager = EnemyManager.instance;
 
-        List<Vector2Int> pathCells = pathGenerator.GeneratePath();
+        int iteration = 0;
+        print("Iteration " + iteration);
+        List<Vector2Int> pathCells = pathGenerator.GeneratePath(addLoops);
         int pathSize = pathCells.Count;
 
-        while (pathSize < minPathLength)
+        while (pathSize < minPathLength || pathSize > maxPathLength || pathGenerator.loopCount < minLoops || pathGenerator.loopCount > maxLoops)
         {
-            pathCells = pathGenerator.GeneratePath();
+            iteration++;
+            print("Iteration " + iteration);
+            pathCells = pathGenerator.GeneratePath(addLoops);
             pathSize = pathCells.Count;
+
+            if (iteration >= 50)
+            {
+                print("Could not generate path with this parameters");
+                break;
+            }
         }
+
+        print("Path generated at iteration " + iteration);
 
         StartCoroutine(CreateGrid(pathCells));
     }
@@ -35,6 +54,9 @@ public class GridManager : MonoBehaviour
     {
         yield return StartCoroutine(LayPathCells(pathCells));
         yield return StartCoroutine(LaySceneryCells(pathCells[pathCells.Count - 1]));
+        enemyManager.SetPathCells(pathGenerator.GenerateRoute());
+        print("Grid is complete");
+        Instantiate(enemyManager.enemyPrefabs[0], new Vector3(enemyManager.pathRoute[0].x, 0.2f, enemyManager.pathRoute[0].y), Quaternion.identity);
     }
 
     private IEnumerator LayPathCells(List<Vector2Int> pathCells)
@@ -44,14 +66,14 @@ public class GridManager : MonoBehaviour
             int neighbourValue = pathGenerator.getCellNeighbourValue(pathCell.x, pathCell.y);
             //Debug.Log("Tile " + pathCell.x + ", " + pathCell.y + " neighbour value = " + neighbourValue);
 
-            if (neighbourValue == 3 || neighbourValue == 5 || neighbourValue == 10 || neighbourValue == 12)
+            /*if (neighbourValue == 3 || neighbourValue == 5 || neighbourValue == 10 || neighbourValue == 12)
             {
                 print("This is corner. Add waypoint");
             }
             else if (neighbourValue == 2)
             {
                 print("This is the end. Add waypoint");
-            }
+            }*/
 
             GameObject pathTile = pathCellObjects[neighbourValue].cellPrefab;
             GameObject pathTileCell = Instantiate(pathTile, new Vector3(pathCell.x, 0f, pathCell.y), Quaternion.identity, grid);
