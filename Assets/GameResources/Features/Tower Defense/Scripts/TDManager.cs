@@ -87,23 +87,25 @@ public class TDManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Keypad3))
         {
-            FindObjectOfType<GameJam.Features.UI.DarkController>()?.ShowDark();
+            //FindObjectOfType<GameJam.Features.UI.DarkController>()?.ShowDark();
+            Repair();
         }
         
         if (Input.GetKeyDown(KeyCode.Keypad4))
         {
             //CoolnessScaleController.Instance.AddCoolness(-100);
-            DestroyTowers(2);
+            BuildTower();
         }
         
         if (Input.GetKeyDown(KeyCode.Keypad5))
         {
-            CoolnessScaleController.Instance.AddCoolness(100);
+            //CoolnessScaleController.Instance.AddCoolness(100);
+            BuildWall();
         }
         
         if (Input.GetKeyDown(KeyCode.Keypad6))
         {
-            LavaFloor(3f);
+            BuildMine();
         }
         
         if (Input.GetKeyDown(KeyCode.Keypad7))
@@ -135,7 +137,8 @@ public class TDManager : MonoBehaviour
 
     public void BuildTower()
     {
-        buildManager.buildMode = BuildManager.BuildMode.Tower;
+        //buildManager.buildMode = BuildManager.BuildMode.Tower;
+        buildManager.BuildTower();
     }
 
     public void DestroyTowers(int numberToDestroy = 0)
@@ -171,7 +174,7 @@ public class TDManager : MonoBehaviour
 
     public void BuildWall()
     {
-        buildManager.buildMode = BuildManager.BuildMode.Wall;
+        buildManager.BuildWall();
     }
 
     public void DestroyWalls(int numberToDestroy = 0)
@@ -207,12 +210,12 @@ public class TDManager : MonoBehaviour
 
     public void BuildMine()
     {
-        buildManager.buildMode = BuildManager.BuildMode.Mine;
+        buildManager.BuildMine();
     }
 
     public void Repair()
     {
-        buildManager.buildMode = BuildManager.BuildMode.Repair;
+        buildManager.Repair();
     }
     
     public IEnumerator StartSpawningEnemies(int enemyType = 0, float spawanDelay = 1f)

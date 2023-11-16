@@ -216,6 +216,95 @@ MonoBehaviour:
   enemyPrefabs:
   - {fileID: 6471479555840823038, guid: 8860f266600886b45b5cc33c25677a8b, type: 3}
   pathRoute: []
+--- !u!1 &1176093363
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1176093365}
+  - component: {fileID: 1176093366}
+  - component: {fileID: 1176093367}
+  m_Layer: 2
+  m_Name: TDManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1176093365
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176093363}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1176093366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176093363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fdf213515eb3ac4ca68ce9287d9525d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meteorHeight: 0
+  meteorPrefab: {fileID: 0}
+  meteorDamage: 500
+  enemies: []
+  turrets: []
+  walls: []
+  mines: []
+  mainBase: {fileID: 0}
+--- !u!114 &1176093367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176093363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 066321d6ea6660f49bf266a9c2a1aeb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  towerToBuild: {fileID: 0}
+  wallToBuild: {fileID: 0}
+  mineToBuild: {fileID: 0}
+  turretPrefab_T1: {fileID: 3035193617540019639, guid: 1f1efe3d7c32fff45b79573f1f2df622, type: 3}
+  turretPrefab_T2: {fileID: 0}
+  turretPrefab_T3: {fileID: 0}
+  wallPrefab: {fileID: 6792631582812006100, guid: 26a73e7ca575c5d42b5aae756dd2ab3a, type: 3}
+  minePrefab: {fileID: 1387924229312095131, guid: ac5f8ce51eadf9348aa59c312364c9d0, type: 3}
+  walkableNodes: []
+  lavaColor: {r: 0, g: 0, b: 0, a: 0}
+  buildMode: 0
+  objectToBuild: {fileID: 0}
+  illegalLocationPlane: {fileID: 6986384287604843280, guid: 871fdc37354880347a26b1751f81657d, type: 3}
+  legalLocationPlane: {fileID: 6986384287604843280, guid: c518411c71e42714d936977c0db09485, type: 3}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 768
+  dragTurret: {fileID: 3035193617540019639, guid: a0d4cfe82d87f8a499e7e70b60487218, type: 3}
+  dragWall: {fileID: 6792631582812006100, guid: 56163fe5a01a41f4c91f9d5e4dc274e5, type: 3}
+  dragMine: {fileID: 1387924229312095131, guid: f8b2b706fa42bab44a98e35305f93c59, type: 3}
+  dragRepair: {fileID: 6792631582812006100, guid: 56163fe5a01a41f4c91f9d5e4dc274e5, type: 3}
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 8192
 --- !u!1 &1556514791
 GameObject:
   m_ObjectHideFlags: 0
