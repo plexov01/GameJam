@@ -84,7 +84,11 @@ public class NewestEnemy : MonoBehaviour, IDamageable
 
     public void UpdateStats()
     {
-        baseSpeed = currentSpeed;
+        if (!isFrozen)
+        {
+            currentSpeed = baseSpeed;
+        }
+        
         enemy.localScale = new Vector3(size, size, size);
     }
 

@@ -10,7 +10,7 @@ public static class SceneLoader
         Menu,
         Loading,
         Cutscene,
-        TowerDefense,
+        TowerDefense_NEW,
     }
 
 

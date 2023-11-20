@@ -143,7 +143,7 @@ public class GameHandler : MonoBehaviour
         Time.timeScale = 1f;
         ChangeState(State.FirstStage);
         Reset();
-        SceneLoader.LoadScene(SceneLoader.Scene.TowerDefense);
+        SceneLoader.LoadScene(SceneLoader.Scene.TowerDefense_NEW);
     }
 
     public void ChangeState(State newState)

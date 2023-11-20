@@ -11,10 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Loading.unity
     guid: 4a8104ec57f2c534a841ee57ea305f90
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TowerDefense.unity
     guid: 89fe59cd8e9f76b4482c165660bdf178
   - enabled: 1
     path: Assets/Scenes/Cutscene.unity
     guid: 76d73016de6d4fc4394888a9ef500ddc
+  - enabled: 1
+    path: Assets/Scenes/TowerDefense_NEW.unity
+    guid: e0b56bd54a8470e408aeecd9c7fa4265
   m_configObjects: {}

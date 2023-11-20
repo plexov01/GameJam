@@ -7,7 +7,7 @@ namespace GameResources.Features.UI.Scripts.Buttons
         protected override void ClickAction()
         {
             gameObject.SetActive(false);
-            SceneLoader.LoadScene(SceneLoader.Scene.TowerDefense);
+            SceneLoader.LoadScene(SceneLoader.Scene.TowerDefense_NEW);
             GameHandler.Instance.ChangeState(GameHandler.State.FirstStage);
         }
     }

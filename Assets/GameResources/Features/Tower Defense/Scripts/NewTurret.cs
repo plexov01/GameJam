@@ -16,7 +16,7 @@ public class NewTurret : MonoBehaviour, IDamageable
     public float damage = 100f;
     public float bulletSpeed = 70f;
     private Transform target = null;
-    public float range = 15f;
+    public float range = 3.75f;
     public float fireRate = 1f;
     private float fireCountdown = 0.25f;
     private string enemyTag = "Enemy";
@@ -35,7 +35,7 @@ public class NewTurret : MonoBehaviour, IDamageable
 
     private void Awake()
     {
-        GetComponent<SphereCollider>().radius = range / 4;
+        GetComponent<SphereCollider>().radius = range;
         // _basefireRate = fireRate;
         tempfireRate = fireRate;
         tempturnSpeed = turnSpeed;
@@ -155,6 +155,7 @@ public class NewTurret : MonoBehaviour, IDamageable
         if (freezeCoroutine != null)
         {
             StopCoroutine(freezeCoroutine);
+            freezeCoroutine = null;
             fireRate = tempfireRate;
             turnSpeed = tempturnSpeed;
             fireCountdown = 1f / fireRate;
@@ -186,6 +187,7 @@ public class NewTurret : MonoBehaviour, IDamageable
         isFrozen = false;
 
         ice.SetActive(false);
+        freezeCoroutine = null;
     }
 
     private void OnDrawGizmos()

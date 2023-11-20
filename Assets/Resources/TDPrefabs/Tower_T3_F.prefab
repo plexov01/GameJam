@@ -441,7 +441,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 9
+      scalar: 2.25
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -5138,8 +5138,8 @@ MonoBehaviour:
   baseHealth: 500
   currentHealth: 0
   damage: 300
-  bulletSpeed: 70
-  range: 15
+  bulletSpeed: 17.5
+  range: 3.75
   fireRate: 1
   firePoint: {fileID: 1091156881779123801}
   bulletPrefab: {fileID: 8927981542334459953, guid: 81f440eb4061ed04b9e276ffe0a9c733, type: 3}

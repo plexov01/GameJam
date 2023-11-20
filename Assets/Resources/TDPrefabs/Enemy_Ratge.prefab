@@ -260,7 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ca03c7368f100148ba2f7d7d49a2f8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
+  enemy: {fileID: 7792519484405729709}
 --- !u!1 &7755161446643977470
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,7 +315,7 @@ MonoBehaviour:
   damage: 50
   attackSpeed: 1
   attacking: 0
-  baseSpeed: 5
+  baseSpeed: 2.5
   currentSpeed: 0
   reachedEnd: 0
   isFrozen: 0

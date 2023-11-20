@@ -11,6 +11,7 @@ public class TDManager : MonoBehaviour
 
     private BuildManager buildManager;
     private EnemyManager enemyManager;
+    public Vector3 spawnPoint;
 
     private Coroutine freezeCoroutine = null;
     private Coroutine lavaFloorCoroutine = null;
@@ -93,14 +94,14 @@ public class TDManager : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Keypad4))
         {
-            //CoolnessScaleController.Instance.AddCoolness(-100);
-            BuildTower();
+            CoolnessScaleController.Instance.AddCoolness(-100);
+            //BuildTower();
         }
         
         if (Input.GetKeyDown(KeyCode.Keypad5))
         {
-            //CoolnessScaleController.Instance.AddCoolness(100);
-            BuildWall();
+            CoolnessScaleController.Instance.AddCoolness(100);
+            //BuildWall();
         }
         
         if (Input.GetKeyDown(KeyCode.Keypad6))
@@ -230,8 +231,8 @@ public class TDManager : MonoBehaviour
                 modifier += 0.03f;
             }
             
-            GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], transform.position, Quaternion.identity, transform.GetChild(0));
-            mob.transform.GetChild(0).GetComponent<NewEnemy>().UpgradeEnemy(modifier * lastStandModifier);
+            GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], spawnPoint, Quaternion.identity, transform.GetChild(0));
+            mob.transform.GetChild(0).GetComponent<NewestEnemy>().UpgradeEnemy(modifier * lastStandModifier);
             enemies.Add(mob.transform.GetChild(0));
 
             yield return new WaitForSeconds(spawanDelay);
@@ -265,8 +266,8 @@ public class TDManager : MonoBehaviour
                 modifier += 0.03f;
             }
             
-            GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], transform.position, Quaternion.identity, transform.GetChild(0));
-            mob.transform.GetChild(0).GetComponent<NewEnemy>().UpgradeEnemy(modifier * lastStandModifier);
+            GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], spawnPoint, Quaternion.identity, transform.GetChild(0));
+            mob.transform.GetChild(0).GetComponent<NewestEnemy>().UpgradeEnemy(modifier * lastStandModifier);
             enemies.Add(mob.transform.GetChild(0));
 
             yield return new WaitForSeconds(spawanDelay);
@@ -379,20 +380,26 @@ public class TDManager : MonoBehaviour
 
             foreach (Transform enemy in enemyList)
             {
-                NewEnemy stats = enemy.GetComponent<NewEnemy>();
-                stats.isFrozen = true;
-                stats.currentSpeed = 0f;
-                stats.ice.SetActive(true);
+                if (enemy != null)
+                {
+                    NewestEnemy stats = enemy.GetComponent<NewestEnemy>();
+                    stats.isFrozen = true;
+                    stats.currentSpeed = 0f;
+                    stats.ice.SetActive(true);
+                }
             }
             
             yield return new WaitForSeconds(duration);
             
             foreach (Transform enemy in enemyList)
             {
-                NewEnemy stats = enemy.GetComponent<NewEnemy>();
-                stats.isFrozen = false;
-                stats.currentSpeed = stats.baseSpeed;
-                stats.ice.SetActive(false);
+                if (enemy != null)
+                {
+                    NewestEnemy stats = enemy.GetComponent<NewestEnemy>();
+                    stats.isFrozen = false;
+                    stats.currentSpeed = stats.baseSpeed;
+                    stats.ice.SetActive(false);
+                }
             }
         }
 
@@ -418,17 +425,17 @@ public class TDManager : MonoBehaviour
 
         foreach (Transform enemy in enemyList)
         {
-            if (enemy != null && enemy.GetComponent<NewEnemy>().type == enemyType)
+            if (enemy != null && enemy.GetComponent<NewestEnemy>().type == enemyType)
             {
-                NewEnemy stats = enemy.GetComponent<NewEnemy>();
+                NewestEnemy stats = enemy.GetComponent<NewestEnemy>();
                 stats.currentHealth += deltaHealth;
 
-                if (stats.currentSpeed / speedDivider > 4f)
+                if (stats.baseSpeed / speedDivider > 1f)
                 {
-                    stats.currentSpeed /= speedDivider;
+                    stats.baseSpeed /= speedDivider;
                 }
 
-                if (stats.size * sizeMultiplier < 5f)
+                if (stats.size * sizeMultiplier < 1.5f)
                 {
                     stats.size *= sizeMultiplier;
                 }
@@ -458,10 +465,10 @@ public class TDManager : MonoBehaviour
     {
         float timer = 0;
 
-        foreach (Node node in buildManager.walkableNodes)
+        foreach (Renderer node in buildManager.pathNodes)
         {
-            node.rend.material.SetFloat("_SmoothSpawn", 0f);
-            node.pathUnhoverColor = Color.black;
+            node.material.SetFloat("_SmoothSpawn", 0f);
+            //node.pathUnhoverColor = Color.black;
         }
 
         while (timer < duration)
@@ -490,10 +497,10 @@ public class TDManager : MonoBehaviour
             }
         }
 
-        foreach (Node node in buildManager.walkableNodes)
+        foreach (Renderer node in buildManager.pathNodes)
         {
-            node.rend.material.SetFloat("_SmoothSpawn", 1f);
-            node.pathUnhoverColor = node.pathStartColor;
+            node.material.SetFloat("_SmoothSpawn", 1f);
+            //node.pathUnhoverColor = node.pathStartColor;
         }
 
         lavaFloorCoroutine = null;

@@ -1,22 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class BuildManager : MonoBehaviour
 {
     public static BuildManager instance = null;
 
-    [HideInInspector] public GameObject towerToBuild;
-    [HideInInspector] public GameObject wallToBuild;
-    [HideInInspector] public GameObject mineToBuild;
-
-    public GameObject turretPrefab_T1;
     public GameObject turretPrefab_T2;
     public GameObject turretPrefab_T3;
-    public GameObject wallPrefab;
-    public GameObject minePrefab;
 
-    public Node[] walkableNodes;
-    public Color lavaColor;
+    public List<Renderer> pathNodes;
 
     public enum BuildMode
     {
@@ -36,17 +28,10 @@ public class BuildManager : MonoBehaviour
     [SerializeField] private GameObject legalLocationPlane;
     private GameObject legalPlaneInstance;
     [SerializeField] private LayerMask groundMask;
-
-    [SerializeField] private GameObject dragTurret;
-    private GameObject dragTurretInstance;
-    [SerializeField] private GameObject dragWall;
-    private GameObject dragWallInstance;
-    [SerializeField] private GameObject dragMine;
-    private GameObject dragMineInstance;
-    [SerializeField] private GameObject dragRepair;
-    private GameObject dragRepairInstance;
+    [SerializeField] private LayerMask planeMask;
 
     private RaycastHit hit;
+    private RaycastHit planeHit;
 
     private string towerNodeTag = "TowerNode";
     private string pathNodeTag = "PathNode";
@@ -54,6 +39,23 @@ public class BuildManager : MonoBehaviour
     private string mainBaseTag = "MainBase";
 
     public LayerMask enemyMask;
+
+    [SerializeField] private float planeOffsetY = 0.25f;
+
+    [System.Serializable]
+    public struct Buildable
+    {
+        public GameObject buildPrefab;
+        public float buildOffsetY;
+        public GameObject dragPrefab;
+        public float dragOffsetY;
+        [HideInInspector] public GameObject dragInstance;
+    }
+
+    public Buildable turret;
+    public Buildable wall;
+    public Buildable mine;
+    public Buildable repair;
 
     private void Awake()
     {
@@ -64,9 +66,6 @@ public class BuildManager : MonoBehaviour
     {
         buildMode = BuildMode.None;
 
-        wallToBuild = wallPrefab;
-        mineToBuild = minePrefab;
-
         mainCamera = Camera.main;
 
         illegalPlaneInstance = Instantiate(illegalLocationPlane, Vector3.zero, Quaternion.identity);
@@ -74,14 +73,14 @@ public class BuildManager : MonoBehaviour
         legalPlaneInstance = Instantiate(legalLocationPlane, Vector3.zero, Quaternion.identity);
         legalPlaneInstance.SetActive(false);
 
-        dragTurretInstance = Instantiate(dragTurret, Vector3.zero, Quaternion.identity);
-        dragTurretInstance.SetActive(false);
-        dragWallInstance = Instantiate(dragWall, Vector3.zero, Quaternion.identity);
-        dragWallInstance.SetActive(false);
-        dragMineInstance = Instantiate(dragMine, Vector3.zero, Quaternion.identity);
-        dragMineInstance.SetActive(false);
-        dragRepairInstance = Instantiate(dragRepair, Vector3.zero, Quaternion.identity);
-        dragRepairInstance.SetActive(false);
+        turret.dragInstance = Instantiate(turret.dragPrefab, Vector3.zero, Quaternion.identity);
+        turret.dragInstance.SetActive(false);
+        wall.dragInstance = Instantiate(wall.dragPrefab, Vector3.zero, Quaternion.identity);
+        wall.dragInstance.SetActive(false);
+        mine.dragInstance = Instantiate(mine.dragPrefab, Vector3.zero, Quaternion.identity);
+        mine.dragInstance.SetActive(false);
+        repair.dragInstance = Instantiate(repair.dragPrefab, Vector3.zero, Quaternion.identity);
+        repair.dragInstance.SetActive(false);
     }
 
     public GameObject GetTowerToBuild(int tier)
@@ -89,37 +88,32 @@ public class BuildManager : MonoBehaviour
         switch (tier)
         {
             case 1:
-                towerToBuild = turretPrefab_T1;
-                break;
+                return turret.buildPrefab;
             case 2:
-                towerToBuild = turretPrefab_T2;
-                break;
+                return turretPrefab_T2;
             case 3:
-                towerToBuild = turretPrefab_T3;
-                break;
+                return turretPrefab_T3;
             default:
-                break;
+                return null;
         }
-
-        return towerToBuild;
     }
 
     public GameObject GetWallToBuild()
     {
-        return wallToBuild;
+        return wall.buildPrefab;
     }
 
     public GameObject GetMineToBuild()
     {
-        return mineToBuild;
+        return mine.buildPrefab;
     }
 
     private void ResetDraggables()
     {
-        dragTurretInstance.SetActive(false);
-        dragWallInstance.SetActive(false);
-        dragMineInstance.SetActive(false);
-        dragRepairInstance.SetActive(false);
+        turret.dragInstance.SetActive(false);
+        wall.dragInstance.SetActive(false);
+        mine.dragInstance.SetActive(false);
+        repair.dragInstance.SetActive(false);
         legalPlaneInstance.SetActive(false);
         illegalPlaneInstance.SetActive(false);
     }
@@ -128,32 +122,32 @@ public class BuildManager : MonoBehaviour
     {
         ResetDraggables();
         buildMode = BuildMode.Tower;
-        objectToBuild = dragTurret;
-        dragTurretInstance.SetActive(true);
+        objectToBuild = turret.dragPrefab;
+        turret.dragInstance.SetActive(true);
     }
 
     public void BuildWall()
     {
         ResetDraggables();
         buildMode = BuildMode.Wall;
-        objectToBuild = dragWall;
-        dragWallInstance.SetActive(true);
+        objectToBuild = wall.dragPrefab;
+        wall.dragInstance.SetActive(true);
     }
 
     public void BuildMine()
     {
         ResetDraggables();
         buildMode = BuildMode.Mine;
-        objectToBuild = dragMine;
-        dragMineInstance.SetActive(true);
+        objectToBuild = mine.dragPrefab;
+        mine.dragInstance.SetActive(true);
     }
 
     public void Repair()
     {
         ResetDraggables();
         buildMode = BuildMode.Repair;
-        objectToBuild = dragRepair;
-        dragRepairInstance.SetActive(true);
+        objectToBuild = repair.dragPrefab;
+        //repair.dragInstance.SetActive(true);
     }
 
     private void Update()
@@ -178,20 +172,20 @@ public class BuildManager : MonoBehaviour
 
                     case BuildMode.Tower:
 
-                        dragTurretInstance.SetActive(true);
+                        //dragTurretInstance.SetActive(true);
                         //objectToBuild.transform.position = new Vector3(hit.point.x, 0.5f, hit.point.z);
-                        dragTurretInstance.transform.localScale = new Vector3(1f, 1f, 1f);
-                        dragTurretInstance.transform.position = new Vector3(hit.transform.position.x, 0.5f, hit.transform.position.z);
+                        //turret.dragInstance.transform.localScale = new Vector3(1f, 1f, 1f);
+                        turret.dragInstance.transform.position = new Vector3(hit.transform.position.x, turret.dragOffsetY, hit.transform.position.z);
 
                         if (hit.transform.CompareTag(towerNodeTag) && hit.transform.childCount == 0)
                         {
-                            legalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, 0.25f, hit.transform.position.z);
+                            legalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, planeOffsetY, hit.transform.position.z);
                             legalPlaneInstance.SetActive(true);
                             illegalPlaneInstance.SetActive(false);
                         }
                         else
                         {
-                            illegalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, 0.25f, hit.transform.position.z);
+                            illegalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, planeOffsetY, hit.transform.position.z);
                             illegalPlaneInstance.SetActive(true);
                             legalPlaneInstance.SetActive(false);
                         }
@@ -200,9 +194,9 @@ public class BuildManager : MonoBehaviour
 
                     case BuildMode.Wall:
 
-                        dragWallInstance.SetActive(true);
-                        dragWallInstance.transform.localScale = new Vector3(1f, 1f, 1f);
-                        dragWallInstance.transform.position = new Vector3(hit.transform.position.x, 0.7f, hit.transform.position.z);
+                        //dragWallInstance.SetActive(true);
+                        //wall.dragInstance.transform.localScale = new Vector3(1f, 1f, 1f);
+                        wall.dragInstance.transform.position = new Vector3(hit.transform.position.x, wall.dragOffsetY, hit.transform.position.z);
 
                         /*Collider[] hitColliders = Physics.OverlapBox(hit.transform.position, new Vector3(0.5f, 5f, 0.5f), Quaternion.identity, enemyMask);
 
@@ -213,13 +207,13 @@ public class BuildManager : MonoBehaviour
 
                         if (hit.transform.CompareTag(pathNodeTag) && hit.transform.childCount == 0 && Physics.OverlapBox(hit.transform.position, new Vector3(0.55f, 5f, 0.55f), Quaternion.identity, enemyMask).Length == 0)
                         {
-                            legalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, 0.25f, hit.transform.position.z);
+                            legalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, planeOffsetY, hit.transform.position.z);
                             legalPlaneInstance.SetActive(true);
                             illegalPlaneInstance.SetActive(false);
                         }
                         else
                         {
-                            illegalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, 0.25f, hit.transform.position.z);
+                            illegalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, planeOffsetY, hit.transform.position.z);
                             illegalPlaneInstance.SetActive(true);
                             legalPlaneInstance.SetActive(false);
                         }
@@ -228,19 +222,19 @@ public class BuildManager : MonoBehaviour
 
                     case BuildMode.Mine:
 
-                        dragMineInstance.SetActive(true);
-                        dragMineInstance.transform.localScale = new Vector3(1f, 1f, 1f);
-                        dragMineInstance.transform.position = new Vector3(hit.transform.position.x, 0.5f, hit.transform.position.z);
+                        //dragMineInstance.SetActive(true);
+                        //mine.dragInstance.transform.localScale = new Vector3(1f, 1f, 1f);
+                        mine.dragInstance.transform.position = new Vector3(hit.transform.position.x, mine.dragOffsetY, hit.transform.position.z);
 
                         if (hit.transform.CompareTag(pathNodeTag) && hit.transform.childCount == 0)
                         {
-                            legalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, 0.25f, hit.transform.position.z);
+                            legalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, planeOffsetY, hit.transform.position.z);
                             legalPlaneInstance.SetActive(true);
                             illegalPlaneInstance.SetActive(false);
                         }
                         else
                         {
-                            illegalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, 0.25f, hit.transform.position.z);
+                            illegalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, planeOffsetY, hit.transform.position.z);
                             illegalPlaneInstance.SetActive(true);
                             legalPlaneInstance.SetActive(false);
                         }
@@ -249,19 +243,19 @@ public class BuildManager : MonoBehaviour
 
                     case BuildMode.Repair:
 
-                        dragRepairInstance.SetActive(true);
-                        dragRepairInstance.transform.localScale = new Vector3(1f, 1f, 1f);
-                        dragRepairInstance.transform.position = new Vector3(hit.transform.position.x, 0.7f, hit.transform.position.z);
+                        //dragRepairInstance.SetActive(true);
+                        //repair.dragInstance.transform.localScale = new Vector3(1f, 1f, 1f);
+                        //repair.dragInstance.transform.position = new Vector3(hit.transform.position.x, repair.dragOffsetY, hit.transform.position.z);
 
                         if (hit.transform.CompareTag(wallTag) || hit.transform.CompareTag(mainBaseTag))
                         {
-                            legalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, 0.25f, hit.transform.position.z);
+                            legalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, planeOffsetY + 1f, hit.transform.position.z);
                             legalPlaneInstance.SetActive(true);
                             illegalPlaneInstance.SetActive(false);
                         }
                         else
                         {
-                            illegalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, 0.25f, hit.transform.position.z);
+                            illegalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, planeOffsetY, hit.transform.position.z);
                             illegalPlaneInstance.SetActive(true);
                             legalPlaneInstance.SetActive(false);
                         }
@@ -278,10 +272,12 @@ public class BuildManager : MonoBehaviour
                 illegalPlaneInstance.SetActive(false);
                 legalPlaneInstance.SetActive(false);
 
-                var mousePos = Input.mousePosition;
-                mousePos.z = mainCamera.transform.position.y;
+                //var mousePos = Input.mousePosition;
+                //mousePos.z = mainCamera.transform.position.y;
                 //Debug.Log(mainCamera.ScreenToWorldPoint(mousePos));
-                Vector3 worldPos = mainCamera.ScreenToWorldPoint(mousePos);
+                //Vector3 worldPos = mainCamera.ScreenToWorldPoint(mousePos);
+
+                Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out planeHit, 100, planeMask);
 
                 switch (buildMode)
                 {
@@ -291,29 +287,33 @@ public class BuildManager : MonoBehaviour
 
                     case BuildMode.Tower:
 
-                        dragTurretInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                        dragTurretInstance.transform.position = worldPos;
+                        //turret.dragInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                        //turret.dragInstance.transform.position = worldPos;
+                        turret.dragInstance.transform.position = new Vector3(planeHit.point.x, 0, planeHit.point.z);
 
                         break;
 
                     case BuildMode.Wall:
 
-                        dragWallInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                        dragWallInstance.transform.position = worldPos;
+                        //wall.dragInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                        //wall.dragInstance.transform.position = worldPos;
+                        wall.dragInstance.transform.position = new Vector3(planeHit.point.x, 0, planeHit.point.z);
 
                         break;
 
                     case BuildMode.Mine:
 
-                        dragMineInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                        dragMineInstance.transform.position = worldPos;
+                        //mine.dragInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                        //mine.dragInstance.transform.position = worldPos;
+                        mine.dragInstance.transform.position = new Vector3(planeHit.point.x, 0, planeHit.point.z);
 
                         break;
 
                     case BuildMode.Repair:
 
-                        dragRepairInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                        dragRepairInstance.transform.position = worldPos;
+                        //repair.dragInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                        //repair.dragInstance.transform.position = worldPos;
+                        //repair.dragInstance.transform.position = new Vector3(planeHit.point.x, 0, planeHit.point.z);
 
                         break;
 
@@ -340,15 +340,29 @@ public class BuildManager : MonoBehaviour
 
                             if (hit.transform.CompareTag(towerNodeTag) && hit.transform.childCount == 0)
                             {
-                                dragTurretInstance.SetActive(false);
-                                GameObject turret = Instantiate(GetTowerToBuild(1), new Vector3(hit.transform.position.x, 0.2f, hit.transform.position.z), Quaternion.identity, hit.transform);
-                                TDManager.instance.turrets.Add(turret.transform.GetChild(0));
+                                turret.dragInstance.SetActive(false);
+                                GameObject turretObject = Instantiate(GetTowerToBuild(1), new Vector3(hit.transform.position.x, turret.buildOffsetY, hit.transform.position.z), Quaternion.identity, hit.transform);
+                                TDManager.instance.turrets.Add(turretObject.transform.GetChild(0));
                                 objectToBuild = null;
                                 buildMode = BuildMode.None;
+
+                                if (GameHandler.Instance.IsFirstStageActive())
+                                {
+                                    if (Random.value < 0.5f)
+                                    {
+                                        SoundManager soundManager = SoundManager.Instance;
+                                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
+                                    }
+                                }
+                                else
+                                {
+                                    SoundManager soundManager = SoundManager.Instance;
+                                    soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
+                                }
                             }
                             else
                             {
-                                Debug.Log("Can't build turret there.");
+                                Debug.Log("Can't place turret there.");
                             }
 
                             break;
@@ -357,15 +371,37 @@ public class BuildManager : MonoBehaviour
 
                             if (hit.transform.CompareTag(pathNodeTag) && hit.transform.childCount == 0 && Physics.OverlapBox(hit.transform.position, new Vector3(0.55f, 5f, 0.55f), Quaternion.identity, enemyMask).Length == 0)
                             {
-                                dragWallInstance.SetActive(false);
-                                GameObject wall = Instantiate(GetWallToBuild(), new Vector3(hit.transform.position.x, 0.7f, hit.transform.position.z), Quaternion.identity, hit.transform);
-                                TDManager.instance.walls.Add(wall.transform.GetChild(0));
+                                wall.dragInstance.SetActive(false);
+                                GameObject wallObject = Instantiate(GetWallToBuild(), new Vector3(hit.transform.position.x, wall.buildOffsetY, hit.transform.position.z), Quaternion.identity, hit.transform);
+                                TDManager.instance.walls.Add(wallObject.transform.GetChild(0));
                                 objectToBuild = null;
                                 buildMode = BuildMode.None;
+
+                                if (GameHandler.Instance.IsFirstStageActive())
+                                {
+                                    if (Random.value < 0.5f)
+                                    {
+                                        SoundManager soundManager = SoundManager.Instance;
+                                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
+                                    }
+                                }
+                                else
+                                {
+                                    SoundManager soundManager = SoundManager.Instance;
+                                    if (Random.value < 0.5f)
+                                    {
+                                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
+                                    }
+                                    else
+                                    {
+                                        soundManager.PlaySound(soundManager.audioClipRefsSo.stopRats, Camera.main.transform.position);
+                                    }
+
+                                }
                             }
                             else
                             {
-                                Debug.Log("Can't build wall there.");
+                                Debug.Log("Can't place wall there.");
                             }
 
                             break;
@@ -374,15 +410,29 @@ public class BuildManager : MonoBehaviour
 
                             if (hit.transform.CompareTag(pathNodeTag) && hit.transform.childCount == 0)
                             {
-                                dragMineInstance.SetActive(false);
-                                GameObject mine = Instantiate(GetMineToBuild(), new Vector3(hit.transform.position.x, 0.5f, hit.transform.position.z), Quaternion.identity, hit.transform);
-                                TDManager.instance.mines.Add(mine.transform.GetChild(0));
+                                mine.dragInstance.SetActive(false);
+                                GameObject mineObject = Instantiate(GetMineToBuild(), new Vector3(hit.transform.position.x, mine.buildOffsetY, hit.transform.position.z), Quaternion.identity, hit.transform);
+                                TDManager.instance.mines.Add(mineObject.transform.GetChild(0));
                                 objectToBuild = null;
                                 buildMode = BuildMode.None;
+
+                                if (GameHandler.Instance.IsFirstStageActive())
+                                {
+                                    if (Random.value < 0.5f)
+                                    {
+                                        SoundManager soundManager = SoundManager.Instance;
+                                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
+                                    }
+                                }
+                                else
+                                {
+                                    SoundManager soundManager = SoundManager.Instance;
+                                    soundManager.PlaySound(soundManager.audioClipRefsSo.stopRats, Camera.main.transform.position);
+                                }
                             }
                             else
                             {
-                                Debug.Log("Can't build mine there.");
+                                Debug.Log("Can't place mine there.");
                             }
 
                             break;
@@ -395,10 +445,14 @@ public class BuildManager : MonoBehaviour
                                 wall.currentHealth = wall.baseHealth;
                                 objectToBuild = null;
                                 buildMode = BuildMode.None;
+
+                                SoundManager soundManager = SoundManager.Instance;
+
+                                soundManager.PlaySound(soundManager.audioClipRefsSo.Upgrade, Camera.main.transform.position);
                             }
                             else
                             {
-                                Debug.Log("Can't repair there!");
+                                Debug.Log("Can't repair there.");
                             }
 
                             break;

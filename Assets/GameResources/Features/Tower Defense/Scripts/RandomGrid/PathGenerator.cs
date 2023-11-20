@@ -17,7 +17,7 @@ public class PathGenerator
         this.height = height;
     }
 
-    public List<Vector2Int> GeneratePath(bool addLoops)
+    public List<Vector2Int> GeneratePath(bool addLoops, int minLoops, int maxLoops)
     {
         pathCells = new List<Vector2Int>();
         loopCount = 0;
@@ -25,6 +25,7 @@ public class PathGenerator
         //int y = height / 2;
         int y = Random.Range(1, height - 1);
         int x = 1;
+        int loops = Random.Range(minLoops, maxLoops + 1);
 
         while (x < width - 1)
         {
@@ -57,7 +58,7 @@ public class PathGenerator
 
         if (addLoops)
         {
-            AddLoops();
+            AddLoops(loops);
         }
 
         return pathCells;
@@ -99,8 +100,10 @@ public class PathGenerator
             }
             else
             {
-                // Nowhere to go. Returning the route
-                //throw new System.Exception("HUH?");
+                currentCell += Vector2Int.right;
+                route.Add(new Vector2Int(currentCell.x, currentCell.y));
+                currentCell += Vector2Int.right;
+                route.Add(new Vector2Int(currentCell.x, currentCell.y));
                 return route;
             }
         }
@@ -108,46 +111,7 @@ public class PathGenerator
         return route;
     }
 
-    public bool AddLoops_old()
-    {
-        for (int i = 0; i < pathCells.Count; i++)
-        {
-            Vector2Int pathCell = pathCells[i];
-
-            if (pathCell.x > 3 && pathCell.x < width - 4 && pathCell.y > 2 && pathCell.y < height - 3)
-            {
-                if (CellIsEmpty(pathCell.x, pathCell.y + 3) && CellIsEmpty(pathCell.x + 1, pathCell.y + 3) && CellIsEmpty(pathCell.x + 2, pathCell.y + 3) &&
-                CellIsEmpty(pathCell.x - 1, pathCell.y + 2) && CellIsEmpty(pathCell.x, pathCell.y + 2) && CellIsEmpty(pathCell.x + 1, pathCell.y + 2) && CellIsEmpty(pathCell.x + 2, pathCell.y + 2) && CellIsEmpty(pathCell.x + 3, pathCell.y + 2) &&
-                CellIsEmpty(pathCell.x - 1, pathCell.y + 1) && CellIsEmpty(pathCell.x, pathCell.y + 1) && CellIsEmpty(pathCell.x + 1, pathCell.y + 1) && CellIsEmpty(pathCell.x + 2, pathCell.y + 1) && CellIsEmpty(pathCell.x + 3, pathCell.y + 1) &&
-                CellIsEmpty(pathCell.x + 1, pathCell.y) && CellIsEmpty(pathCell.x + 2, pathCell.y) && CellIsEmpty(pathCell.x + 3, pathCell.y) &&
-                CellIsEmpty(pathCell.x + 1, pathCell.y - 1) && CellIsEmpty(pathCell.x + 2, pathCell.y - 1))
-                {
-                    pathCells.InsertRange(i + 1, new List<Vector2Int> { new Vector2Int(pathCell.x + 1, pathCell.y),  new Vector2Int(pathCell.x + 2, pathCell.y),
-                                                                    new Vector2Int(pathCell.x + 2, pathCell.y + 1), new Vector2Int(pathCell.x + 2, pathCell.y + 2),
-                                                                    new Vector2Int(pathCell.x + 1, pathCell.y + 2), new Vector2Int(pathCell.x, pathCell.y + 2),
-                                                                    new Vector2Int(pathCell.x, pathCell.y + 1)});
-                    return true;
-                }
-
-                if (CellIsEmpty(pathCell.x + 1, pathCell.y + 1) && CellIsEmpty(pathCell.x + 2, pathCell.y + 1) &&
-                CellIsEmpty(pathCell.x + 1, pathCell.y) && CellIsEmpty(pathCell.x + 2, pathCell.y) && CellIsEmpty(pathCell.x + 3, pathCell.y) &&
-                CellIsEmpty(pathCell.x - 1, pathCell.y - 1) && CellIsEmpty(pathCell.x, pathCell.y - 1) && CellIsEmpty(pathCell.x + 1, pathCell.y - 1) && CellIsEmpty(pathCell.x + 2, pathCell.y - 1) && CellIsEmpty(pathCell.x + 3, pathCell.y - 1) &&
-                CellIsEmpty(pathCell.x - 1, pathCell.y - 2) && CellIsEmpty(pathCell.x, pathCell.y - 2) && CellIsEmpty(pathCell.x + 1, pathCell.y - 2) && CellIsEmpty(pathCell.x + 2, pathCell.y - 2) && CellIsEmpty(pathCell.x + 3, pathCell.y - 2) &&
-                CellIsEmpty(pathCell.x, pathCell.y - 3) && CellIsEmpty(pathCell.x + 1, pathCell.y - 3) && CellIsEmpty(pathCell.x + 2, pathCell.y - 3))
-                {
-                    pathCells.InsertRange(i + 1, new List<Vector2Int> { new Vector2Int(pathCell.x + 1, pathCell.y),  new Vector2Int(pathCell.x + 2, pathCell.y),
-                                                                    new Vector2Int(pathCell.x + 2, pathCell.y - 1), new Vector2Int(pathCell.x + 2, pathCell.y - 2),
-                                                                    new Vector2Int(pathCell.x + 1, pathCell.y - 2), new Vector2Int(pathCell.x, pathCell.y - 2),
-                                                                    new Vector2Int(pathCell.x, pathCell.y - 1)});
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    public void AddLoops()
+    public void AddLoops(int loops)
     {
         bool loopsGenerated = true;
 
@@ -157,18 +121,22 @@ public class PathGenerator
 
             for (int i = 0; i < pathCells.Count; i++)
             {
-                List<Vector2Int> loop = IsLoopOption(i);
-
-                if (loop.Count > 0)
+                if (Random.Range(0f, 1f) < 0.1f && loopCount != loops)
                 {
-                    loopsGenerated = true;
-                    pathCells.InsertRange(i + 1, loop);
+                    List<Vector2Int> loop = IsLoopAnOption(i);
+
+                    if (loop.Count > 0)
+                    {
+                        loopsGenerated = true;
+                        loopCount++;
+                        pathCells.InsertRange(i + 1, loop);
+                    }
                 }
             }
         }
     }
 
-    private List<Vector2Int> IsLoopOption(int i)
+    private List<Vector2Int> IsLoopAnOption(int i)
     {
         Vector2Int pathCell = pathCells[i];
         int x = pathCell.x;
@@ -184,16 +152,11 @@ public class PathGenerator
             CellIsEmpty(x + 1, y) && CellIsEmpty(x + 2, y) && CellIsEmpty(x + 3, y) &&
             CellIsEmpty(x + 1, y - 1) && CellIsEmpty(x + 2, y - 1))
             {
-                /*pathCells.InsertRange(i + 1, new List<Vector2Int> { new Vector2Int(x + 1, y),  new Vector2Int(x + 2, y),
-                                                                    new Vector2Int(x + 2, y + 1), new Vector2Int(x + 2, y + 2),
-                                                                    new Vector2Int(x + 1, y + 2), new Vector2Int(x, y + 2),
-                                                                    new Vector2Int(x, y + 1)});*/
                 returnPath = new List<Vector2Int> { new Vector2Int(x + 1, y),  new Vector2Int(x + 2, y),
                                                                     new Vector2Int(x + 2, y + 1), new Vector2Int(x + 2, y + 2),
                                                                     new Vector2Int(x + 1, y + 2), new Vector2Int(x, y + 2),
                                                                     new Vector2Int(x, y + 1)};
-                loopCount++;
-                Debug.Log("Top right at (" + x + ", " + y + ")");
+                //Debug.Log("Top right at (" + x + ", " + y + ")");
             }
 
             // Bottom right (red)
@@ -203,16 +166,11 @@ public class PathGenerator
             CellIsEmpty(x - 1, y - 2) && CellIsEmpty(x, y - 2) && CellIsEmpty(x + 1, y - 2) && CellIsEmpty(x + 2, y - 2) && CellIsEmpty(x + 3, y - 2) &&
             CellIsEmpty(x, y - 3) && CellIsEmpty(x + 1, y - 3) && CellIsEmpty(x + 2, y - 3))
             {
-                /*pathCells.InsertRange(i + 1, new List<Vector2Int> { new Vector2Int(x + 1, y),  new Vector2Int(x + 2, y),
-                                                                new Vector2Int(x + 2, y - 1), new Vector2Int(x + 2, y - 2),
-                                                                new Vector2Int(x + 1, y - 2), new Vector2Int(x, y - 2),
-                                                                new Vector2Int(x, y - 1)});*/
                 returnPath = new List<Vector2Int> { new Vector2Int(x + 1, y),  new Vector2Int(x + 2, y),
                                                                 new Vector2Int(x + 2, y - 1), new Vector2Int(x + 2, y - 2),
                                                                 new Vector2Int(x + 1, y - 2), new Vector2Int(x, y - 2),
                                                                 new Vector2Int(x, y - 1)};
-                loopCount++;
-                Debug.Log("Bottom right at (" + x + ", " + y + ")");
+                //Debug.Log("Bottom right at (" + x + ", " + y + ")");
             }
 
             // Bottom left (brown)
@@ -222,16 +180,11 @@ public class PathGenerator
             CellIsEmpty(x - 3, y - 2) && CellIsEmpty(x - 2, y - 2) && CellIsEmpty(x - 1, y - 2) && CellIsEmpty(x, y - 2) && CellIsEmpty(x + 1, y - 2) &&
             CellIsEmpty(x - 2, y - 3) && CellIsEmpty(x - 1, y - 3) && CellIsEmpty(x, y - 3))
             {
-                /*pathCells.InsertRange(i + 1, new List<Vector2Int> { new Vector2Int(x, y - 1),  new Vector2Int(x, y - 2),
-                                                                new Vector2Int(x - 1, y - 2), new Vector2Int(x - 2, y - 2),
-                                                                new Vector2Int(x - 2, y - 1), new Vector2Int(x - 2, y),
-                                                                new Vector2Int(x - 1, y)});*/
                 returnPath = new List<Vector2Int> { new Vector2Int(x, y - 1),  new Vector2Int(x, y - 2),
                                                                 new Vector2Int(x - 1, y - 2), new Vector2Int(x - 2, y - 2),
                                                                 new Vector2Int(x - 2, y - 1), new Vector2Int(x - 2, y),
                                                                 new Vector2Int(x - 1, y)};
-                loopCount++;
-                Debug.Log("Bottom left at (" + x + ", " + y + ")");
+                //Debug.Log("Bottom left at (" + x + ", " + y + ")");
             }
             // Top left (blue)
             else if (CellIsEmpty(x - 2, y + 3) && CellIsEmpty(x - 1, y + 3) && CellIsEmpty(x, y + 3) &&
@@ -240,16 +193,11 @@ public class PathGenerator
             CellIsEmpty(x - 3, y) && CellIsEmpty(x - 2, y) && CellIsEmpty(x - 1, y) &&
             CellIsEmpty(x - 2, y - 1) && CellIsEmpty(x - 1, y - 1))
             {
-                /*pathCells.InsertRange(i + 1, new List<Vector2Int> { new Vector2Int(x, y + 1),  new Vector2Int(x, y + 2),
-                                                                new Vector2Int(x - 1, y + 2), new Vector2Int(x - 2, y + 2),
-                                                                new Vector2Int(x - 2, y + 1), new Vector2Int(x - 2, y),
-                                                                new Vector2Int(x - 1, y)});*/
                 returnPath = new List<Vector2Int> { new Vector2Int(x, y + 1),  new Vector2Int(x, y + 2),
                                                                 new Vector2Int(x - 1, y + 2), new Vector2Int(x - 2, y + 2),
                                                                 new Vector2Int(x - 2, y + 1), new Vector2Int(x - 2, y),
                                                                 new Vector2Int(x - 1, y)};
-                loopCount++;
-                Debug.Log("Top left at (" + x + ", " + y + ")");
+                //Debug.Log("Top left at (" + x + ", " + y + ")");
             }
         }
 
