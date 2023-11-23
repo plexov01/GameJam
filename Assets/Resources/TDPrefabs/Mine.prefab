@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1387924229312095132}
   m_Layer: 0
-  m_Name: Mine_F
+  m_Name: Mine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 1387924229935830955}
   - component: {fileID: 4255245988826910586}
   m_Layer: 16
-  m_Name: TriggerForMeteor
+  m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,10 +88,10 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1387924229935830953}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.32
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1921466381051399330
 GameObject:
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 8525813016033713533}
   - component: {fileID: 2061439107589133251}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewEnemy : MonoBehaviour, IDamageable
+public class OLD_Enemy : MonoBehaviour, IDamageable
 {
     [Header("Enemy")]
     public int type;

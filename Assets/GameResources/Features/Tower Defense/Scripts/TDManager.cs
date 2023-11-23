@@ -106,7 +106,7 @@ public class TDManager : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Keypad6))
         {
-            BuildMine();
+            SpawnMeteor();
         }
         
         if (Input.GetKeyDown(KeyCode.Keypad7))
@@ -232,7 +232,7 @@ public class TDManager : MonoBehaviour
             }
             
             GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], spawnPoint, Quaternion.identity, transform.GetChild(0));
-            mob.transform.GetChild(0).GetComponent<NewestEnemy>().UpgradeEnemy(modifier * lastStandModifier);
+            mob.transform.GetChild(0).GetComponent<EnemyRat>().UpgradeEnemy(modifier * lastStandModifier);
             enemies.Add(mob.transform.GetChild(0));
 
             yield return new WaitForSeconds(spawanDelay);
@@ -267,7 +267,7 @@ public class TDManager : MonoBehaviour
             }
             
             GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], spawnPoint, Quaternion.identity, transform.GetChild(0));
-            mob.transform.GetChild(0).GetComponent<NewestEnemy>().UpgradeEnemy(modifier * lastStandModifier);
+            mob.transform.GetChild(0).GetComponent<EnemyRat>().UpgradeEnemy(modifier * lastStandModifier);
             enemies.Add(mob.transform.GetChild(0));
 
             yield return new WaitForSeconds(spawanDelay);
@@ -328,7 +328,7 @@ public class TDManager : MonoBehaviour
             {
                 if (turret != null)
                 {
-                    turret.GetComponent<NewTurret>().Freeze(duration);
+                    turret.GetComponent<Turret>().Freeze(duration);
                 }
             }
             
@@ -382,7 +382,7 @@ public class TDManager : MonoBehaviour
             {
                 if (enemy != null)
                 {
-                    NewestEnemy stats = enemy.GetComponent<NewestEnemy>();
+                    EnemyRat stats = enemy.GetComponent<EnemyRat>();
                     stats.isFrozen = true;
                     stats.currentSpeed = 0f;
                     stats.ice.SetActive(true);
@@ -395,7 +395,7 @@ public class TDManager : MonoBehaviour
             {
                 if (enemy != null)
                 {
-                    NewestEnemy stats = enemy.GetComponent<NewestEnemy>();
+                    EnemyRat stats = enemy.GetComponent<EnemyRat>();
                     stats.isFrozen = false;
                     stats.currentSpeed = stats.baseSpeed;
                     stats.ice.SetActive(false);
@@ -425,9 +425,9 @@ public class TDManager : MonoBehaviour
 
         foreach (Transform enemy in enemyList)
         {
-            if (enemy != null && enemy.GetComponent<NewestEnemy>().type == enemyType)
+            if (enemy != null && enemy.GetComponent<EnemyRat>().type == enemyType)
             {
-                NewestEnemy stats = enemy.GetComponent<NewestEnemy>();
+                EnemyRat stats = enemy.GetComponent<EnemyRat>();
                 stats.currentHealth += deltaHealth;
 
                 if (stats.baseSpeed / speedDivider > 1f)
@@ -547,12 +547,12 @@ public class TDManager : MonoBehaviour
             {
                 if (turret != null)
                 {
-                    if (turret.GetComponent<NewTurret>().tier == 1)
+                    if (turret.GetComponent<Turret>().tier == 1)
                     {
                         tier1Turrets.Add(turret);
                     }
 
-                    if (turret.GetComponent<NewTurret>().tier == 2)
+                    if (turret.GetComponent<Turret>().tier == 2)
                     {
                         tier2Turrets.Add(turret);
                     }
@@ -624,12 +624,12 @@ public class TDManager : MonoBehaviour
             {
                 if (turret != null)
                 {
-                    if (turret.GetComponent<NewTurret>().tier == 2)
+                    if (turret.GetComponent<Turret>().tier == 2)
                     {
                         tier2Turrets.Add(turret);
                     }
 
-                    if (turret.GetComponent<NewTurret>().tier == 3)
+                    if (turret.GetComponent<Turret>().tier == 3)
                     {
                         tier3Turrets.Add(turret);
                     }

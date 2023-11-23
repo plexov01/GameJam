@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewTurret : MonoBehaviour, IDamageable
+public class Turret : MonoBehaviour, IDamageable
 {
     [Header("Turret")]
     public int tier;
@@ -14,7 +14,7 @@ public class NewTurret : MonoBehaviour, IDamageable
 
     [Header("Shooting")]
     public float damage = 100f;
-    public float bulletSpeed = 70f;
+    public float bulletSpeed = 17.5f;
     private Transform target = null;
     public float range = 3.75f;
     public float fireRate = 1f;
@@ -22,7 +22,7 @@ public class NewTurret : MonoBehaviour, IDamageable
     private string enemyTag = "Enemy";
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private ParticleSystem partSys;
+    private ParticleSystem partSys;
 
     [Header("Rotation")]
     [SerializeField] private Transform partToRotate;
@@ -39,6 +39,8 @@ public class NewTurret : MonoBehaviour, IDamageable
         // _basefireRate = fireRate;
         tempfireRate = fireRate;
         tempturnSpeed = turnSpeed;
+
+        partSys = firePoint.GetComponent<ParticleSystem>();
         partSys.Stop();
     }
 

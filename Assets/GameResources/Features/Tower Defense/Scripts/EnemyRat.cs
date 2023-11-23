@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewestEnemy : MonoBehaviour, IDamageable
+public class EnemyRat : MonoBehaviour, IDamageable
 {
     [Header("Enemy")]
     public int type;
