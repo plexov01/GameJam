@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
 {
-    [SerializeField] private NewEnemy enemy;
+    [SerializeField] private EnemyRat enemy;
     private Transform attackTarget;
     private Coroutine attackCoroutine = null;
 
@@ -23,7 +23,7 @@ public class EnemyAttack : MonoBehaviour
     {
         if (other.CompareTag("Wall") || other.CompareTag("MainBase"))
         {
-            print("entered wall trigger");
+            //print("entered wall trigger");
 
             attackTarget = other.transform;
 

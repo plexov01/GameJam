@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3399363835413576879
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Shield_Tr
+  m_Shader: {fileID: -6465566751694194690, guid: ef62a84609f2a9341984e003e9fad001, type: 3}
+  m_ValidKeywords:
+  - _USECOLLISIONRIPPLES
+  - _USEEDGEGLOW
+  - _USEHEXGLOW
+  - _USEINTERSECION
+  - _USESCANLINE
+  m_InvalidKeywords: []
+  m_LightmapFlags: 2
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AspectRatio: 0.5
+    - _Edge_Glow_Strength: 0.063
+    - _GlowNoiseScale: 0.86
+    - _GlowSpeed: 0.28
+    - _HeightmapStrength: 0.004
+    - _Intersection_Strength: 0
+    - _Intersection_Thickness: 0
+    - _Metallic: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _RippleSpeed: 0.5
+    - _Ripple_Time: 0.5
+    - _Rippletickness: 0.5
+    - _ScanLineSpeed: 0.5
+    - _ScanLineStrength: 0.27
+    - _ScanlineTickness: 0.05
+    - _Smoothness: 0
+    - _USECOLLISIONRIPPLES: 1
+    - _USEEDGEGLOW: 1
+    - _USEHEXGLOW: 1
+    - _USEINTERSECION: 1
+    - _USESCANLINE: 1
+    m_Colors:
+    - _BaseColor: {r: 0.6320754, g: 0.2772783, b: 0.2772783, a: 0.87058824}
+    - _Edge_Glow_Thickness: {r: -4.6, g: 4.12, b: 0, a: 0}
+    - _EmissionColor: {r: 13.615688, g: 1.9247308, b: 1.9247308, a: 0.007843138}
+    - _FloorColor: {r: 0.6320754, g: 0.2772784, b: 0.2772784, a: 0.39215687}
+    - _GlowStrenght_MinMax: {r: 0.1, g: 1, b: 0, a: 0}
+    - _Ripple_origin: {r: 0.82, g: 0.5, b: 0, a: 0}
+  m_BuildTextureStacks: []
