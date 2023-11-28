@@ -1,9 +1,16 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BuildManager : MonoBehaviour
 {
     public static BuildManager instance = null;
+    
+    public static event EventHandler<OnConstructionPlacedEventArgs> OnConstructionPlaced;
+    public class OnConstructionPlacedEventArgs : EventArgs {
+        public BuildMode buildMode;
+    }
 
     public GameObject turretPrefab_T2;
     public GameObject turretPrefab_T3;
@@ -344,21 +351,12 @@ public class BuildManager : MonoBehaviour
                                 GameObject turretObject = Instantiate(GetTowerToBuild(1), new Vector3(hit.transform.position.x, turret.buildOffsetY, hit.transform.position.z), Quaternion.identity, hit.transform);
                                 TDManager.instance.turrets.Add(turretObject.transform.GetChild(0));
                                 objectToBuild = null;
+                                
+                                OnConstructionPlaced?.Invoke(this, new OnConstructionPlacedEventArgs() {
+                                    buildMode = buildMode
+                                });
+                                
                                 buildMode = BuildMode.None;
-
-                                if (GameHandler.Instance.IsFirstStageActive())
-                                {
-                                    if (Random.value < 0.5f)
-                                    {
-                                        SoundManager soundManager = SoundManager.Instance;
-                                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
-                                    }
-                                }
-                                else
-                                {
-                                    SoundManager soundManager = SoundManager.Instance;
-                                    soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
-                                }
                             }
                             else
                             {
@@ -375,29 +373,12 @@ public class BuildManager : MonoBehaviour
                                 GameObject wallObject = Instantiate(GetWallToBuild(), new Vector3(hit.transform.position.x, wall.buildOffsetY, hit.transform.position.z), Quaternion.identity, hit.transform);
                                 TDManager.instance.walls.Add(wallObject.transform.GetChild(0));
                                 objectToBuild = null;
+                                
+                                OnConstructionPlaced?.Invoke(this, new OnConstructionPlacedEventArgs() {
+                                    buildMode = buildMode
+                                });
+                                
                                 buildMode = BuildMode.None;
-
-                                if (GameHandler.Instance.IsFirstStageActive())
-                                {
-                                    if (Random.value < 0.5f)
-                                    {
-                                        SoundManager soundManager = SoundManager.Instance;
-                                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
-                                    }
-                                }
-                                else
-                                {
-                                    SoundManager soundManager = SoundManager.Instance;
-                                    if (Random.value < 0.5f)
-                                    {
-                                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
-                                    }
-                                    else
-                                    {
-                                        soundManager.PlaySound(soundManager.audioClipRefsSo.stopRats, Camera.main.transform.position);
-                                    }
-
-                                }
                             }
                             else
                             {
@@ -414,21 +395,12 @@ public class BuildManager : MonoBehaviour
                                 GameObject mineObject = Instantiate(GetMineToBuild(), new Vector3(hit.transform.position.x, mine.buildOffsetY, hit.transform.position.z), Quaternion.identity, hit.transform);
                                 TDManager.instance.mines.Add(mineObject.transform.GetChild(0));
                                 objectToBuild = null;
+                                
+                                OnConstructionPlaced?.Invoke(this, new OnConstructionPlacedEventArgs() {
+                                    buildMode = buildMode
+                                });
+                                
                                 buildMode = BuildMode.None;
-
-                                if (GameHandler.Instance.IsFirstStageActive())
-                                {
-                                    if (Random.value < 0.5f)
-                                    {
-                                        SoundManager soundManager = SoundManager.Instance;
-                                        soundManager.PlaySound(soundManager.audioClipRefsSo.thatsIt, Camera.main.transform.position);
-                                    }
-                                }
-                                else
-                                {
-                                    SoundManager soundManager = SoundManager.Instance;
-                                    soundManager.PlaySound(soundManager.audioClipRefsSo.stopRats, Camera.main.transform.position);
-                                }
                             }
                             else
                             {
@@ -444,11 +416,12 @@ public class BuildManager : MonoBehaviour
                                 Wall wall = hit.transform.GetComponent<Wall>();
                                 wall.currentHealth = wall.baseHealth;
                                 objectToBuild = null;
+                                
+                                OnConstructionPlaced?.Invoke(this, new OnConstructionPlacedEventArgs() {
+                                    buildMode = buildMode
+                                });
+                                
                                 buildMode = BuildMode.None;
-
-                                SoundManager soundManager = SoundManager.Instance;
-
-                                soundManager.PlaySound(soundManager.audioClipRefsSo.Upgrade, Camera.main.transform.position);
                             }
                             else
                             {

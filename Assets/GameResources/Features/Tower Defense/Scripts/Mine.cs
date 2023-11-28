@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mine : MonoBehaviour
-{
+public class Mine : MonoBehaviour {
+    
+    public static event EventHandler OnMineExploded;
+    
     public float range = 15f;
     public float damage = 50f;
     private string enemyTag = "Enemy";
@@ -23,8 +26,7 @@ public class Mine : MonoBehaviour
             
             CoolnessScaleController.Instance.AddCoolness(40);
             
-            SoundManager soundManager = SoundManager.Instance;
-            soundManager.PlaySound(soundManager.audioClipRefsSo.Bomb, Camera.main.transform.position);
+            OnMineExploded?.Invoke(this, EventArgs.Empty);
 
             Destroy(gameObject.transform.parent.gameObject);
         }

@@ -1,4 +1,6 @@
-﻿namespace GameJam.Features.CardSystem
+﻿using System;
+
+namespace GameJam.Features.CardSystem
 {
 	using System.Collections.Generic;
 	using System.Linq;
@@ -11,10 +13,6 @@
 		{
 			base.ActivateCard();
 			TDManager.instance.ShortCircuit();
-
-			SoundManager soundManager = SoundManager.Instance;
-			soundManager.PlaySound(soundManager.audioClipRefsSo.cuircut, Camera.main.transform.position);
-
 		}
 	}
 }

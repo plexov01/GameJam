@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Meteor : MonoBehaviour
 {
+    public static event EventHandler OnMeteorExploded;
+    
     private Rigidbody rb;
     [SerializeField] private SphereCollider col;
     [SerializeField] private float radius;
@@ -28,9 +31,8 @@ public class Meteor : MonoBehaviour
         col.enabled = true;
         yield return new WaitForSeconds(0.25f);
         
-        SoundManager soundManager = SoundManager.Instance;
-			
-        soundManager.PlaySound(soundManager.audioClipRefsSo.meteor, Camera.main.transform.position);
+        OnMeteorExploded?.Invoke(this, EventArgs.Empty);
+        
         Destroy(transform.parent.gameObject);
     }
 }
