@@ -5,34 +5,42 @@ using UnityEngine;
 
 public class Meteor : MonoBehaviour
 {
+    [SerializeField] private GameObject objectToDestroy;
     public static event EventHandler OnMeteorExploded;
-    
-    private Rigidbody rb;
     [SerializeField] private SphereCollider col;
     [SerializeField] private float radius;
+    private Rigidbody rb;
 
     private void Awake()
     {
-        rb = transform.parent.GetComponent<Rigidbody>();
         col.radius = radius;
         col.enabled = false;
+        rb = GetComponent<Rigidbody>();
     }
 
-    void Update()
+    private void Update()
     {
-        if (rb.velocity.y == 0 && transform.position.y < 9f)
+        if (rb.velocity.y > 0)
         {
-            StartCoroutine(Explode());
+            rb.velocity = Vector3.zero;
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        print(collision.transform.tag);
+        rb.velocity = Vector3.zero;
+        StartCoroutine(Explode());
     }
 
     private IEnumerator Explode()
     {
         col.enabled = true;
         yield return new WaitForSeconds(0.25f);
-        
+      
+        SoundManager soundManager = SoundManager.Instance;
+        soundManager.PlaySound(soundManager.audioClipRefsSo.meteor, Camera.main.transform.position);
+        Destroy(objectToDestroy);
         OnMeteorExploded?.Invoke(this, EventArgs.Empty);
-        
-        Destroy(transform.parent.gameObject);
     }
 }

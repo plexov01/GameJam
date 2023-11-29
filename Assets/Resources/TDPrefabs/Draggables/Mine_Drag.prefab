@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1387924229312095132}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Mine_Drag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 8251940989486075966}
   - component: {fileID: 8525813016033713533}
   - component: {fileID: 2061439107589133251}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Mine
   m_TagString: Untagged
   m_Icon: {fileID: 0}

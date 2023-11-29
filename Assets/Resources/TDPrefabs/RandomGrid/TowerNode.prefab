@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2856522601048751075}
   - component: {fileID: 1750275087987047212}
   m_Layer: 8
-  m_Name: TowerNode_NEW
+  m_Name: TowerNode
   m_TagString: TowerNode
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

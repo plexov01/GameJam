@@ -61,8 +61,12 @@ public class BuildManager : MonoBehaviour
 
     public Buildable turret;
     public Buildable wall;
+    public Buildable miniWall;
     public Buildable mine;
     public Buildable repair;
+
+    private List<Vector2Int> routeCells;
+    private List<Vector2Int> routeDirections;
 
     private void Awake()
     {
@@ -84,10 +88,18 @@ public class BuildManager : MonoBehaviour
         turret.dragInstance.SetActive(false);
         wall.dragInstance = Instantiate(wall.dragPrefab, Vector3.zero, Quaternion.identity);
         wall.dragInstance.SetActive(false);
+        miniWall.dragInstance = Instantiate(miniWall.dragPrefab, Vector3.zero, Quaternion.identity);
+        miniWall.dragInstance.SetActive(false);
         mine.dragInstance = Instantiate(mine.dragPrefab, Vector3.zero, Quaternion.identity);
         mine.dragInstance.SetActive(false);
         repair.dragInstance = Instantiate(repair.dragPrefab, Vector3.zero, Quaternion.identity);
         repair.dragInstance.SetActive(false);
+    }
+
+    public void SetRoute(Tuple<List<Vector2Int>, List<Vector2Int>> route)
+    {
+        routeCells = route.Item1;
+        routeDirections = route.Item2;
     }
 
     public GameObject GetTowerToBuild(int tier)
@@ -105,9 +117,17 @@ public class BuildManager : MonoBehaviour
         }
     }
 
-    public GameObject GetWallToBuild()
+    public GameObject GetWallToBuild(int type)
     {
-        return wall.buildPrefab;
+        switch (type)
+        {
+            case 0:
+                return wall.buildPrefab;
+            case 1:
+                return miniWall.buildPrefab;
+            default:
+                return null;
+        }
     }
 
     public GameObject GetMineToBuild()
@@ -119,6 +139,7 @@ public class BuildManager : MonoBehaviour
     {
         turret.dragInstance.SetActive(false);
         wall.dragInstance.SetActive(false);
+        miniWall.dragInstance.SetActive(false);
         mine.dragInstance.SetActive(false);
         repair.dragInstance.SetActive(false);
         legalPlaneInstance.SetActive(false);
@@ -179,9 +200,6 @@ public class BuildManager : MonoBehaviour
 
                     case BuildMode.Tower:
 
-                        //dragTurretInstance.SetActive(true);
-                        //objectToBuild.transform.position = new Vector3(hit.point.x, 0.5f, hit.point.z);
-                        //turret.dragInstance.transform.localScale = new Vector3(1f, 1f, 1f);
                         turret.dragInstance.transform.position = new Vector3(hit.transform.position.x, turret.dragOffsetY, hit.transform.position.z);
 
                         if (hit.transform.CompareTag(towerNodeTag) && hit.transform.childCount == 0)
@@ -201,25 +219,113 @@ public class BuildManager : MonoBehaviour
 
                     case BuildMode.Wall:
 
-                        //dragWallInstance.SetActive(true);
-                        //wall.dragInstance.transform.localScale = new Vector3(1f, 1f, 1f);
-                        wall.dragInstance.transform.position = new Vector3(hit.transform.position.x, wall.dragOffsetY, hit.transform.position.z);
+                        Vector3 rotation = Vector3.zero;
 
-                        /*Collider[] hitColliders = Physics.OverlapBox(hit.transform.position, new Vector3(0.5f, 5f, 0.5f), Quaternion.identity, enemyMask);
-
-                        for (int i = 0; i < hitColliders.Length; i++)
+                        if (hit.transform.CompareTag(pathNodeTag))
                         {
-                            print("overlap: " + i + " " + hitColliders[i]);
-                        }*/
+                            for (int i = 0; i < routeCells.Count; i++)
+                            {
+                                if (routeCells[i] == new Vector2Int((int)hit.transform.position.x, (int)hit.transform.position.z))
+                                {
+                                    if (routeDirections[i] == Vector2Int.right)
+                                    {
+                                        rotation.y = -90f;
+                                    }
+                                    else if (routeDirections[i] == Vector2Int.left)
+                                    {
+                                        rotation.y = 90f;
+                                    }
+                                    else if (routeDirections[i] == Vector2Int.up)
+                                    {
+                                        rotation.y = 180f;
+                                    }
+                                    else if (routeDirections[i] == Vector2Int.down)
+                                    {
+                                        rotation.y = 0f;
+                                    }
 
-                        if (hit.transform.CompareTag(pathNodeTag) && hit.transform.childCount == 0 && Physics.OverlapBox(hit.transform.position, new Vector3(0.55f, 5f, 0.55f), Quaternion.identity, enemyMask).Length == 0)
+                                    break;
+                                }
+                            }
+
+                            if (hit.transform.rotation.y != 0)
+                            {
+                                wall.dragInstance.SetActive(true);
+                                miniWall.dragInstance.SetActive(false);
+                                wall.dragInstance.transform.position = new Vector3(hit.transform.position.x, wall.dragOffsetY, hit.transform.position.z);
+                            }
+                            else
+                            {
+                                wall.dragInstance.SetActive(false);
+                                miniWall.dragInstance.SetActive(true);
+                                miniWall.dragInstance.transform.position = new Vector3(hit.transform.position.x, miniWall.dragOffsetY, hit.transform.position.z);
+                                miniWall.dragInstance.transform.eulerAngles = rotation;
+                            }
+
+                            if (hit.transform.childCount == 0 && Physics.OverlapBox(hit.transform.position, new Vector3(0.55f, 5f, 0.55f), Quaternion.identity, enemyMask).Length == 0
+                                && hit.transform != pathNodes[0].transform && hit.transform != pathNodes[1].transform)
+                            {
+                                legalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, planeOffsetY, hit.transform.position.z);
+                                legalPlaneInstance.SetActive(true);
+                                illegalPlaneInstance.SetActive(false);
+                            }
+                            else
+                            {
+                                illegalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, planeOffsetY, hit.transform.position.z);
+                                illegalPlaneInstance.SetActive(true);
+                                legalPlaneInstance.SetActive(false);
+                            }
+                        }
+                        else if (hit.transform.CompareTag(wallTag) || hit.transform.CompareTag(mainBaseTag))
                         {
-                            legalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, planeOffsetY, hit.transform.position.z);
-                            legalPlaneInstance.SetActive(true);
-                            illegalPlaneInstance.SetActive(false);
+                            for (int i = 0; i < routeCells.Count; i++)
+                            {
+                                if (routeCells[i] == new Vector2Int((int)hit.transform.parent.parent.position.x, (int)hit.transform.parent.parent.position.z))
+                                {
+                                    if (routeDirections[i] == Vector2Int.right)
+                                    {
+                                        rotation.y = -90f;
+                                    }
+                                    else if (routeDirections[i] == Vector2Int.left)
+                                    {
+                                        rotation.y = 90f;
+                                    }
+                                    else if (routeDirections[i] == Vector2Int.up)
+                                    {
+                                        rotation.y = 180f;
+                                    }
+                                    else if (routeDirections[i] == Vector2Int.down)
+                                    {
+                                        rotation.y = 0f;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (hit.transform.parent.parent.rotation.y != 0)
+                            {
+                                wall.dragInstance.SetActive(true);
+                                miniWall.dragInstance.SetActive(false);
+                                wall.dragInstance.transform.position = new Vector3(hit.transform.parent.parent.position.x, wall.dragOffsetY, hit.transform.parent.parent.position.z);
+                            }
+                            else
+                            {
+                                wall.dragInstance.SetActive(false);
+                                miniWall.dragInstance.SetActive(true);
+                                miniWall.dragInstance.transform.position = new Vector3(hit.transform.parent.parent.position.x, miniWall.dragOffsetY, hit.transform.parent.parent.position.z);
+                                miniWall.dragInstance.transform.eulerAngles = rotation;
+                            }
+
+                            illegalPlaneInstance.transform.position = new Vector3(hit.transform.parent.parent.position.x, planeOffsetY, hit.transform.parent.parent.position.z);
+                            illegalPlaneInstance.SetActive(true);
+                            legalPlaneInstance.SetActive(false);
                         }
                         else
                         {
+                            wall.dragInstance.transform.position = new Vector3(hit.transform.position.x, wall.dragOffsetY, hit.transform.position.z);
+                            wall.dragInstance.SetActive(true);
+                            miniWall.dragInstance.SetActive(false);
                             illegalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, planeOffsetY, hit.transform.position.z);
                             illegalPlaneInstance.SetActive(true);
                             legalPlaneInstance.SetActive(false);
@@ -229,8 +335,6 @@ public class BuildManager : MonoBehaviour
 
                     case BuildMode.Mine:
 
-                        //dragMineInstance.SetActive(true);
-                        //mine.dragInstance.transform.localScale = new Vector3(1f, 1f, 1f);
                         mine.dragInstance.transform.position = new Vector3(hit.transform.position.x, mine.dragOffsetY, hit.transform.position.z);
 
                         if (hit.transform.CompareTag(pathNodeTag) && hit.transform.childCount == 0)
@@ -279,11 +383,6 @@ public class BuildManager : MonoBehaviour
                 illegalPlaneInstance.SetActive(false);
                 legalPlaneInstance.SetActive(false);
 
-                //var mousePos = Input.mousePosition;
-                //mousePos.z = mainCamera.transform.position.y;
-                //Debug.Log(mainCamera.ScreenToWorldPoint(mousePos));
-                //Vector3 worldPos = mainCamera.ScreenToWorldPoint(mousePos);
-
                 Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out planeHit, 100, planeMask);
 
                 switch (buildMode)
@@ -294,33 +393,22 @@ public class BuildManager : MonoBehaviour
 
                     case BuildMode.Tower:
 
-                        //turret.dragInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                        //turret.dragInstance.transform.position = worldPos;
-                        turret.dragInstance.transform.position = new Vector3(planeHit.point.x, 0, planeHit.point.z);
-
+                        turret.dragInstance.transform.position = new Vector3(planeHit.point.x, 0f, planeHit.point.z);
                         break;
 
                     case BuildMode.Wall:
 
-                        //wall.dragInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                        //wall.dragInstance.transform.position = worldPos;
-                        wall.dragInstance.transform.position = new Vector3(planeHit.point.x, 0, planeHit.point.z);
-
+                        miniWall.dragInstance.SetActive(false);
+                        wall.dragInstance.SetActive(true);
+                        wall.dragInstance.transform.position = new Vector3(planeHit.point.x, 0f, planeHit.point.z);
                         break;
 
                     case BuildMode.Mine:
 
-                        //mine.dragInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                        //mine.dragInstance.transform.position = worldPos;
-                        mine.dragInstance.transform.position = new Vector3(planeHit.point.x, 0, planeHit.point.z);
-
+                        mine.dragInstance.transform.position = new Vector3(planeHit.point.x, 0.5f, planeHit.point.z);
                         break;
 
                     case BuildMode.Repair:
-
-                        //repair.dragInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                        //repair.dragInstance.transform.position = worldPos;
-                        //repair.dragInstance.transform.position = new Vector3(planeHit.point.x, 0, planeHit.point.z);
 
                         break;
 
@@ -367,10 +455,51 @@ public class BuildManager : MonoBehaviour
 
                         case BuildMode.Wall:
 
-                            if (hit.transform.CompareTag(pathNodeTag) && hit.transform.childCount == 0 && Physics.OverlapBox(hit.transform.position, new Vector3(0.55f, 5f, 0.55f), Quaternion.identity, enemyMask).Length == 0)
+                            if (hit.transform.CompareTag(pathNodeTag) && hit.transform.childCount == 0 && Physics.OverlapBox(hit.transform.position, new Vector3(0.55f, 5f, 0.55f), Quaternion.identity, enemyMask).Length == 0
+                                && hit.transform != pathNodes[0].transform && hit.transform != pathNodes[1].transform)
                             {
                                 wall.dragInstance.SetActive(false);
-                                GameObject wallObject = Instantiate(GetWallToBuild(), new Vector3(hit.transform.position.x, wall.buildOffsetY, hit.transform.position.z), Quaternion.identity, hit.transform);
+                                miniWall.dragInstance.SetActive(false);
+
+                                GameObject wallObject;
+
+                                if (hit.transform.rotation.y != 0)
+                                {
+                                    wallObject = Instantiate(GetWallToBuild(0), new Vector3(hit.transform.position.x, wall.buildOffsetY, hit.transform.position.z), new Quaternion(0, 0, 0, 0), hit.transform);
+                                }
+                                else
+                                {
+                                    Vector3 rotation = Vector3.zero;
+
+                                    for (int i = 0; i < routeCells.Count; i++)
+                                    {
+                                        if (routeCells[i] == new Vector2Int((int)hit.transform.position.x, (int)hit.transform.position.z))
+                                        {
+                                            if (routeDirections[i] == Vector2Int.right)
+                                            {
+                                                rotation.y = -90f;
+                                            }
+                                            else if (routeDirections[i] == Vector2Int.left)
+                                            {
+                                                rotation.y = 90f;
+                                            }
+                                            else if (routeDirections[i] == Vector2Int.up)
+                                            {
+                                                rotation.y = 180f;
+                                            }
+                                            else if (routeDirections[i] == Vector2Int.down)
+                                            {
+                                                rotation.y = 0f;
+                                            }
+
+                                            break;
+                                        }
+                                    }
+
+                                    wallObject = Instantiate(GetWallToBuild(1), new Vector3(hit.transform.position.x, miniWall.buildOffsetY, hit.transform.position.z), new Quaternion(0, 0, 0, 0), hit.transform);
+                                    wallObject.transform.eulerAngles = rotation;
+                                }
+
                                 TDManager.instance.walls.Add(wallObject.transform.GetChild(0));
                                 objectToBuild = null;
                                 

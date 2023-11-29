@@ -1,9 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GridManager : MonoBehaviour
 {
+    public static GridManager instance = null;
+
     [Header("Grid parameters")]
     public int gridWidth = 16;
     public int gridHeight = 8;
@@ -22,10 +26,11 @@ public class GridManager : MonoBehaviour
     public GridCellObject[] pathCellObjects;
     public GridCellObject[] sceneryCellObjects;
 
-    private PathGenerator pathGenerator;
+    public PathGenerator pathGenerator;
     private List<Transform> pathNodes = new List<Transform>();
 
     private EnemyManager enemyManager;
+    private BuildManager buildManager;
 
     public bool mainScene;
     public GameObject spawnStructure;
@@ -34,6 +39,8 @@ public class GridManager : MonoBehaviour
 
     private void Awake()
     {
+        instance = this;
+
         if (mainScene)
         {
             spawnStructure.SetActive(false);
@@ -46,6 +53,7 @@ public class GridManager : MonoBehaviour
     {
         pathGenerator = new PathGenerator(gridWidth, gridHeight);
         enemyManager = EnemyManager.instance;
+        buildManager = BuildManager.instance;
 
         int iteration = 0;
         //print("Iteration " + iteration);
@@ -82,27 +90,27 @@ public class GridManager : MonoBehaviour
 
     private IEnumerator CreateGrid(List<Vector2Int> pathCells)
     {
-        yield return StartCoroutine(LayPathCells(pathCells));
-        yield return StartCoroutine(LaySceneryCells(pathCells[pathCells.Count - 1]));
-        enemyManager.SetPathCells(pathGenerator.GenerateRoute());
-        
-        BuildManager buildManager = BuildManager.instance;
-
-        foreach (Transform pathNode in grid.GetChild(0))
-        {
-            buildManager.pathNodes.Add(pathNode.GetComponent<Renderer>());
-        }
-
-        TDManager tDManager = TDManager.instance;
-        tDManager.spawnPoint = new Vector3(pathCells[0].x, 0.5f, pathCells[0].y);
+        Tuple<List<Vector2Int>, List<Vector2Int>> route = pathGenerator.GenerateRoute();
+        List<Vector2Int> routeCells = route.Item1;
+        buildManager.SetRoute(route);
+        enemyManager.SetPathCells(routeCells);
 
         if (mainScene)
         {
             spawnStructure.transform.position = new Vector3(pathCells[0].x, 0.5f, pathCells[0].y);
-            spawnStructure.SetActive(true);
+            TDManager tDManager = TDManager.instance;
+            tDManager.spawnPoint = new Vector3(pathCells[0].x, 0.5f, pathCells[0].y);
             endStructure.transform.position = new Vector3(pathCells[pathCells.Count - 1].x + 1.25f, 0.5f, pathCells[pathCells.Count - 1].y);
-            endStructure.SetActive(true);
             mainBase.transform.position = new Vector3(pathCells[pathCells.Count - 1].x, 1f, pathCells[pathCells.Count - 1].y);
+        }
+
+        yield return StartCoroutine(LayPathCells(routeCells));
+        yield return StartCoroutine(LaySceneryCells(pathCells[pathCells.Count - 1]));
+
+        if (mainScene)
+        {
+            spawnStructure.SetActive(true);
+            endStructure.SetActive(true);
             mainBase.transform.parent = pathNodes[pathNodes.Count - 1];
             mainBase.SetActive(true);
         }
@@ -112,14 +120,16 @@ public class GridManager : MonoBehaviour
 
     private IEnumerator LayPathCells(List<Vector2Int> pathCells)
     {
-        foreach (Vector2Int pathCell in pathCells)
+        for (int i = 0; i < pathCells.Count - 2; i++)
         {
-            int neighbourValue = pathGenerator.getCellNeighbourValue(pathCell.x, pathCell.y);
-            //Debug.Log("Tile " + pathCell.x + ", " + pathCell.y + " neighbour value = " + neighbourValue);
+            int neighbourValue = pathGenerator.getCellNeighbourValue(pathCells[i].x, pathCells[i].y);
+            //Debug.Log("Tile " + pathCells[i].x + ", " + pathCells[i].y + " neighbour value = " + neighbourValue);
 
             GameObject pathTile = pathCellObjects[neighbourValue].cellPrefab;
-            GameObject pathTileCell = Instantiate(pathTile, new Vector3(pathCell.x, 0f, pathCell.y), Quaternion.identity, grid.GetChild(0));
+            GameObject pathTileCell = Instantiate(pathTile, new Vector3(pathCells[i].x, 0f, pathCells[i].y), Quaternion.identity, grid.GetChild(0));
             pathNodes.Add(pathTileCell.transform);
+            buildManager.pathNodes.Add(pathTileCell.GetComponent<Renderer>());
+
             pathTileCell.transform.Rotate(0f, pathCellObjects[neighbourValue].yRotation, 0f, Space.Self);
 
             yield return new WaitForSeconds(0.05f);
@@ -152,7 +162,7 @@ public class GridManager : MonoBehaviour
                     }
                     
                     Instantiate(sceneryCellObjects[randomSceneryCellIndex].cellPrefab, new Vector3(x, 0f, y), Quaternion.identity, grid.GetChild(1));
-                    yield return new WaitForSeconds(0.01f);
+                    yield return new WaitForSeconds(0.005f);
                 }
             }
         }

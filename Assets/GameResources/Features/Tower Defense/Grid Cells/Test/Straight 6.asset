@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e060af53041468d4cbfcb7cc4468dd68, type: 3}
-  m_Name: Crossroads 15
+  m_Name: Straight 6
   m_EditorClassIdentifier: 
   cellType: 0
-  cellPrefab: {fileID: 2871493014758776274, guid: e1175e879f886b74782406f68d9edfbb, type: 3}
-  yRotation: 360
+  cellPrefab: {fileID: 7472298477687144587, guid: 7a61f9fa6d3a3ce4e9cd619c292f1514, type: 3}
+  yRotation: 90

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6986384287604843284}
   - component: {fileID: 6986384287604843283}
   - component: {fileID: 6986384287604843282}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Legal Location Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
