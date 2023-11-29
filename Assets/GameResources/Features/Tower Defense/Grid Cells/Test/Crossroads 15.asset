@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Crossroads 15
   m_EditorClassIdentifier: 
   cellType: 0
-  cellPrefab: {fileID: 2871493014758776274, guid: e1175e879f886b74782406f68d9edfbb, type: 3}
-  yRotation: 360
+  cellPrefab: {fileID: 5127833634570740475, guid: 6e8f10351385fbb4f84c0e0268031413, type: 3}
+  yRotation: 0

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PathGenerator
 {
@@ -8,6 +10,7 @@ public class PathGenerator
     private int height;
     private List<Vector2Int> pathCells;
     private List<Vector2Int> route;
+    private List<Vector2Int> routeDirection;
 
     public int loopCount = 0;
 
@@ -64,15 +67,17 @@ public class PathGenerator
         return pathCells;
     }
 
-    public List<Vector2Int> GenerateRoute()
+    public Tuple<List<Vector2Int>, List<Vector2Int>> GenerateRoute()
     {
         Vector2Int direction = Vector2Int.right;
         route = new List<Vector2Int>();
         Vector2Int currentCell = pathCells[0];
+        routeDirection = new List<Vector2Int>();
 
         while (currentCell.x < width - 1)
         {
             route.Add(new Vector2Int(currentCell.x, currentCell.y));
+            routeDirection.Add(direction);
 
             if (CellIsTaken(currentCell + direction))
             {
@@ -104,11 +109,11 @@ public class PathGenerator
                 route.Add(new Vector2Int(currentCell.x, currentCell.y));
                 currentCell += Vector2Int.right;
                 route.Add(new Vector2Int(currentCell.x, currentCell.y));
-                return route;
+                return new Tuple<List<Vector2Int>, List<Vector2Int>>(route, routeDirection);
             }
         }
 
-        return route;
+        return new Tuple<List<Vector2Int>, List<Vector2Int>>(route, routeDirection);
     }
 
     public void AddLoops(int loops)
