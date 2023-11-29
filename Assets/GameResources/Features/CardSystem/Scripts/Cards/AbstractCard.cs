@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace GameJam.Features.CardSystem
 {
     using UnityEngine;
@@ -5,8 +8,9 @@ namespace GameJam.Features.CardSystem
     /// <summary>
     /// Абстрактная карточка с событием
     /// </summary>
-    public abstract class AbstractCard : ScriptableObject
-    {
+    public abstract class AbstractCard : ScriptableObject {
+        
+        public static event EventHandler OnCardActivated;
         /// <summary>
         /// Название
         /// </summary>
@@ -30,13 +34,14 @@ namespace GameJam.Features.CardSystem
         /// <summary>
         /// Звук события в карте
         /// </summary>
-        public AudioSource EventSound = default;
+        public List<AudioClip> EventSoundList = new List<AudioClip>();
 
         /// <summary>
         /// Активировать карту
         /// </summary>
         public virtual void ActivateCard()
         {
+            OnCardActivated?.Invoke(this, EventArgs.Empty);
             CoolnessScaleController.Instance.AddCoolness(Coolness);
         }
 

@@ -15,11 +15,7 @@
 		{
 			base.ActivateCard();
 			
-			
 			TDManager.instance.Freeze(Duration);
-			
-			SoundManager soundManager = SoundManager.Instance;
-			soundManager.PlaySound(soundManager.audioClipRefsSo.freeze, Camera.main.transform.position);
 			
 		}
 	}

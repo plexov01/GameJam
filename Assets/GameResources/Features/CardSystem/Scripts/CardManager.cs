@@ -22,6 +22,7 @@ namespace GameJam.Features.CardSystem
         private int _numberOfSelection = default;
 
         private bool _firstStage = true;
+        public bool IsCardReshuffleAvailable { get; private set; }
 
         private UiCardController _uiCardController = default;
 
@@ -71,9 +72,13 @@ namespace GameJam.Features.CardSystem
         public List<AbstractCard> GetRandomCards(int number)
         {
             List<AbstractCard> cards = new List<AbstractCard>();
-            for (int i = 0; i < number; i++)
-            {
-                cards.Add(_abstractNotSpecialCards[Random.Range(0,_abstractNotSpecialCards.Count)]);
+            for (int i = 0; i < number; i++) {
+                AbstractCard randomCard = _abstractNotSpecialCards[Random.Range(0, _abstractNotSpecialCards.Count)];
+                while (cards.Contains(randomCard)) {
+                    randomCard = _abstractNotSpecialCards[Random.Range(0, _abstractNotSpecialCards.Count)];
+                }
+                
+                cards.Add(randomCard);
             }
             
             return cards;
@@ -98,6 +103,7 @@ namespace GameJam.Features.CardSystem
             if (selectedCard!=null)
             {
                 selectedCard.ActivateCard();
+                IsCardReshuffleAvailable = true;
                 TryChooseNextCard();
             }
             else
@@ -117,10 +123,17 @@ namespace GameJam.Features.CardSystem
         /// </summary>
         public void TryChooseNextCard()
         {
-            if (_numberOfSelection>0)
+            if (!GameHandler.Instance.IsFirstStageActive() || _numberOfSelection>0)
             {
                 _numberOfSelection--;
                 _uiCardController.ShowUIChooseCard();
+
+                if (IsCardReshuffleAvailable && !GameHandler.Instance.IsFirstStageActive()) {
+                    _uiCardController.ShowReshuffleButton();
+                } else {
+                    _uiCardController.HideReshuffleButton();
+                }
+                
                 List<AbstractCard> cards = new List<AbstractCard>();
                 
                 if (_firstStage)
@@ -129,7 +142,7 @@ namespace GameJam.Features.CardSystem
                 }
                 else
                 {
-                    cards = GetRandomCards(2);
+                    cards = GetRandomCards(3);
                     
                     // Добавление 1 карты с 40% шансом
                     if (Random.Range(0, 100)<40)
@@ -147,11 +160,17 @@ namespace GameJam.Features.CardSystem
             }
         }
 
+        public void TryToReshuffleCards() {
+            if (!IsCardReshuffleAvailable) return;
+            
+            IsCardReshuffleAvailable = false;
+            TryChooseNextCard();
+        }
+
         private void Start()
         {
             SetNumberCardSelection(5);
             TryChooseNextCard();
-            
         }
 
         private void DoLogicOnStages(object sender, EventArgs args)
@@ -160,14 +179,17 @@ namespace GameJam.Features.CardSystem
             {
                 StopAllCoroutines();
             }
-            if (!GameHandler.Instance.IsFirstStageActive())
+            if (GameHandler.Instance.IsSecondStageActive())
             {
                 _firstStage = false;
-                if (_coroutineShowCard == null)
-                {
-                    SetNumberCardSelection(0);
-                    _coroutineShowCard = StartCoroutine(ShowCardEveryTime(TimeLoopShow));
-                }
+                
+                TryChooseNextCard();
+                
+                // if (_coroutineShowCard == null)
+                // {
+                //     SetNumberCardSelection(0);
+                //     _coroutineShowCard = StartCoroutine(ShowCardEveryTime(TimeLoopShow));
+                // }
                 
             }
 

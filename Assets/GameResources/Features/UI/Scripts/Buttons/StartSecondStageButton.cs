@@ -9,9 +9,6 @@ public class StartSecondStageButton : AbstractButton
     {
         GameHandler.Instance.ChangeState(GameHandler.State.SecondStage);
         
-        SoundManager soundManager = SoundManager.Instance;
-        soundManager.PlaySound(soundManager.audioClipRefsSo.stealCheese,Camera.main.transform.position);
-        
         Destroy(gameObject);
     }
 }
