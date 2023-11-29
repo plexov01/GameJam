@@ -2529,10 +2529,16 @@ MonoBehaviour:
     dragOffsetY: 0.6
     dragInstance: {fileID: 0}
   wall:
-    buildPrefab: {fileID: 6792631582812006100, guid: 26a73e7ca575c5d42b5aae756dd2ab3a, type: 3}
-    buildOffsetY: 1
-    dragPrefab: {fileID: 6792631582812006100, guid: 56163fe5a01a41f4c91f9d5e4dc274e5, type: 3}
-    dragOffsetY: 1.1
+    buildPrefab: {fileID: 6942433500770526434, guid: 3689adf2f5c465e458d449d14f3fe733, type: 3}
+    buildOffsetY: 0.5
+    dragPrefab: {fileID: 6942433500770526434, guid: a4e39b3f459d9704a8e33dd9d810450f, type: 3}
+    dragOffsetY: 0.6
+    dragInstance: {fileID: 0}
+  miniWall:
+    buildPrefab: {fileID: 6942433500770526434, guid: 2f485581e3d566d439353e0188813b8b, type: 3}
+    buildOffsetY: 0.5
+    dragPrefab: {fileID: 6942433500770526434, guid: fa572e62960019e40ab276d31c0bcd15, type: 3}
+    dragOffsetY: 0.6
     dragInstance: {fileID: 0}
   mine:
     buildPrefab: {fileID: 1387924229312095131, guid: ac5f8ce51eadf9348aa59c312364c9d0, type: 3}
@@ -2589,22 +2595,22 @@ MonoBehaviour:
   addLoops: 0
   grid: {fileID: 1050934795}
   pathCellObjects:
-  - {fileID: 11400000, guid: 856efa6edb6ecef43b61ccdfbd646365, type: 2}
-  - {fileID: 11400000, guid: 856efa6edb6ecef43b61ccdfbd646365, type: 2}
-  - {fileID: 11400000, guid: 856efa6edb6ecef43b61ccdfbd646365, type: 2}
-  - {fileID: 11400000, guid: 856efa6edb6ecef43b61ccdfbd646365, type: 2}
-  - {fileID: 11400000, guid: 856efa6edb6ecef43b61ccdfbd646365, type: 2}
-  - {fileID: 11400000, guid: 856efa6edb6ecef43b61ccdfbd646365, type: 2}
-  - {fileID: 11400000, guid: 856efa6edb6ecef43b61ccdfbd646365, type: 2}
-  - {fileID: 11400000, guid: 856efa6edb6ecef43b61ccdfbd646365, type: 2}
-  - {fileID: 11400000, guid: 856efa6edb6ecef43b61ccdfbd646365, type: 2}
-  - {fileID: 11400000, guid: 856efa6edb6ecef43b61ccdfbd646365, type: 2}
-  - {fileID: 11400000, guid: 856efa6edb6ecef43b61ccdfbd646365, type: 2}
-  - {fileID: 11400000, guid: 856efa6edb6ecef43b61ccdfbd646365, type: 2}
-  - {fileID: 11400000, guid: 856efa6edb6ecef43b61ccdfbd646365, type: 2}
-  - {fileID: 11400000, guid: 856efa6edb6ecef43b61ccdfbd646365, type: 2}
-  - {fileID: 11400000, guid: 856efa6edb6ecef43b61ccdfbd646365, type: 2}
-  - {fileID: 11400000, guid: 856efa6edb6ecef43b61ccdfbd646365, type: 2}
+  - {fileID: 11400000, guid: f596c0e3a37b4524ab8d80aff3085839, type: 2}
+  - {fileID: 11400000, guid: f596c0e3a37b4524ab8d80aff3085839, type: 2}
+  - {fileID: 11400000, guid: f596c0e3a37b4524ab8d80aff3085839, type: 2}
+  - {fileID: 11400000, guid: f596c0e3a37b4524ab8d80aff3085839, type: 2}
+  - {fileID: 11400000, guid: f596c0e3a37b4524ab8d80aff3085839, type: 2}
+  - {fileID: 11400000, guid: f596c0e3a37b4524ab8d80aff3085839, type: 2}
+  - {fileID: 11400000, guid: f596c0e3a37b4524ab8d80aff3085839, type: 2}
+  - {fileID: 11400000, guid: f596c0e3a37b4524ab8d80aff3085839, type: 2}
+  - {fileID: 11400000, guid: f596c0e3a37b4524ab8d80aff3085839, type: 2}
+  - {fileID: 11400000, guid: f596c0e3a37b4524ab8d80aff3085839, type: 2}
+  - {fileID: 11400000, guid: f596c0e3a37b4524ab8d80aff3085839, type: 2}
+  - {fileID: 11400000, guid: f596c0e3a37b4524ab8d80aff3085839, type: 2}
+  - {fileID: 11400000, guid: f596c0e3a37b4524ab8d80aff3085839, type: 2}
+  - {fileID: 11400000, guid: f596c0e3a37b4524ab8d80aff3085839, type: 2}
+  - {fileID: 11400000, guid: f596c0e3a37b4524ab8d80aff3085839, type: 2}
+  - {fileID: 11400000, guid: 0aa04a1a9168bc245b69e0e55c2644de, type: 2}
   sceneryCellObjects:
   - {fileID: 11400000, guid: 48b7e3282dc536b42b32a1aeb9def208, type: 2}
   mainScene: 1

@@ -40,7 +40,8 @@ public class Meteor : MonoBehaviour
       
         SoundManager soundManager = SoundManager.Instance;
         soundManager.PlaySound(soundManager.audioClipRefsSo.meteor, Camera.main.transform.position);
-        Destroy(objectToDestroy);
+        
         OnMeteorExploded?.Invoke(this, EventArgs.Empty);
+        Destroy(objectToDestroy);
     }
 }
