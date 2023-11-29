@@ -15,6 +15,8 @@ namespace GameJam.Features.CardSystem
         
         private List<ChooseCardButton> _chooseCardButtons = new List<ChooseCardButton>();
 
+        [SerializeField] private GameObject reshuffleButton;
+
         private void Awake()
         {
             _currentButtons = GetComponentsInChildren<ChooseCardButton>().ToList();
@@ -39,6 +41,14 @@ namespace GameJam.Features.CardSystem
                 _currentButtons[i].gameObject.GetComponent<Image>().sprite = cards[i].CardSprite;
                 _currentButtons[i].gameObject.SetActive(true);
             }
+        }
+
+        public void ShowReshuffleButton() {
+            reshuffleButton.SetActive(true);
+        }
+        
+        public void HideReshuffleButton() {
+            reshuffleButton.SetActive(false);
         }
         
         public void ShowUIChooseCard()
