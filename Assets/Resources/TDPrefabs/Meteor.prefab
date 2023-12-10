@@ -274,7 +274,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7142726745259104331}
   - component: {fileID: 6931819981451288617}
-  m_Layer: 16
+  m_Layer: 17
   m_Name: Trigger
   m_TagString: Meteor
   m_Icon: {fileID: 0}

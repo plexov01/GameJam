@@ -65,63 +65,90 @@ public class TDManager : MonoBehaviour
 
     private void Update()
     {
-        /*if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.T))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, 100))
-            {
-                Debug.Log(hit.transform.gameObject.name);
-            }
-        }*/
-
-        if (Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            LavaFloor(3f);
+            BuildTower();
         }
 
-        if (Input.GetKeyDown(KeyCode.Keypad2))
+        if (Input.GetKeyDown(KeyCode.W))
         {
-            Freeze(3f);
+            BuildWall();
         }
 
-        if (Input.GetKeyDown(KeyCode.Keypad3))
+        if (Input.GetKeyDown(KeyCode.B))
         {
-            //FindObjectOfType<GameJam.Features.UI.DarkController>()?.ShowDark();
+            BuildMine();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
             Repair();
         }
-        
-        if (Input.GetKeyDown(KeyCode.Keypad4))
-        {
-            CoolnessScaleController.Instance.AddCoolness(-100);
-            //BuildTower();
-        }
-        
-        if (Input.GetKeyDown(KeyCode.Keypad5))
-        {
-            CoolnessScaleController.Instance.AddCoolness(100);
-            //BuildWall();
-        }
-        
-        if (Input.GetKeyDown(KeyCode.Keypad6))
-        {
-            SpawnMeteor();
-        }
-        
-        if (Input.GetKeyDown(KeyCode.Keypad7))
+
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             ChangeTurretTier(true);
         }
-        
-        if (Input.GetKeyDown(KeyCode.Keypad8))
+
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             ChangeTurretTier(false);
         }
-        
-        if (Input.GetKeyDown(KeyCode.Keypad9))
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Freeze(10f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            LavaFloor(10f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            SpawnMeteor();
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            StartCoroutine(SpawnEnemies(10, 0, 0.2f));
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            ChangeEnemiesStats(0, 400f, 1.5f, 1.5f, 5f, 0f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
         {
             ShortCircuit();
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            FindObjectOfType<GameJam.Features.UI.DarkController>()?.ShowDark();
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            CoolnessScaleController.Instance.canChangeCoolness = !CoolnessScaleController.Instance.canChangeCoolness;
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Equals))
+        {
+            bool scaleStatus = CoolnessScaleController.Instance.canChangeCoolness;
+            CoolnessScaleController.Instance.canChangeCoolness = true;
+            CoolnessScaleController.Instance.AddCoolness(100);
+            CoolnessScaleController.Instance.canChangeCoolness = scaleStatus;
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Minus))
+        {
+            bool scaleStatus = CoolnessScaleController.Instance.canChangeCoolness;
+            CoolnessScaleController.Instance.canChangeCoolness = true;
+            CoolnessScaleController.Instance.AddCoolness(-100);
+            CoolnessScaleController.Instance.canChangeCoolness = scaleStatus;
         }
     }
 
@@ -505,13 +532,17 @@ public class TDManager : MonoBehaviour
             friendList.Add(mainBase);
 
             aim = friendList[Random.Range(0, friendList.Count)];
+            Instantiate(meteorPrefab, new Vector3(aim.position.x, aim.position.y + meteorHeight, aim.position.z), Quaternion.identity);
+        }
+        else if (enemies.Count != 0)
+        {
+            aim = enemies[Random.Range(0, enemies.Count)];
+            Instantiate(meteorPrefab, new Vector3(aim.position.x, aim.position.y + meteorHeight, aim.position.z), Quaternion.identity);
         }
         else
         {
-            aim = enemies[Random.Range(0, enemies.Count)];
+            Instantiate(meteorPrefab, new Vector3(spawnPoint.x, spawnPoint.y + meteorHeight, spawnPoint.z), Quaternion.identity);
         }
-
-        Instantiate(meteorPrefab, new Vector3(aim.position.x, aim.position.y + meteorHeight, aim.position.z), Quaternion.identity);
     }
 
     public void ChangeTurretTier(bool upgrade)

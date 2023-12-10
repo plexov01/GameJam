@@ -180,12 +180,15 @@ public class BuildManager : MonoBehaviour
 
     private void Update()
     {
-        /*Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit1;
+        /*if (Input.GetMouseButtonDown(0))
+        {    
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit1;
 
-        if (Physics.Raycast(ray, out hit1, 100, layerMask))
-        {
-            Debug.Log(hit1.transform.gameObject.name);
+            if (Physics.Raycast(ray, out hit1, 100, layerMask))
+            {
+                Debug.Log(hit1.transform.gameObject.name);
+            }
         }*/
 
         if (objectToBuild != null)

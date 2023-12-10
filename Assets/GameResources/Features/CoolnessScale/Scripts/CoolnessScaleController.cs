@@ -9,6 +9,9 @@ public class CoolnessScaleController : MonoBehaviour
     public static CoolnessScaleController Instance { get; private set; }
     
     public static event EventHandler<OnCoolnessChangedEventArgs> OnCoolnessChanged;
+
+    public bool canChangeCoolness = true;
+
     public class OnCoolnessChangedEventArgs : EventArgs
     {
         public float coolness;
@@ -26,8 +29,11 @@ public class CoolnessScaleController : MonoBehaviour
 
     public void AddCoolness(int points)
     {
-        currentCoolness += points;
-        OnCoolnessChanged?.Invoke(this,new OnCoolnessChangedEventArgs{coolness = GetCoolness()});
+        if (canChangeCoolness)
+        {
+            currentCoolness += points;
+            OnCoolnessChanged?.Invoke(this, new OnCoolnessChangedEventArgs { coolness = GetCoolness() });
+        }
     }
 
     public float GetCoolness()

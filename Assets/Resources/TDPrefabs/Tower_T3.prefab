@@ -5038,7 +5038,7 @@ GameObject:
   - component: {fileID: 4478343906566039645}
   - component: {fileID: 8566218354239996971}
   - component: {fileID: 7684319258308841721}
-  m_Layer: 16
+  m_Layer: 17
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5143,7 +5143,6 @@ MonoBehaviour:
   fireRate: 1
   firePoint: {fileID: 1091156881779123801}
   bulletPrefab: {fileID: 8927981542334459953, guid: 81f440eb4061ed04b9e276ffe0a9c733, type: 3}
-  partSys: {fileID: 0}
   partToRotate: {fileID: 8276893961519824481}
   barrel: {fileID: 8603589264270440076}
   turnSpeed: 10
