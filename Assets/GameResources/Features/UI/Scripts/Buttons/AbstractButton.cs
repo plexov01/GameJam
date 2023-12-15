@@ -8,7 +8,7 @@ namespace GameJam.Features.UI
     [RequireComponent(typeof(Button))]
     public abstract class AbstractButton : MonoBehaviour
     {
-        private Button _button = default;
+        protected Button _button = default;
 
         protected virtual void Awake()
         {

@@ -38,7 +38,7 @@ namespace GameJam.Features.CardSystem
             for (int i = 0; i < cards.Count; i++)
             {
                 _currentButtons[i].SetNameCard(cards[i].name);
-                _currentButtons[i].gameObject.GetComponent<Image>().sprite = cards[i].CardSprite;
+                _currentButtons[i].gameObject.GetComponent<SingleCardUI>().SetCardImage(cards[i].CardSprite);
                 _currentButtons[i].gameObject.SetActive(true);
             }
         }

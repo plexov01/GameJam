@@ -4,6 +4,7 @@ namespace GameJam.Features.CardSystem
     using GameJam.Features.UI;
     using UnityEngine;
     using UnityEngine.UI;
+    using UnityEngine.EventSystems;
 
     /// <summary>
     /// Кнопка активации карточки
@@ -23,7 +24,7 @@ namespace GameJam.Features.CardSystem
             _cardManager = FindObjectOfType<CardManager>();
             _uiCardController = FindObjectOfType<UiCardController>();
         }
-
+        
         protected override void ClickAction()
         {
             _cardManager.SelectCard(_nameCard);
@@ -33,6 +34,8 @@ namespace GameJam.Features.CardSystem
         /// </summary>
         /// <param name="name"></param>
         public void SetNameCard(string name) => _nameCard = name;
+        
+        
     }
 }
 
