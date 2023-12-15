@@ -16,8 +16,8 @@ MonoBehaviour:
   Description: 
   Special: 0
   Coolness: 100
-  CardSprite: {fileID: 21300000, guid: 5e787833a378d6142b076c8a578f301e, type: 3}
-  EventSound: {fileID: 0}
+  CardSprite: {fileID: -1061321560, guid: 5e787833a378d6142b076c8a578f301e, type: 3}
+  EventSoundList: []
   DeltaHealth: 400
   SpeedDivider: 1.5
   SizeMultiplier: 1.5

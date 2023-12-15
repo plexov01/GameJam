@@ -16,5 +16,5 @@ MonoBehaviour:
   Description: 
   Special: 1
   Coolness: 200
-  CardSprite: {fileID: 21300000, guid: afe6fc8c013cda14daca70e671421f49, type: 3}
-  EventSound: {fileID: 0}
+  CardSprite: {fileID: -1871714243, guid: afe6fc8c013cda14daca70e671421f49, type: 3}
+  EventSoundList: []
