@@ -395,23 +395,7 @@ public class TDManager : MonoBehaviour
             {
                 if (enemy != null)
                 {
-                    EnemyRat stats = enemy.GetComponent<EnemyRat>();
-                    stats.isFrozen = true;
-                    stats.currentSpeed = 0f;
-                    stats.ice.SetActive(true);
-                }
-            }
-            
-            yield return new WaitForSeconds(duration);
-            
-            foreach (Transform enemy in enemyList)
-            {
-                if (enemy != null)
-                {
-                    EnemyRat stats = enemy.GetComponent<EnemyRat>();
-                    stats.isFrozen = false;
-                    stats.currentSpeed = stats.baseSpeed;
-                    stats.ice.SetActive(false);
+                    enemy.GetComponent<Enemy>().Freeze(duration);
                 }
             }
         }

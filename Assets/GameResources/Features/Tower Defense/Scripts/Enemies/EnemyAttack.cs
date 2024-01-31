@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
 {
-    [SerializeField] private EnemyRat enemy;
+    [SerializeField] private Enemy enemy;
     private Transform attackTarget;
     private Coroutine attackCoroutine = null;
 

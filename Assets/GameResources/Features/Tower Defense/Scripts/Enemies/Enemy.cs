@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyRat : MonoBehaviour, IDamageable
+public class Enemy : MonoBehaviour, IDamageable
 {
     [Header("Enemy")]
     public int type;
-    [HideInInspector] public float size;
+    [SerializeField] private int coolnessCost;
     [SerializeField] private GameObject objectToDestroy;
+    [HideInInspector] public float size;
     private Transform enemy;
     private EnemyManager enemyManager;
 
@@ -18,28 +19,24 @@ public class EnemyRat : MonoBehaviour, IDamageable
     [Header("Attack")]
     public float damage;
     public float attackSpeed;
-    public bool attacking;
+    [ReadOnlyInspector] public bool attacking;
 
     [Header("Movement")]
     public float baseSpeed;
     public float currentSpeed;
-
-    [Header("Waypoints")]
+    // Waypoints
     private Vector3 target;
     private int nextPathCellIndex = 0;
-    public bool reachedEnd = false;
+    [ReadOnlyInspector, SerializeField] private bool reachedEnd = false;
 
     [Header("Freeze")]
-    public bool isFrozen = false;
-    public GameObject ice;
+    [SerializeField] private GameObject ice;
+    [ReadOnlyInspector] public bool isFrozen = false;
+    private Coroutine freezeCoroutine = null;
 
-    private void Awake()
+    protected virtual void Start()
     {
         enemy = objectToDestroy.transform;
-    }
-
-    private void Start()
-    {
         enemyManager = EnemyManager.instance;
         target = new Vector3(enemyManager.pathRoute[nextPathCellIndex].x, transform.position.y, enemyManager.pathRoute[nextPathCellIndex].y);
 
@@ -50,20 +47,25 @@ public class EnemyRat : MonoBehaviour, IDamageable
         enemy.LookAt(new Vector3(enemyManager.pathRoute[nextPathCellIndex].x, transform.position.y, enemyManager.pathRoute[nextPathCellIndex].y));
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (!attacking && !reachedEnd && enemyManager.pathRoute != null)
         {
-            Vector3 dir = target - enemy.position;
-            enemy.Translate(currentSpeed * Time.deltaTime * dir.normalized, Space.World);
+            Move();
+        }
+    }
 
-            Vector2 transformPosition = new Vector2(enemy.position.x, enemy.position.z);
-            Vector2 targetPosition = new Vector2(target.x, target.z);
+    private void Move()
+    {
+        Vector3 dir = target - enemy.position;
+        enemy.Translate(currentSpeed * Time.deltaTime * dir.normalized, Space.World);
 
-            if (Vector2.Distance(transformPosition, targetPosition) <= 0.1f)
-            {
-                GetNextPathCell();
-            }
+        Vector2 transformPosition = new Vector2(enemy.position.x, enemy.position.z);
+        Vector2 targetPosition = new Vector2(target.x, target.z);
+
+        if (Vector2.Distance(transformPosition, targetPosition) <= 0.1f)
+        {
+            GetNextPathCell();
         }
     }
 
@@ -88,7 +90,7 @@ public class EnemyRat : MonoBehaviour, IDamageable
         {
             currentSpeed = baseSpeed;
         }
-        
+
         enemy.localScale = new Vector3(size, size, size);
     }
 
@@ -99,11 +101,41 @@ public class EnemyRat : MonoBehaviour, IDamageable
         currentHealth *= modifier;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void Freeze(float duration)
     {
-        if (other.CompareTag("Meteor"))
+        if (freezeCoroutine != null)
         {
-            TakeDamage(TDManager.instance.meteorDamage);
+            StopCoroutine(freezeCoroutine);
+            freezeCoroutine = null;
+        }
+
+        freezeCoroutine = StartCoroutine(FreezeCoroutine(duration));
+    }
+
+    private IEnumerator FreezeCoroutine(float duration)
+    {
+        ice.SetActive(true);
+        currentSpeed = 0f;
+        isFrozen = true;
+
+        yield return new WaitForSeconds(duration);
+
+        ice.SetActive(false);
+        currentSpeed = baseSpeed;
+        isFrozen = false;
+
+        freezeCoroutine = null;
+    }
+
+    public void UnFreeze()
+    {
+        if (freezeCoroutine != null)
+        {
+            StopCoroutine(freezeCoroutine);
+            freezeCoroutine = null;
+            ice.SetActive(false);
+            currentSpeed = baseSpeed;
+            isFrozen = false;
         }
     }
 
@@ -123,11 +155,11 @@ public class EnemyRat : MonoBehaviour, IDamageable
 
         if (CoolnessScaleController.Instance.isDark)
         {
-            CoolnessScaleController.Instance.AddCoolness(+5);
+            CoolnessScaleController.Instance.AddCoolness(+coolnessCost);
         }
         else
         {
-            CoolnessScaleController.Instance.AddCoolness(-5);
+            CoolnessScaleController.Instance.AddCoolness(-coolnessCost);
         }
 
         Destroy(objectToDestroy);

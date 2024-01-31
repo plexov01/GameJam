@@ -472,8 +472,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  size: 0
+  coolnessCost: 5
   objectToDestroy: {fileID: 6471479555840823038}
+  size: 0
   baseHealth: 90
   currentHealth: 0
   damage: 50
@@ -482,8 +483,8 @@ MonoBehaviour:
   baseSpeed: 2.5
   currentSpeed: 0
   reachedEnd: 0
-  isFrozen: 0
   ice: {fileID: 6252938811763007128}
+  isFrozen: 0
 --- !u!135 &5629343764263988544
 SphereCollider:
   m_ObjectHideFlags: 0
