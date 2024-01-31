@@ -7,9 +7,9 @@ public class Enemy : MonoBehaviour, IDamageable
     [Header("Enemy")]
     public int type;
     [SerializeField] private int coolnessCost;
-    [SerializeField] private GameObject objectToDestroy;
+    [SerializeField] protected GameObject objectToDestroy;
     [HideInInspector] public float size;
-    private Transform enemy;
+    private Transform enemyTransform;
     private EnemyManager enemyManager;
 
     [Header("Health")]
@@ -36,20 +36,20 @@ public class Enemy : MonoBehaviour, IDamageable
 
     protected virtual void Start()
     {
-        enemy = objectToDestroy.transform;
+        enemyTransform = objectToDestroy.transform;
         enemyManager = EnemyManager.instance;
         target = new Vector3(enemyManager.pathRoute[nextPathCellIndex].x, transform.position.y, enemyManager.pathRoute[nextPathCellIndex].y);
 
         currentHealth = baseHealth;
         currentSpeed = baseSpeed;
-        size = enemy.localScale.x;
+        size = enemyTransform.localScale.x;
 
-        enemy.LookAt(new Vector3(enemyManager.pathRoute[nextPathCellIndex].x, transform.position.y, enemyManager.pathRoute[nextPathCellIndex].y));
+        enemyTransform.LookAt(new Vector3(enemyManager.pathRoute[nextPathCellIndex].x, transform.position.y, enemyManager.pathRoute[nextPathCellIndex].y));
     }
 
     protected virtual void Update()
     {
-        if (!attacking && !reachedEnd && enemyManager.pathRoute != null)
+        if (!attacking && !isFrozen && !reachedEnd && enemyManager.pathRoute != null)
         {
             Move();
         }
@@ -57,10 +57,10 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void Move()
     {
-        Vector3 dir = target - enemy.position;
-        enemy.Translate(currentSpeed * Time.deltaTime * dir.normalized, Space.World);
+        Vector3 dir = target - enemyTransform.position;
+        enemyTransform.Translate(currentSpeed * Time.deltaTime * dir.normalized, Space.World);
 
-        Vector2 transformPosition = new Vector2(enemy.position.x, enemy.position.z);
+        Vector2 transformPosition = new Vector2(enemyTransform.position.x, enemyTransform.position.z);
         Vector2 targetPosition = new Vector2(target.x, target.z);
 
         if (Vector2.Distance(transformPosition, targetPosition) <= 0.1f)
@@ -81,7 +81,7 @@ public class Enemy : MonoBehaviour, IDamageable
         nextPathCellIndex++;
         target = new Vector3(enemyManager.pathRoute[nextPathCellIndex].x, transform.position.y, enemyManager.pathRoute[nextPathCellIndex].y);
 
-        enemy.LookAt(new Vector3(enemyManager.pathRoute[nextPathCellIndex].x, transform.position.y, enemyManager.pathRoute[nextPathCellIndex].y));
+        enemyTransform.LookAt(new Vector3(enemyManager.pathRoute[nextPathCellIndex].x, transform.position.y, enemyManager.pathRoute[nextPathCellIndex].y));
     }
 
     public void UpdateStats()
@@ -91,7 +91,7 @@ public class Enemy : MonoBehaviour, IDamageable
             currentSpeed = baseSpeed;
         }
 
-        enemy.localScale = new Vector3(size, size, size);
+        enemyTransform.localScale = new Vector3(size, size, size);
     }
 
     public void UpgradeEnemy(float modifier)

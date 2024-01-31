@@ -2492,6 +2492,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefabs:
   - {fileID: 6471479555840823038, guid: 8860f266600886b45b5cc33c25677a8b, type: 3}
+  - {fileID: 6471479555840823038, guid: 15af5f0a6d709634185b46b9bf40bde6, type: 3}
   pathRoute: []
 --- !u!114 &760727379
 MonoBehaviour:
@@ -2573,6 +2574,8 @@ MonoBehaviour:
   walls: []
   mines: []
   mainBase: {fileID: 61296192}
+  freezeTimer: 0
+  lavaTimer: 0
 --- !u!114 &760727381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6218,6 +6221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12c7d4221380921479d19f54a745d700, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canChangeCoolness: 1
   coolnessMax: 1000
   currentCoolness: 350
   isDark: 0

@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 3143732834926274122}
   - component: {fileID: 8117484326291737389}
   - component: {fileID: 2856522601048751075}
-  - component: {fileID: 1750275087987047212}
-  m_Layer: 8
-  m_Name: TowerNode
-  m_TagString: TowerNode
+  m_Layer: 0
+  m_Name: BrokenTowerNode
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -62,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 008debefff499fd42816e19eaf7546df, type: 2}
+  - {fileID: 2100000, guid: ab2e55f613c291742bfbef863b80ea1c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,16 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1750275087987047212
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1563155269728197486}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}

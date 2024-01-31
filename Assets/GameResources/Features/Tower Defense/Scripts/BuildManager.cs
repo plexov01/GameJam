@@ -44,6 +44,7 @@ public class BuildManager : MonoBehaviour
     private string pathNodeTag = "PathNode";
     private string wallTag = "Wall";
     private string mainBaseTag = "MainBase";
+    private string brokenTowerNodeTag = "BrokenTowerNode";
 
     public LayerMask enemyMask;
 
@@ -367,6 +368,12 @@ public class BuildManager : MonoBehaviour
                             legalPlaneInstance.SetActive(true);
                             illegalPlaneInstance.SetActive(false);
                         }
+                        else if (hit.transform.CompareTag(brokenTowerNodeTag)) 
+                        {
+                            legalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, planeOffsetY, hit.transform.position.z);
+                            legalPlaneInstance.SetActive(true);
+                            illegalPlaneInstance.SetActive(false);
+                        }
                         else
                         {
                             illegalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, planeOffsetY, hit.transform.position.z);
@@ -548,11 +555,26 @@ public class BuildManager : MonoBehaviour
                                 Wall wall = hit.transform.GetComponent<Wall>();
                                 wall.currentHealth = wall.baseHealth;
                                 objectToBuild = null;
-                                
-                                OnConstructionPlaced?.Invoke(this, new OnConstructionPlacedEventArgs() {
+
+                                OnConstructionPlaced?.Invoke(this, new OnConstructionPlacedEventArgs()
+                                {
                                     buildMode = buildMode
                                 });
-                                
+
+                                buildMode = BuildMode.None;
+                            }
+                            else if (hit.transform.CompareTag(brokenTowerNodeTag)) 
+                            {
+                                Transform node = hit.transform;
+                                node.tag = towerNodeTag;
+                                node.GetComponent<MeshRenderer>().enabled = true;
+                                Destroy(node.GetChild(0).gameObject);
+
+                                OnConstructionPlaced?.Invoke(this, new OnConstructionPlacedEventArgs()
+                                {
+                                    buildMode = buildMode
+                                });
+
                                 buildMode = BuildMode.None;
                             }
                             else

@@ -32,6 +32,10 @@ public class TDManager : MonoBehaviour
     public List<Transform> mines = new List<Transform>();
     public Transform mainBase;
 
+    [Header("Timers")]
+    public float freezeTimer = 0f;
+    public float lavaTimer = 0f;
+
     private void Awake()
     {
         instance = this;
@@ -65,6 +69,7 @@ public class TDManager : MonoBehaviour
 
     private void Update()
     {
+        // Cheats
         if (Input.GetKeyDown(KeyCode.T))
         {
             BuildTower();
@@ -149,6 +154,35 @@ public class TDManager : MonoBehaviour
             CoolnessScaleController.Instance.canChangeCoolness = true;
             CoolnessScaleController.Instance.AddCoolness(-100);
             CoolnessScaleController.Instance.canChangeCoolness = scaleStatus;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            StartCoroutine(SpawnEnemies(1, 0));
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            StartCoroutine(SpawnEnemies(1, 1));
+        }
+
+        // Timers
+        if (freezeTimer > 0)
+        {
+            freezeTimer -= Time.deltaTime;
+        }
+        else
+        {
+            freezeTimer = 0;
+        }
+
+        if (lavaTimer > 0)
+        {
+            lavaTimer -= Time.deltaTime;
+        }
+        else
+        {
+            lavaTimer = 0;
         }
     }
 
@@ -259,7 +293,7 @@ public class TDManager : MonoBehaviour
             }
             
             GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], spawnPoint, Quaternion.identity, transform.GetChild(0));
-            mob.transform.GetChild(0).GetComponent<EnemyRat>().UpgradeEnemy(modifier * lastStandModifier);
+            mob.transform.GetChild(0).GetComponent<Enemy>().UpgradeEnemy(modifier * lastStandModifier);
             enemies.Add(mob.transform.GetChild(0));
 
             yield return new WaitForSeconds(spawanDelay);
@@ -280,7 +314,7 @@ public class TDManager : MonoBehaviour
             }
             
             GameObject mob = Instantiate(enemyManager.enemyPrefabs[enemyType], spawnPoint, Quaternion.identity, transform.GetChild(0));
-            mob.transform.GetChild(0).GetComponent<EnemyRat>().UpgradeEnemy(modifier * lastStandModifier);
+            mob.transform.GetChild(0).GetComponent<Enemy>().UpgradeEnemy(modifier * lastStandModifier);
             enemies.Add(mob.transform.GetChild(0));
 
             yield return new WaitForSeconds(spawanDelay);
@@ -330,6 +364,7 @@ public class TDManager : MonoBehaviour
     private IEnumerator FreezeCoroutine(float duration)
     {
         float coolness = CoolnessScaleController.Instance.GetCoolness();
+        freezeTimer = duration;
         
         if (coolness < 0.35f)
         {
