@@ -19,7 +19,7 @@ public class TriggerForMeteor : MonoBehaviour
         {
             if (damageable != null)
             {
-                damageable.TakeDamage(TDManager.instance.meteorDamage);
+                //damageable.TakeDamage(TDManager.instance.meteorDamage);
             }
             else
             {

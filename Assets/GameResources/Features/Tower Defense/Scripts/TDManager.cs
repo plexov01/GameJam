@@ -19,7 +19,6 @@ public class TDManager : MonoBehaviour
     [Header("Meteor")]
     [SerializeField] private float meteorHeight;
     [SerializeField] private GameObject meteorPrefab;
-    public float meteorDamage = 500f;
     
     [Header("Scaling")]
     float modifier = 1f;
@@ -280,7 +279,7 @@ public class TDManager : MonoBehaviour
         buildManager.Repair();
     }
     
-    public IEnumerator StartSpawningEnemies(int enemyType = 0, float spawanDelay = 1f)
+    public IEnumerator StartSpawningEnemies(int enemyType = 0, float spawnDelay = 1f)
     {
         while (true)
         {
@@ -296,12 +295,12 @@ public class TDManager : MonoBehaviour
             mob.transform.GetChild(0).GetComponent<Enemy>().UpgradeEnemy(modifier * lastStandModifier);
             enemies.Add(mob.transform.GetChild(0));
 
-            yield return new WaitForSeconds(spawanDelay);
+            yield return new WaitForSeconds(spawnDelay);
         }
     }
     
 
-    public IEnumerator SpawnEnemies(int numberToSpawn, int enemyType = 0, float spawanDelay = 1f)
+    public IEnumerator SpawnEnemies(int numberToSpawn, int enemyType = 0, float spawnDelay = 1f)
     {
         for (int i = 0; i < numberToSpawn; i++)
         {
@@ -317,7 +316,7 @@ public class TDManager : MonoBehaviour
             mob.transform.GetChild(0).GetComponent<Enemy>().UpgradeEnemy(modifier * lastStandModifier);
             enemies.Add(mob.transform.GetChild(0));
 
-            yield return new WaitForSeconds(spawanDelay);
+            yield return new WaitForSeconds(spawnDelay);
         }
     }
 
@@ -457,9 +456,9 @@ public class TDManager : MonoBehaviour
 
         foreach (Transform enemy in enemyList)
         {
-            if (enemy != null && enemy.GetComponent<EnemyRat>().type == enemyType)
+            if (enemy != null && enemy.GetComponent<Enemy>().type == enemyType)
             {
-                EnemyRat stats = enemy.GetComponent<EnemyRat>();
+                Enemy stats = enemy.GetComponent<Enemy>();
                 stats.currentHealth += deltaHealth;
 
                 if (stats.baseSpeed / speedDivider > 1f)

@@ -307,7 +307,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7597629841756058132}
-  - component: {fileID: 6673905247187128110}
   - component: {fileID: 5372790280444580034}
   m_Layer: 17
   m_Name: Trigger
@@ -331,19 +330,6 @@ Transform:
   m_Father: {fileID: 7715698397356932696}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6673905247187128110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6492301910166909027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad570e5f2b101d44eb4c43d1da81a27a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: {fileID: 349573853946587904}
 --- !u!65 &5372790280444580034
 BoxCollider:
   m_ObjectHideFlags: 0

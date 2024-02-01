@@ -14,12 +14,4 @@ public class EnemyRat : Enemy
         base.Update();
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Meteor"))
-        {
-            TakeDamage(TDManager.instance.meteorDamage);
-        }
-    }
-
 }

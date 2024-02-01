@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 9093198040458721218}
   - component: {fileID: 7422153012324231793}
   - component: {fileID: 6509498078382776684}
+  - component: {fileID: 4634088834939740769}
   m_Layer: 16
   m_Name: Meteor
   m_TagString: Meteor
@@ -34,6 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7142726745259104331}
+  - {fileID: 3192938939799071785}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -49,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6d915a3c6f350d45a1cb0aae9b7b818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 500
   objectToDestroy: {fileID: 4964905279176150626}
   col: {fileID: 6931819981451288617}
   radius: 2.5
@@ -133,6 +136,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 0
+--- !u!111 &4634088834939740769
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4964905279176150626}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 3bb99cb954a59ea4796b576ebc5feea9, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 3bb99cb954a59ea4796b576ebc5feea9, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &5830010800790770286
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,13 +176,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5830010800790770286}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 7142726745259104331}
-  m_RootOrder: 0
+  m_Father: {fileID: 4169380766628376740}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!96 &1304188888239069357
 TrailRenderer:
@@ -292,8 +311,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3192938939799071785}
+  m_Children: []
   m_Father: {fileID: 4169380766628376740}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -308,5 +326,5 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 1.49
+  m_Radius: 0.00001
   m_Center: {x: 0, y: 0, z: 0}

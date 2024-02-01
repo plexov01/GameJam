@@ -52,18 +52,11 @@ public class EnemyTaa : Enemy
         }
 
         float angle = Random.Range(45, 136) * shootDirection;
-        print("angle: " + angle);
+        //print("angle: " + angle);
 
         GameObject bombObject = Instantiate(bomb, transform.position + new Vector3(0, 1f, 0), objectToDestroy.transform.rotation);
         bombObject.GetComponent<Rigidbody>().AddForce(Vector3.Scale(Quaternion.Euler(0f, angle, 0f) * bombObject.transform.forward, shootForce) + new Vector3(0f, shootForce.y, 0f), ForceMode.Impulse);
-        print(Vector3.Scale(Quaternion.Euler(0f, angle, 0f) * bombObject.transform.forward, shootForce));
+        //print(Vector3.Scale(Quaternion.Euler(0f, angle, 0f) * bombObject.transform.forward, shootForce));
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Meteor"))
-        {
-            TakeDamage(TDManager.instance.meteorDamage);
-        }
-    }
 }

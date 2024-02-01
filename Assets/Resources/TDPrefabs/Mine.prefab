@@ -43,9 +43,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1387924229935830954}
-  - component: {fileID: 1387924229935830955}
   - component: {fileID: 4255245988826910586}
-  m_Layer: 16
+  m_Layer: 17
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67,19 +66,6 @@ Transform:
   m_Father: {fileID: 1387924229312095132}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1387924229935830955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1387924229935830953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad570e5f2b101d44eb4c43d1da81a27a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: {fileID: 0}
 --- !u!135 &4255245988826910586
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -187,8 +173,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4066601645309590494}
-  - component: {fileID: 8835403026060119471}
   - component: {fileID: 2521706894468137368}
+  - component: {fileID: 8835403026060119471}
   m_Layer: 2
   m_Name: Mine
   m_TagString: Bomb
@@ -211,20 +197,6 @@ Transform:
   m_Father: {fileID: 1387924229312095132}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &8835403026060119471
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9032218126448711707}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.25
-  m_Height: 3
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2521706894468137368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,3 +211,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 3.75
   damage: 1000000
+--- !u!136 &8835403026060119471
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9032218126448711707}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.25
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}

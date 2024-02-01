@@ -17,6 +17,7 @@ TagManager:
   - Grass
   - BrokenTowerNode
   - Tower
+  - Projectile
   layers:
   - Default
   - TransparentFX

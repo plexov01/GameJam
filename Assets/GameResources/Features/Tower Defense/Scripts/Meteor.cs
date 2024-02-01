@@ -5,15 +5,17 @@ using UnityEngine;
 
 public class Meteor : MonoBehaviour
 {
+    [SerializeField] private float damage;
     [SerializeField] private GameObject objectToDestroy;
     public static event EventHandler OnMeteorExploded;
     [SerializeField] private SphereCollider col;
     [SerializeField] private float radius;
     private Rigidbody rb;
 
+    private string projectileTag = "Projectile";
+
     private void Awake()
     {
-        col.radius = radius;
         col.enabled = false;
         rb = GetComponent<Rigidbody>();
     }
@@ -30,18 +32,32 @@ public class Meteor : MonoBehaviour
     {
         print(collision.transform.tag);
         rb.velocity = Vector3.zero;
-        StartCoroutine(Explode());
+        col.enabled = true;
+        GetComponent<Animation>().Play();
     }
 
-    private IEnumerator Explode()
+    public void ExplosionEnd()
     {
-        col.enabled = true;
-        yield return new WaitForSeconds(0.25f);
-      
         SoundManager soundManager = SoundManager.Instance;
         soundManager.PlaySound(soundManager.audioClipRefsSo.meteor, Camera.main.transform.position);
-        
         OnMeteorExploded?.Invoke(this, EventArgs.Empty);
         Destroy(objectToDestroy);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        print("meteor entered tag: " + other.tag + " name: " + other.name);
+
+        if (!other.CompareTag(projectileTag))
+        {
+            if (other.GetComponent<IDamageable>() != null)
+            {
+                other.GetComponent<IDamageable>().TakeDamage(damage);
+            }
+            else if (other.transform.parent.GetComponentInChildren<IDamageable>() != null)
+            {
+                other.transform.parent.GetComponentInChildren<IDamageable>().TakeDamage(damage);
+            }
+        }
     }
 }

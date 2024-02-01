@@ -96,7 +96,7 @@ public class OLD_Enemy : MonoBehaviour, IDamageable
     {
         if (other.CompareTag("Meteor"))
         {
-            TakeDamage(TDManager.instance.meteorDamage);
+            //TakeDamage(TDManager.instance.meteorDamage);
         }
     }
 

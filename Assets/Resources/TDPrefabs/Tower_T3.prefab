@@ -5036,7 +5036,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4478343906566039645}
-  - component: {fileID: 7684319258308841721}
   - component: {fileID: 5044813723802914367}
   m_Layer: 17
   m_Name: Trigger
@@ -5060,19 +5059,6 @@ Transform:
   m_Father: {fileID: 4478343905516491597}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7684319258308841721
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4478343906566039644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 651486610fdecf54596d855c04e43f97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: {fileID: 6840355810201238546}
 --- !u!136 &5044813723802914367
 CapsuleCollider:
   m_ObjectHideFlags: 0
