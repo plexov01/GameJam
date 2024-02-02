@@ -28,9 +28,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4066601645309590494}
-  - {fileID: 1387924229935830954}
   - {fileID: 8251940989486075966}
+  - {fileID: 1387924229935830954}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -44,9 +43,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1387924229935830954}
   - component: {fileID: 4255245988826910586}
-  m_Layer: 17
+  - component: {fileID: 863334938029500967}
+  m_Layer: 20
   m_Name: Trigger
-  m_TagString: Untagged
+  m_TagString: Bomb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,6 +79,22 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.32
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &863334938029500967
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387924229935830953}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &1921466381051399330
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,10 +104,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8251940989486075966}
+  - component: {fileID: 8513197346854870313}
+  - component: {fileID: 6739655077239922248}
   - component: {fileID: 8525813016033713533}
   - component: {fileID: 2061439107589133251}
-  m_Layer: 0
-  m_Name: Model
+  - component: {fileID: 2088911001933280629}
+  m_Layer: 2
+  m_Name: Mine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110,8 +129,42 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1387924229312095132}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8513197346854870313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921466381051399330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41c34112cccd38a4c81716f2ff9c4567, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coolnessCost: 40
+  objectToDestroy: {fileID: 1387924229312095131}
+  baseHealth: 500
+  currentHealth: 0
+  range: 3.75
+  damage: 1000000
+  col: {fileID: 4255245988826910586}
+  activated: 0
+  isReady: 0
+--- !u!135 &6739655077239922248
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921466381051399330}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &8525813016033713533
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -164,64 +217,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &9032218126448711707
-GameObject:
+--- !u!111 &2088911001933280629
+Animation:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4066601645309590494}
-  - component: {fileID: 2521706894468137368}
-  - component: {fileID: 8835403026060119471}
-  m_Layer: 2
-  m_Name: Mine
-  m_TagString: Bomb
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4066601645309590494
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9032218126448711707}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 1, z: 2}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1387924229312095132}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2521706894468137368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9032218126448711707}
+  m_GameObject: {fileID: 1921466381051399330}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41c34112cccd38a4c81716f2ff9c4567, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  range: 3.75
-  damage: 1000000
---- !u!136 &8835403026060119471
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9032218126448711707}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.25
-  m_Height: 3
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 82402d2047bc4f047b02cb6c33bd5a0c, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 82402d2047bc4f047b02cb6c33bd5a0c, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0

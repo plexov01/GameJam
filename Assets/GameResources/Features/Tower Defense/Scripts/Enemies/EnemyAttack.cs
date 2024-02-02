@@ -21,11 +21,19 @@ public class EnemyAttack : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Wall") || other.CompareTag("MainBase"))
+        print(other.tag);
+        if (other.CompareTag("Wall") || other.CompareTag("MainBase") || other.CompareTag("Bomb"))
         {
             //print("entered wall trigger");
 
-            attackTarget = other.transform;
+            if (other.CompareTag("Wall") || other.CompareTag("MainBase"))
+            {
+                attackTarget = other.transform;
+            }
+            else
+            {
+                attackTarget = other.transform.parent.GetChild(0);
+            }
 
             if (attackTarget != null && attackCoroutine == null)
             {

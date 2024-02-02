@@ -339,7 +339,14 @@ public class BuildManager : MonoBehaviour
 
                     case BuildMode.Mine:
 
-                        mine.dragInstance.transform.position = new Vector3(hit.transform.position.x, mine.dragOffsetY, hit.transform.position.z);
+                        if (hit.transform.CompareTag(wallTag)) 
+                        {
+                            mine.dragInstance.transform.position = new Vector3(hit.transform.parent.position.x, mine.dragOffsetY, hit.transform.parent.position.z);
+                        }
+                        else
+                        {
+                            mine.dragInstance.transform.position = new Vector3(hit.transform.position.x, mine.dragOffsetY, hit.transform.position.z);
+                        }
 
                         if (hit.transform.CompareTag(pathNodeTag) && hit.transform.childCount == 0)
                         {
@@ -349,7 +356,15 @@ public class BuildManager : MonoBehaviour
                         }
                         else
                         {
-                            illegalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, planeOffsetY, hit.transform.position.z);
+                            if (hit.transform.CompareTag(wallTag)) 
+                            {
+                                illegalPlaneInstance.transform.position = new Vector3(hit.transform.parent.position.x, planeOffsetY, hit.transform.parent.position.z);
+                            }
+                            else
+                            {
+                                illegalPlaneInstance.transform.position = new Vector3(hit.transform.position.x, planeOffsetY, hit.transform.position.z);
+                            }
+                            
                             illegalPlaneInstance.SetActive(true);
                             legalPlaneInstance.SetActive(false);
                         }

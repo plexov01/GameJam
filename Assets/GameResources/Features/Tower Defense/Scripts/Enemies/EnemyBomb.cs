@@ -11,6 +11,14 @@ public class EnemyBomb : MonoBehaviour
 
     public float damage = 100f;
 
+    private void Update()
+    {
+        if (transform.position.y < 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(towerNodeTag) && other.transform.childCount == 0)

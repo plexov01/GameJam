@@ -2,39 +2,81 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mine : MonoBehaviour {
-    
+public class Mine : MonoBehaviour, IDamageable
+{
     public static event EventHandler OnMineExploded;
-    
+
+    [SerializeField] private int coolnessCost;
+    [SerializeField] protected GameObject objectToDestroy;
+    private SphereCollider damageCollider;
+
+    [Header("Health")]
+    public float baseHealth;
+    public float currentHealth;
+
+    [Header("Explosion")]
     public float range = 15f;
     public float damage = 50f;
+    [SerializeField] private SphereCollider col;
     private string enemyTag = "Enemy";
+    public bool activated = false;
+    public bool isReady = false;
+
+    private void Awake()
+    {
+        damageCollider = GetComponent<SphereCollider>();
+    }
+
+    private void Start()
+    {
+        currentHealth = baseHealth;
+        damageCollider.enabled = false;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(enemyTag))
+        if (other.CompareTag(enemyTag) && isReady)
         {
-            List<Transform> enemyList = new(TDManager.instance.enemies);
-
-            foreach (Transform enemy in enemyList)
+            if (!activated)
             {
-                if (enemy != null && Vector3.Distance(transform.position, enemy.position) <= range)
-                {
-                    enemy.GetComponent<IDamageable>().TakeDamage(damage);
-                }
+                activated = true;
+                GetComponent<MeshRenderer>().enabled = false;
+                damageCollider.radius = range / transform.localScale.x;
+
+                CoolnessScaleController.Instance.AddCoolness(coolnessCost);
+
+                OnMineExploded?.Invoke(this, EventArgs.Empty);
+                Death();
             }
             
-            CoolnessScaleController.Instance.AddCoolness(40);
-            
-            OnMineExploded?.Invoke(this, EventArgs.Empty);
-
-            Destroy(gameObject.transform.parent.gameObject);
+            if (other.GetComponent<IDamageable>() != null)
+            {
+                print("mine explosion entered " + other.tag);
+                other.GetComponent<IDamageable>().TakeDamage(damage);
+            }
         }
     }
 
-    private void OnDestroy()
+    private void Ready()
+    {
+        isReady = true;
+        damageCollider.enabled = true;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+
+        if (currentHealth <= 0 && objectToDestroy != null)
+        {
+            Death();
+        }
+    }
+
+    public void Death()
     {
         TDManager.instance.mines.Remove(transform);
+        Destroy(objectToDestroy, 0.05f);
     }
 
     private void OnDrawGizmos()
