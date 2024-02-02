@@ -18,7 +18,7 @@ public class Mine : MonoBehaviour, IDamageable
     public float range = 15f;
     public float damage = 50f;
     [SerializeField] private SphereCollider col;
-    private string enemyTag = "Enemy";
+    private string enemyTag;
     public bool activated = false;
     public bool isReady = false;
 
@@ -31,6 +31,7 @@ public class Mine : MonoBehaviour, IDamageable
     {
         currentHealth = baseHealth;
         damageCollider.enabled = false;
+        enemyTag = TDManager.instance.tags.enemy;
     }
 
     private void OnTriggerEnter(Collider other)

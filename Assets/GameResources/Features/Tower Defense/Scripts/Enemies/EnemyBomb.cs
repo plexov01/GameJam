@@ -5,11 +5,19 @@ using UnityEngine;
 public class EnemyBomb : MonoBehaviour
 {
     [SerializeField] private GameObject brokenTowerNode;
-    private string towerNodeTag = "TowerNode";
-    private string brokenTowerNodeTag = "BrokenTowerNode";
-    private string towerTag = "Tower";
+    private string towerNodeTag;
+    private string brokenTowerNodeTag;
+    private string towerTag;
 
     public float damage = 100f;
+
+    private void Start()
+    {
+        TDManager tDManager = TDManager.instance;
+        towerNodeTag = tDManager.tags.towerNode;
+        brokenTowerNodeTag = tDManager.tags.brokenTowerNode;
+        towerTag = tDManager.tags.tower;
+    }
 
     private void Update()
     {

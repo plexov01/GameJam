@@ -12,12 +12,17 @@ public class Meteor : MonoBehaviour
     [SerializeField] private float radius;
     private Rigidbody rb;
 
-    private string projectileTag = "Projectile";
+    private string projectileTag;
 
     private void Awake()
     {
         col.enabled = false;
         rb = GetComponent<Rigidbody>();
+    }
+
+    private void Start()
+    {
+        projectileTag = TDManager.instance.tags.projectile;
     }
 
     private void Update()

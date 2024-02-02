@@ -40,11 +40,11 @@ public class BuildManager : MonoBehaviour
     private RaycastHit hit;
     private RaycastHit planeHit;
 
-    private string towerNodeTag = "TowerNode";
-    private string pathNodeTag = "PathNode";
-    private string wallTag = "Wall";
-    private string mainBaseTag = "MainBase";
-    private string brokenTowerNodeTag = "BrokenTowerNode";
+    private string towerNodeTag;
+    private string pathNodeTag;
+    private string wallTag;
+    private string mainBaseTag;
+    private string brokenTowerNodeTag;
 
     public LayerMask enemyMask;
 
@@ -68,6 +68,8 @@ public class BuildManager : MonoBehaviour
 
     private List<Vector2Int> routeCells;
     private List<Vector2Int> routeDirections;
+
+    private TDManager tDManager;
 
     private void Awake()
     {
@@ -95,6 +97,13 @@ public class BuildManager : MonoBehaviour
         mine.dragInstance.SetActive(false);
         repair.dragInstance = Instantiate(repair.dragPrefab, Vector3.zero, Quaternion.identity);
         repair.dragInstance.SetActive(false);
+
+        tDManager = TDManager.instance;
+        towerNodeTag = tDManager.tags.towerNode;
+        pathNodeTag = tDManager.tags.pathNode;
+        wallTag = tDManager.tags.wall;
+        mainBaseTag = tDManager.tags.mainBase;
+        brokenTowerNodeTag = tDManager.tags.brokenTowerNode;
     }
 
     public void SetRoute(Tuple<List<Vector2Int>, List<Vector2Int>> route)
@@ -462,7 +471,7 @@ public class BuildManager : MonoBehaviour
                             {
                                 turret.dragInstance.SetActive(false);
                                 GameObject turretObject = Instantiate(GetTowerToBuild(1), new Vector3(hit.transform.position.x, turret.buildOffsetY, hit.transform.position.z), Quaternion.identity, hit.transform);
-                                TDManager.instance.turrets.Add(turretObject.transform.GetChild(0));
+                                tDManager.turrets.Add(turretObject.transform.GetChild(0));
                                 objectToBuild = null;
                                 
                                 OnConstructionPlaced?.Invoke(this, new OnConstructionPlacedEventArgs() {
@@ -525,7 +534,7 @@ public class BuildManager : MonoBehaviour
                                     wallObject.transform.eulerAngles = rotation;
                                 }
 
-                                TDManager.instance.walls.Add(wallObject.transform.GetChild(0));
+                                tDManager.walls.Add(wallObject.transform.GetChild(0));
                                 objectToBuild = null;
                                 
                                 OnConstructionPlaced?.Invoke(this, new OnConstructionPlacedEventArgs() {
@@ -547,7 +556,7 @@ public class BuildManager : MonoBehaviour
                             {
                                 mine.dragInstance.SetActive(false);
                                 GameObject mineObject = Instantiate(GetMineToBuild(), new Vector3(hit.transform.position.x, mine.buildOffsetY, hit.transform.position.z), Quaternion.identity, hit.transform);
-                                TDManager.instance.mines.Add(mineObject.transform.GetChild(0));
+                                tDManager.mines.Add(mineObject.transform.GetChild(0));
                                 objectToBuild = null;
                                 
                                 OnConstructionPlaced?.Invoke(this, new OnConstructionPlacedEventArgs() {

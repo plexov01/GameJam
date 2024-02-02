@@ -31,6 +31,21 @@ public class TDManager : MonoBehaviour
     public List<Transform> mines = new List<Transform>();
     public Transform mainBase;
 
+    public struct Tags
+    {
+        public string enemy;
+        public string wall;
+        public string mainBase;
+        public string projectile;
+        public string tower;
+        public string towerNode;
+        public string brokenTowerNode;
+        public string pathNode;
+    }
+
+    [Header("Tags")]
+    public Tags tags;
+
     [Header("Timers")]
     public float freezeTimer = 0f;
     public float lavaTimer = 0f;
@@ -41,6 +56,15 @@ public class TDManager : MonoBehaviour
 
         buildManager = GetComponent<BuildManager>();
         enemyManager = GetComponent<EnemyManager>();
+
+        tags.enemy = "Enemy";
+        tags.wall = "Wall";
+        tags.mainBase = "MainBase";
+        tags.projectile = "Projectile";
+        tags.tower = "Tower";
+        tags.towerNode = "TowerNode";
+        tags.brokenTowerNode = "BrokenTowerNode";
+        tags.pathNode = "PathNode";
     }
 
     private void Start()

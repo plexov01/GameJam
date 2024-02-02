@@ -3,7 +3,12 @@ using UnityEngine;
 public class MineTrigger : MonoBehaviour
 {
     [SerializeField] private Mine mine;
-    private readonly string enemyTag = "Enemy";
+    private string enemyTag;
+
+    private void Start()
+    {
+        enemyTag = TDManager.instance.tags.enemy;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
