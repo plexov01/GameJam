@@ -5,37 +5,51 @@ using UnityEngine;
 public class EnemyAttack : MonoBehaviour
 {
     [SerializeField] private Enemy enemy;
-    private Transform attackTarget;
+    [SerializeField] private Transform currentAttackTarget;
+    [SerializeField] private Transform newAttackTarget;
     private Coroutine attackCoroutine = null;
 
-    void Update()
+    private string wallTag;
+    private string mainBaseTag;
+    private string mineTag;
+
+    //[SerializeField] private int numberOfAvailableTargets = 0;
+
+    private void Start()
     {
-        if (attackTarget == null && attackCoroutine != null)
-        {
-            //print("stop coroutine");
-            StopCoroutine(attackCoroutine);
-            attackCoroutine = null;
-            enemy.attacking = false;
-        }
+        TDManager tDManager = TDManager.instance;
+        wallTag = tDManager.tags.wall;
+        mainBaseTag = tDManager.tags.mainBase;
+        mineTag = tDManager.tags.mine;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        print(other.tag);
-        if (other.CompareTag("Wall") || other.CompareTag("MainBase") || other.CompareTag("Bomb"))
+        //print(other.tag);
+        if (ValidTarget(other))
         {
-            //print("entered wall trigger");
-
-            if (other.CompareTag("Wall") || other.CompareTag("MainBase"))
+            //numberOfAvailableTargets++;
+            if (other.CompareTag(wallTag) || other.CompareTag(mainBaseTag))
             {
-                attackTarget = other.transform;
+                print("entered wall trigger");
+                newAttackTarget = other.transform;
             }
             else
             {
-                attackTarget = other.transform.parent.GetChild(0);
+                print("entered landMine trigger");
+                newAttackTarget = other.transform.parent.GetChild(0);
             }
 
-            if (attackTarget != null && attackCoroutine == null)
+            if (currentAttackTarget == null)
+            {
+                currentAttackTarget = newAttackTarget;
+            }
+            else if (currentAttackTarget.CompareTag(wallTag) && newAttackTarget.CompareTag(mineTag))
+            {
+                currentAttackTarget = newAttackTarget;
+            }
+
+            if (currentAttackTarget != null && attackCoroutine == null)
             {
                 enemy.attacking = true;
                 attackCoroutine = StartCoroutine(AttackCoroutine());
@@ -43,15 +57,48 @@ public class EnemyAttack : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        //print(other.tag);
+        if (currentAttackTarget == null && ValidTarget(other))
+        {
+            if (other.CompareTag(wallTag) || other.CompareTag(mainBaseTag))
+            {
+                currentAttackTarget = other.transform;
+            }
+            else
+            {
+                currentAttackTarget = other.transform.parent.GetChild(0);
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        print("exit trigger " + other.tag);
+        //currentAttackTarget = null;
+        /*if (ValidTarget(other))
+        {
+            numberOfAvailableTargets--;
+
+            if (numberOfAvailableTargets == 0)
+            {
+                StopCoroutine(attackCoroutine);
+                attackCoroutine = null;
+                enemy.attacking = false;
+            }
+        }*/
+    }
+
     public IEnumerator AttackCoroutine()
     {
         yield return new WaitForSeconds(1f / enemy.attackSpeed);
 
-        while (attackTarget != null)
+        while (currentAttackTarget != null)
         {
             if (!enemy.isFrozen)
             {
-                attackTarget.GetComponent<IDamageable>().TakeDamage(enemy.damage);
+                currentAttackTarget.GetComponent<IDamageable>().TakeDamage(enemy.damage);
             }
 
             yield return new WaitForSeconds(1f / enemy.attackSpeed);
@@ -59,5 +106,10 @@ public class EnemyAttack : MonoBehaviour
 
         enemy.attacking = false;
         attackCoroutine = null;
+    }
+
+    private bool ValidTarget(Collider collider)
+    {
+        return (collider.CompareTag(wallTag) || collider.CompareTag(mainBaseTag) || collider.CompareTag(mineTag));
     }
 }

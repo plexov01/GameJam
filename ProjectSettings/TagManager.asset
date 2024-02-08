@@ -18,6 +18,7 @@ TagManager:
   - BrokenTowerNode
   - Tower
   - Projectile
+  - LandMine
   layers:
   - Default
   - TransparentFX
@@ -39,7 +40,7 @@ TagManager:
   - Trigger
   - 
   - EnemyBomb
-  - Bomb
+  - LandMine
   - 
   - 
   - 

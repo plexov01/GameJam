@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 863334938029500967}
   m_Layer: 20
   m_Name: Trigger
-  m_TagString: Bomb
+  m_TagString: Mine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 2088911001933280629}
   m_Layer: 2
   m_Name: Mine
-  m_TagString: Untagged
+  m_TagString: Mine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -149,7 +149,7 @@ MonoBehaviour:
   currentHealth: 0
   range: 3.75
   damage: 1000000
-  col: {fileID: 4255245988826910586}
+  triggerCollider: {fileID: 4255245988826910586}
   activated: 0
   isReady: 0
 --- !u!135 &6739655077239922248

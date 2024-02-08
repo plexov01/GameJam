@@ -41,6 +41,7 @@ public class TDManager : MonoBehaviour
         public string towerNode;
         public string brokenTowerNode;
         public string pathNode;
+        public string mine;
     }
 
     [Header("Tags")]
@@ -65,6 +66,7 @@ public class TDManager : MonoBehaviour
         tags.towerNode = "TowerNode";
         tags.brokenTowerNode = "BrokenTowerNode";
         tags.pathNode = "PathNode";
+        tags.mine = "Mine";
     }
 
     private void Start()

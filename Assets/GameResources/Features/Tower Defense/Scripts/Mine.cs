@@ -17,7 +17,7 @@ public class Mine : MonoBehaviour, IDamageable
     [Header("Explosion")]
     public float range = 15f;
     public float damage = 50f;
-    [SerializeField] private SphereCollider col;
+    [SerializeField] private SphereCollider triggerCollider;
     private string enemyTag;
     public bool activated = false;
     public bool isReady = false;
@@ -62,15 +62,20 @@ public class Mine : MonoBehaviour, IDamageable
     {
         isReady = true;
         damageCollider.enabled = true;
+        triggerCollider.enabled = false;
+        //triggerCollider.radius = 0f;
     }
 
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
-
-        if (currentHealth <= 0 && objectToDestroy != null)
+        if (!isReady)
         {
-            Death();
+            currentHealth -= damage;
+
+            if (currentHealth <= 0 && objectToDestroy != null)
+            {
+                Death();
+            }
         }
     }
 
