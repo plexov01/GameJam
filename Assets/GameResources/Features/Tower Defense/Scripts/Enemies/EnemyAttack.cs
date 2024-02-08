@@ -13,7 +13,15 @@ public class EnemyAttack : MonoBehaviour
     private string mainBaseTag;
     private string mineTag;
 
+    private BoxCollider boxCollider;
+    [SerializeField] private LayerMask layerMask;
+
     //[SerializeField] private int numberOfAvailableTargets = 0;
+
+    private void Awake()
+    {
+        boxCollider = GetComponent<BoxCollider>();
+    }
 
     private void Start()
     {
@@ -36,7 +44,7 @@ public class EnemyAttack : MonoBehaviour
             }
             else
             {
-                print("entered landMine trigger");
+                print("entered mine trigger");
                 newAttackTarget = other.transform.parent.GetChild(0);
             }
 
@@ -44,7 +52,7 @@ public class EnemyAttack : MonoBehaviour
             {
                 currentAttackTarget = newAttackTarget;
             }
-            else if (currentAttackTarget.CompareTag(wallTag) && newAttackTarget.CompareTag(mineTag))
+            else if ((currentAttackTarget.CompareTag(wallTag) || currentAttackTarget.CompareTag(mainBaseTag)) && newAttackTarget.CompareTag(mineTag))
             {
                 currentAttackTarget = newAttackTarget;
             }
@@ -94,9 +102,16 @@ public class EnemyAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(1f / enemy.attackSpeed);
 
-        while (currentAttackTarget != null)
+        while (currentAttackTarget != null || Physics.OverlapBox(transform.TransformPoint(boxCollider.center), boxCollider.size / 2f, transform.parent.rotation, layerMask).Length != 0)
         {
-            if (!enemy.isFrozen)
+            /*Collider[] colliders = Physics.OverlapBox(transform.TransformPoint(boxCollider.center), boxCollider.size / 2f, transform.parent.rotation);
+
+            foreach (Collider collider in colliders)
+            {
+                print(collider.tag);
+            }*/
+
+            if (!enemy.isFrozen && currentAttackTarget != null)
             {
                 currentAttackTarget.GetComponent<IDamageable>().TakeDamage(enemy.damage);
             }
@@ -112,4 +127,10 @@ public class EnemyAttack : MonoBehaviour
     {
         return (collider.CompareTag(wallTag) || collider.CompareTag(mainBaseTag) || collider.CompareTag(mineTag));
     }
+
+    /*private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.TransformPoint(boxCollider.center), boxCollider.size / 2);
+    }*/
 }

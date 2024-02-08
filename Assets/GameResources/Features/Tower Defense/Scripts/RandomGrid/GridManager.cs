@@ -19,6 +19,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int minLoops = 1;
     [SerializeField] private int maxLoops = 4;
     public bool addLoops;
+    [SerializeField] private int maxAttempts = 1000000;
 
     [Header("References")]
     public Transform grid;
@@ -56,34 +57,75 @@ public class GridManager : MonoBehaviour
         buildManager = BuildManager.instance;
 
         int iteration = 0;
-        //print("Iteration " + iteration);
         List<Vector2Int> pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
         int pathSize = pathCells.Count;
 
-        while (pathSize < minPathLength || pathSize > maxPathLength || pathGenerator.loopCount < minLoops || pathGenerator.loopCount > maxLoops)
+        if (addLoops)
         {
-            iteration++;
-            //print("Iteration " + iteration);
-            pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
-            pathSize = pathCells.Count;
-
-            if (iteration >= 50)
+            while (pathSize < minPathLength || pathSize > maxPathLength || pathGenerator.loopCount < minLoops || pathGenerator.loopCount > maxLoops)
             {
-                //print("Could not generate path with given parameters");
+                iteration++;
+                pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
+                pathSize = pathCells.Count;
 
-                while (pathSize < minPathLength)
+                if (iteration >= maxAttempts)
                 {
-                    iteration++;
-                    //print("Iteration " + iteration);
-                    pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
-                    pathSize = pathCells.Count;
-                }
+                    //print("Could not generate path with given parameters");
+                    print("ÓÂÛ Jokerge");
 
-                break;
+                    while (pathSize < minPathLength)
+                    {
+                        iteration++;
+                        pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
+                        pathSize = pathCells.Count;
+
+                        if (iteration >= 2 * maxAttempts)
+                        {
+                            print("ÓÂÛ Jokerge");
+                            iteration++;
+                            pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+            }
+        }
+        else
+        {
+            while (pathSize < minPathLength || pathSize > maxPathLength)
+            {
+                iteration++;
+                pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
+                pathSize = pathCells.Count;
+
+                if (iteration >= maxAttempts)
+                {
+                    //print("Could not generate path with given parameters");
+                    print("ÓÂÛ Jokerge");
+
+                    while (pathSize < minPathLength)
+                    {
+                        iteration++;
+                        pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
+                        pathSize = pathCells.Count;
+
+                        if (iteration >= 2 * maxAttempts)
+                        {
+                            print("ÓÂÛ Jokerge");
+                            iteration++;
+                            pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
+                            break;
+                        }
+                    }
+
+                    break;
+                }
             }
         }
 
-        print("Path generated at iteration " + iteration);
+        print("Path of length " + pathCells.Count + " generated at iteration " + iteration);
 
         StartCoroutine(CreateGrid(pathCells));
     }

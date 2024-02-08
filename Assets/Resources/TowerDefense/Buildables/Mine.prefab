@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 1387924229935830954}
   - component: {fileID: 4255245988826910586}
   - component: {fileID: 863334938029500967}
-  m_Layer: 20
+  m_Layer: 17
   m_Name: Trigger
   m_TagString: Mine
   m_Icon: {fileID: 0}

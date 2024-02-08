@@ -8,17 +8,15 @@ TagManager:
   - Wall
   - EnemyTrigger
   - Turret
-  - WallBlock
   - MainBase
   - Meteor
-  - Bomb
   - PathNode
   - TowerNode
   - Grass
   - BrokenTowerNode
   - Tower
   - Projectile
-  - LandMine
+  - Mine
   layers:
   - Default
   - TransparentFX
@@ -40,7 +38,7 @@ TagManager:
   - Trigger
   - 
   - EnemyBomb
-  - LandMine
+  - Mine
   - 
   - 
   - 

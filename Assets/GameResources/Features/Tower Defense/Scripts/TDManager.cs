@@ -13,7 +13,6 @@ public class TDManager : MonoBehaviour
     private EnemyManager enemyManager;
     public Vector3 spawnPoint;
 
-    private Coroutine freezeCoroutine = null;
     private Coroutine lavaFloorCoroutine = null;
 
     [Header("Meteor")]
@@ -378,19 +377,9 @@ public class TDManager : MonoBehaviour
 
     public void Freeze(float duration)
     {
-        if (freezeCoroutine != null)
-        {
-            StopCoroutine(freezeCoroutine);
-        }
-
-        freezeCoroutine = StartCoroutine(FreezeCoroutine(duration));
-    }
-
-    private IEnumerator FreezeCoroutine(float duration)
-    {
         float coolness = CoolnessScaleController.Instance.GetCoolness();
         freezeTimer = duration;
-        
+
         if (coolness < 0.35f)
         {
             print("freeze towers");
@@ -404,7 +393,7 @@ public class TDManager : MonoBehaviour
                     turret.GetComponent<Turret>().Freeze(duration);
                 }
             }
-            
+
         }
         else if (coolness < 0.65f)
         {
@@ -412,36 +401,12 @@ public class TDManager : MonoBehaviour
 
             List<Transform> wallList = new(walls);
             wallList.Add(mainBase);
-            
-            foreach (Transform wall in wallList)
-            {
-                if (wall != null)
-                {
-                    Wall stats = wall.GetComponent<Wall>();
-
-                    stats.currentHealth = stats.baseHealth * 2;
-                    stats.ice.SetActive(true);
-                }
-            }
-
-            yield return new WaitForSeconds(duration);
 
             foreach (Transform wall in wallList)
             {
                 if (wall != null)
                 {
-                    Wall stats = wall.GetComponent<Wall>();
-
-                    if (stats.currentHealth >= stats.baseHealth)
-                    {
-                        stats.currentHealth = stats.baseHealth;
-                    }
-                    else
-                    {
-                        stats.currentHealth = stats.baseHealth * 0.65f;
-                    }
-
-                    stats.ice.SetActive(false);
+                    wall.GetComponent<Wall>().Freeze(duration);
                 }
             }
         }
@@ -459,8 +424,6 @@ public class TDManager : MonoBehaviour
                 }
             }
         }
-
-        freezeCoroutine = null;
     }
 
     /*public void IncreaseEnemiesHP(int enemyType, float amount)

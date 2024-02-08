@@ -2568,7 +2568,6 @@ MonoBehaviour:
   spawnPoint: {x: 0, y: 0, z: 0}
   meteorHeight: 150
   meteorPrefab: {fileID: 4964905279176150626, guid: 687f808ff9409734c9298c3ca11056a9, type: 3}
-  meteorDamage: 500
   enemies: []
   turrets: []
   walls: []
@@ -2596,6 +2595,7 @@ MonoBehaviour:
   minLoops: 4
   maxLoops: 6
   addLoops: 0
+  maxAttempts: 1000000
   grid: {fileID: 1050934795}
   pathCellObjects:
   - {fileID: 11400000, guid: f596c0e3a37b4524ab8d80aff3085839, type: 2}

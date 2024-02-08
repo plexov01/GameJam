@@ -118,11 +118,11 @@ public class PathGenerator
 
     public void AddLoops(int loops)
     {
-        bool loopsGenerated = true;
+        bool loopGenerated = true;
 
-        while (loopsGenerated)
+        while (loopGenerated)
         {
-            loopsGenerated = false;
+            loopGenerated = false;
 
             for (int i = 0; i < pathCells.Count; i++)
             {
@@ -132,7 +132,7 @@ public class PathGenerator
 
                     if (loop.Count > 0)
                     {
-                        loopsGenerated = true;
+                        loopGenerated = true;
                         loopCount++;
                         pathCells.InsertRange(i + 1, loop);
                     }

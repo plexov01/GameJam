@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour, IDamageable
     [Header("Movement")]
     public float baseSpeed;
     public float currentSpeed;
+    [SerializeField] private float offset = 0.35f;
     // Waypoints
     private Vector3 target;
     private int nextPathCellIndex = 0;
@@ -44,7 +45,15 @@ public class Enemy : MonoBehaviour, IDamageable
         currentSpeed = baseSpeed;
         size = enemyTransform.localScale.x;
 
-        enemyTransform.LookAt(new Vector3(enemyManager.pathRoute[nextPathCellIndex].x, transform.position.y, enemyManager.pathRoute[nextPathCellIndex].y));
+        enemyTransform.rotation = Quaternion.LookRotation(new Vector3(enemyManager.pathRoute[1].x, transform.position.y, enemyManager.pathRoute[1].y) -
+            new Vector3(enemyManager.pathRoute[0].x, transform.position.y, enemyManager.pathRoute[0].y));
+
+        float localOffset = Random.Range(-offset, offset);
+
+        foreach (Transform child in enemyTransform)
+        {
+            child.localPosition = new Vector3(child.localPosition.x + localOffset, child.localPosition.y, child.localPosition.z);
+        }
     }
 
     protected virtual void Update()
@@ -81,7 +90,8 @@ public class Enemy : MonoBehaviour, IDamageable
         nextPathCellIndex++;
         target = new Vector3(enemyManager.pathRoute[nextPathCellIndex].x, transform.position.y, enemyManager.pathRoute[nextPathCellIndex].y);
 
-        enemyTransform.LookAt(new Vector3(enemyManager.pathRoute[nextPathCellIndex].x, transform.position.y, enemyManager.pathRoute[nextPathCellIndex].y));
+        enemyTransform.rotation = Quaternion.LookRotation(new Vector3(enemyManager.pathRoute[nextPathCellIndex].x, transform.position.y, enemyManager.pathRoute[nextPathCellIndex].y) -
+            new Vector3(enemyManager.pathRoute[nextPathCellIndex - 1].x, transform.position.y, enemyManager.pathRoute[nextPathCellIndex - 1].y));
     }
 
     public void UpdateStats()

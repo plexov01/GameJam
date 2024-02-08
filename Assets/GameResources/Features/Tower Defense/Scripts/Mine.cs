@@ -62,20 +62,17 @@ public class Mine : MonoBehaviour, IDamageable
     {
         isReady = true;
         damageCollider.enabled = true;
-        triggerCollider.enabled = false;
+        //triggerCollider.enabled = false;
         //triggerCollider.radius = 0f;
     }
 
     public void TakeDamage(float damage)
     {
-        if (!isReady)
-        {
-            currentHealth -= damage;
+        currentHealth -= damage;
 
-            if (currentHealth <= 0 && objectToDestroy != null)
-            {
-                Death();
-            }
+        if (currentHealth <= 0 && objectToDestroy != null)
+        {
+            Death();
         }
     }
 
