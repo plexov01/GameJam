@@ -8,7 +8,7 @@ public class PathGenerator
 {
     private int width;
     private int height;
-    private List<Vector2Int> pathCells;
+    public List<Vector2Int> pathCells = new();
     private List<Vector2Int> route;
     private List<Vector2Int> routeDirection;
 

@@ -21,6 +21,15 @@ public class GridManager : MonoBehaviour
     public bool addLoops;
     [SerializeField] private int maxAttempts = 1000000;
 
+    [Header("Preset Settings")]
+    public bool useCustomPreset;
+
+    public PathPresetLibrary presetLibrary;
+    public int selectedPresetIndex = 0;
+    public List<Vector2Int> customPreset = new();
+
+    [HideInInspector] public List<Vector2Int> pathCells = new();
+
     [Header("References")]
     public Transform grid;
 
@@ -56,8 +65,65 @@ public class GridManager : MonoBehaviour
         enemyManager = EnemyManager.instance;
         buildManager = BuildManager.instance;
 
+        if (useCustomPreset)
+        {
+            var presetPath = GetSelectedPresetPath();
+            if (presetPath != null && presetPath.Count > 0)
+            {
+                pathCells = presetPath;
+                pathGenerator.pathCells = pathCells;
+                Debug.Log("Loaded custom preset path");
+            }
+        }
+        else
+        {
+            pathCells = GenerateValidPath();
+        }
+
+        //Debug.Log("pathCells: " + string.Join(", ", pathCells));
+        StartCoroutine(CreateGrid(pathCells));
+    }
+
+    public List<Vector2Int> GetSelectedPresetPath()
+    {
+        if (presetLibrary == null)
+        {
+            Debug.LogWarning("presetLibrary is NULL");
+            return null;
+        }
+
+        if (presetLibrary.presets == null)
+        {
+            Debug.LogWarning("presetLibrary.presets is NULL");
+            return null;
+        }
+
+        if (presetLibrary.presets.Count == 0)
+        {
+            Debug.LogWarning("presetLibrary.presets is EMPTY");
+            return null;
+        }
+
+        if (selectedPresetIndex < 0 || selectedPresetIndex >= presetLibrary.presets.Count)
+        {
+            Debug.LogWarning($"Invalid selectedPresetIndex: {selectedPresetIndex}");
+            return null;
+        }
+
+        var preset = presetLibrary.presets[selectedPresetIndex];
+        if (preset.path == null || preset.path.Count == 0)
+        {
+            Debug.LogWarning("Selected preset path is NULL or EMPTY");
+            return null;
+        }
+
+        return preset.path;
+    }
+
+    private List<Vector2Int> GenerateValidPath()
+    {
         int iteration = 0;
-        List<Vector2Int> pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
+        pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
         int pathSize = pathCells.Count;
 
         if (addLoops)
@@ -70,24 +136,7 @@ public class GridManager : MonoBehaviour
 
                 if (iteration >= maxAttempts)
                 {
-                    //print("Could not generate path with given parameters");
-                    print("ÓÂÛ Jokerge");
-
-                    while (pathSize < minPathLength)
-                    {
-                        iteration++;
-                        pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
-                        pathSize = pathCells.Count;
-
-                        if (iteration >= 2 * maxAttempts)
-                        {
-                            print("ÓÂÛ Jokerge");
-                            iteration++;
-                            pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
-                            break;
-                        }
-                    }
-
+                    UseRandomPreset();
                     break;
                 }
             }
@@ -102,32 +151,31 @@ public class GridManager : MonoBehaviour
 
                 if (iteration >= maxAttempts)
                 {
-                    //print("Could not generate path with given parameters");
-                    print("ÓÂÛ Jokerge");
-
-                    while (pathSize < minPathLength)
-                    {
-                        iteration++;
-                        pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
-                        pathSize = pathCells.Count;
-
-                        if (iteration >= 2 * maxAttempts)
-                        {
-                            print("ÓÂÛ Jokerge");
-                            iteration++;
-                            pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
-                            break;
-                        }
-                    }
-
+                    UseRandomPreset();
                     break;
                 }
             }
         }
 
         print("Path of length " + pathCells.Count + " generated at iteration " + iteration);
+        return pathCells;
+    }
 
-        StartCoroutine(CreateGrid(pathCells));
+    private void UseRandomPreset()
+    {
+        Debug.Log("Max attempts reached");
+        // Trying fallback: random preset
+        if (presetLibrary != null && presetLibrary.presets != null && presetLibrary.presets.Count > 0)
+        {
+            int randomIndex = Random.Range(0, presetLibrary.presets.Count);
+            pathCells = presetLibrary.presets[randomIndex].path;
+            pathGenerator.pathCells = pathCells;
+            Debug.LogWarning($"Fallback to random preset: {presetLibrary.presets[randomIndex].name}");
+        }
+        else
+        {
+            Debug.LogError("Fallback failed: no presets available in presetLibrary");
+        }
     }
 
     private IEnumerator CreateGrid(List<Vector2Int> pathCells)
