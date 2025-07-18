@@ -2590,12 +2590,9 @@ MonoBehaviour:
   gridWidth: 20
   gridHeight: 20
   rightExtend: 3
-  minPathLength: 50
-  maxPathLength: 100
-  minLoops: 4
-  maxLoops: 6
-  addLoops: 1
-  maxAttempts: 100000
+  minPathLength: 70
+  maxPathLength: 200
+  maxAttempts: 50000
   useCustomPreset: 0
   presetLibrary: {fileID: 11400000, guid: baebf25bb12dd7a48ba951d59d3c47bd, type: 2}
   selectedPresetIndex: 0

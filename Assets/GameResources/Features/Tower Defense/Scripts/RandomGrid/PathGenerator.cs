@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,6 +12,16 @@ public class PathGenerator
     public List<Vector2Int> pathCells = new();
     private List<Vector2Int> route;
     private List<Vector2Int> routeDirection;
+    private HashSet<Vector2Int> path;
+    //private List<Vector2Int> pathCells;
+
+    private Vector2Int[] directions = new Vector2Int[]
+    {
+        Vector2Int.up,
+        Vector2Int.down,
+        Vector2Int.left,
+        Vector2Int.right
+    };
 
     public int loopCount = 0;
 
@@ -20,52 +31,228 @@ public class PathGenerator
         this.height = height;
     }
 
-    public List<Vector2Int> GeneratePath(bool addLoops, int minLoops, int maxLoops)
-    {
-        pathCells = new List<Vector2Int>();
-        loopCount = 0;
-
-        //int y = height / 2;
-        int y = Random.Range(1, height - 1);
-        int x = 1;
-        int loops = Random.Range(minLoops, maxLoops + 1);
-
-        while (x < width - 1)
+    /*    public List<Vector2Int> GeneratePath(bool addLoops, int minLoops, int maxLoops)
         {
-            pathCells.Add(new Vector2Int(x, y));
+            pathCells = new List<Vector2Int>();
+            loopCount = 0;
 
-            bool validMove = false;
+            //int y = height / 2;
+            int y = Random.Range(1, height - 1);
+            int x = 1;
+            int loops = Random.Range(minLoops, maxLoops + 1);
 
-            while (!validMove)
+            while (x < width - 1)
             {
-                int move = Random.Range(0, 3);
+                pathCells.Add(new Vector2Int(x, y));
 
-                if (move == 0 || x == 1 || x % 2 == 0 || x > (width - 2))
-                {
-                    x++;
-                    validMove = true;
-                }
-                else if (move == 1 && CellIsEmpty(x, y + 1) && y < (height - 2))
-                {
-                    y++;
-                    validMove = true;
-                }
+                bool validMove = false;
 
-                else if (move == 2 && CellIsEmpty(x, y - 1) && y > 1)
+                while (!validMove)
                 {
-                    y--;
-                    validMove = true;
+                    int move = Random.Range(0, 3);
+
+                    if (move == 0 || x == 1 || x % 2 == 0 || x > (width - 2))
+                    {
+                        x++;
+                        validMove = true;
+                    }
+                    else if (move == 1 && CellIsEmpty(x, y + 1) && y < (height - 2))
+                    {
+                        y++;
+                        validMove = true;
+                    }
+
+                    else if (move == 2 && CellIsEmpty(x, y - 1) && y > 1)
+                    {
+                        y--;
+                        validMove = true;
+                    }
                 }
             }
-        }
 
-        if (addLoops)
+            if (addLoops)
+            {
+                AddLoops(loops);
+            }
+
+            return pathCells;
+        }*/
+
+    public List<Vector2Int> GeneratePath(int maxAttempts, int minPathLength, int maxPathLength)
+    {
+        for (int attempt = 0; attempt < maxAttempts; attempt++)
         {
-            AddLoops(loops);
+            path = new HashSet<Vector2Int>();
+            List<Vector2Int> pathList = new();
+
+            // Стартовая точка
+            Vector2Int current = new Vector2Int(1, Random.Range(1, height - 1));
+            path.Add(current);
+            pathList.Add(current);
+
+            // Первый шаг ВПРАВО
+            Vector2Int firstStep = current + Vector2Int.right;
+            path.Add(firstStep);
+            pathList.Add(firstStep);
+            current = firstStep;
+
+            // Основной цикл
+            while (current.x < width - 2)
+            {
+                List<Vector2Int> options = GetSafeDirections(current);
+
+                if (options.Count == 0)
+                {
+                    ///Debug.Log("Тупик, остановка пути");
+                    break;
+                }
+
+                Vector2Int chosen = ChooseBiasedDirection(options);
+                current += chosen;
+
+                path.Add(current);
+                pathList.Add(current);
+            }
+
+            int pathSize = pathList.Count;
+
+            // Проверяем, достиг ли правого края и входит ли длина в допустимый диапазон
+            if (current.x >= width - 2 && pathSize >= minPathLength && pathSize <= maxPathLength)
+            {
+                Debug.Log($"Успешно сгенерирован путь длиной {pathSize} на попытке {attempt + 1}");
+                return pathList;
+            }
+            /*else
+            {
+                Debug.Log($"Попытка {attempt + 1}: путь не подходит (X={current.x}, длина={pathSize}), пробуем снова.");
+            }*/
         }
 
-        return pathCells;
+        Debug.LogWarning("Не удалось сгенерировать путь, достигающий правого края за максимальное количество попыток.");
+        return new List<Vector2Int>(); // Возвращаем пустой путь
     }
+
+    private List<Vector2Int> GetSafeDirections(Vector2Int current)
+    {
+        List<Vector2Int> dirs = new()
+        {
+            Vector2Int.right,
+            Vector2Int.up,
+            Vector2Int.down,
+            Vector2Int.left
+        };
+
+        List<Vector2Int> result = new();
+
+        foreach (var dir in dirs)
+        {
+            Vector2Int next = current + dir;
+
+            if (!InBounds(next) || path.Contains(next) || HasAdjacentPath(next, current))
+                continue;
+
+            if (HasFutureOptions(next))
+                result.Add(dir);
+            /*else
+                Debug.Log($"Отклонено: {next} — нет будущих опций");*/
+        }
+
+        /*if (result.Count == 0)
+            Debug.Log($"Тупик в точке: {current}");*/
+
+        return result;
+    }
+
+    private bool InBounds(Vector2Int cell)
+    {
+        bool inside = cell.x >= 1 && cell.x < width - 1 && cell.y >= 1 && cell.y < height - 1;
+        /*if (!inside)
+            Debug.Log($"{cell} — вне границ поля");*/
+        return inside;
+    }
+
+    private bool HasAdjacentPath(Vector2Int cell, Vector2Int previousCell)
+    {
+        foreach (var dir in directions)
+        {
+            Vector2Int neighbor = cell + dir;
+            if (!InBounds(neighbor)) continue;
+            if (path.Contains(neighbor))
+            {
+                if (neighbor == previousCell) continue; // разрешаем соседство только с предыдущей клеткой
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private bool HasFutureOptions(Vector2Int next)
+    {
+        //Debug.Log($"Проверка будущих ходов из клетки: {next}");
+
+        foreach (var dir in directions)
+        {
+            Vector2Int neighbor = next + dir;
+
+            if (!InBounds(neighbor))
+            {
+                //Debug.Log($"{neighbor} — вне границ");
+                continue;
+            }
+
+            if (path.Contains(neighbor))
+            {
+                //Debug.Log($"{neighbor} — уже входит в путь");
+                continue;
+            }
+
+            if (HasAdjacentPath(neighbor, next))
+            {
+                //Debug.Log($"{neighbor} — слишком близко к существующему пути");
+                continue;
+            }
+
+            //Debug.Log($"{neighbor} — допустимый следующий шаг");
+            return true;
+        }
+
+        //Debug.Log("Нет допустимых направлений — тупик!");
+        return false;
+    }
+
+
+    private Vector2Int ChooseBiasedDirection(List<Vector2Int> options)
+    {
+        List<(Vector2Int dir, float weight)> weighted = new();
+
+        foreach (var dir in options)
+        {
+            float weight = dir == Vector2Int.right ? 0.6f :
+                           dir == Vector2Int.left ? 0.05f :
+                           0.175f;
+
+            weighted.Add((dir, weight));
+        }
+
+        return WeightedRandomChoice(weighted);
+    }
+
+    private Vector2Int WeightedRandomChoice(List<(Vector2Int dir, float weight)> options)
+    {
+        float total = options.Sum(o => o.weight);
+        float r = Random.Range(0f, total);
+        float cumulative = 0f;
+
+        foreach (var option in options)
+        {
+            cumulative += option.weight;
+            if (r <= cumulative)
+                return option.dir;
+        }
+
+        return options.Last().dir;
+    }
+
 
     public Tuple<List<Vector2Int>, List<Vector2Int>> GenerateRoute()
     {
@@ -226,7 +413,7 @@ public class PathGenerator
         return pathCells.Contains(cell);
     }
 
-    public int getCellNeighbourValue(int x, int y)
+    public int GetCellNeighbourValue(int x, int y)
     {
         int returnValue = 0;
 
