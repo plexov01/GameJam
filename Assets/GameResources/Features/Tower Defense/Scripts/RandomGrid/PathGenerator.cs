@@ -13,7 +13,6 @@ public class PathGenerator
     private List<Vector2Int> route;
     private List<Vector2Int> routeDirection;
     private HashSet<Vector2Int> path;
-    //private List<Vector2Int> pathCells;
 
     private Vector2Int[] directions = new Vector2Int[]
     {
@@ -31,55 +30,11 @@ public class PathGenerator
         this.height = height;
     }
 
-    /*    public List<Vector2Int> GeneratePath(bool addLoops, int minLoops, int maxLoops)
-        {
-            pathCells = new List<Vector2Int>();
-            loopCount = 0;
-
-            //int y = height / 2;
-            int y = Random.Range(1, height - 1);
-            int x = 1;
-            int loops = Random.Range(minLoops, maxLoops + 1);
-
-            while (x < width - 1)
-            {
-                pathCells.Add(new Vector2Int(x, y));
-
-                bool validMove = false;
-
-                while (!validMove)
-                {
-                    int move = Random.Range(0, 3);
-
-                    if (move == 0 || x == 1 || x % 2 == 0 || x > (width - 2))
-                    {
-                        x++;
-                        validMove = true;
-                    }
-                    else if (move == 1 && CellIsEmpty(x, y + 1) && y < (height - 2))
-                    {
-                        y++;
-                        validMove = true;
-                    }
-
-                    else if (move == 2 && CellIsEmpty(x, y - 1) && y > 1)
-                    {
-                        y--;
-                        validMove = true;
-                    }
-                }
-            }
-
-            if (addLoops)
-            {
-                AddLoops(loops);
-            }
-
-            return pathCells;
-        }*/
-
     public List<Vector2Int> GeneratePath(int maxAttempts, int minPathLength, int maxPathLength)
     {
+        int deadEndPathCount = 0;
+        int shortPathCount = 0;
+
         for (int attempt = 0; attempt < maxAttempts; attempt++)
         {
             path = new HashSet<Vector2Int>();
@@ -104,10 +59,11 @@ public class PathGenerator
                 if (options.Count == 0)
                 {
                     ///Debug.Log("Тупик, остановка пути");
+                    deadEndPathCount++;
                     break;
                 }
 
-                Vector2Int chosen = ChooseBiasedDirection(options);
+                Vector2Int chosen = ChooseBiasedDirection(options, pathList.Count, minPathLength);
                 current += chosen;
 
                 path.Add(current);
@@ -119,16 +75,19 @@ public class PathGenerator
             // Проверяем, достиг ли правого края и входит ли длина в допустимый диапазон
             if (current.x >= width - 2 && pathSize >= minPathLength && pathSize <= maxPathLength)
             {
-                Debug.Log($"Успешно сгенерирован путь длиной {pathSize} на попытке {attempt + 1}");
+                Debug.Log($"Успешно сгенерирован путь длиной {pathSize} на попытке {attempt + 1}\n" +
+                    $"Тупиковых: {deadEndPathCount}, коротких {shortPathCount - deadEndPathCount}");
                 return pathList;
             }
-            /*else
+            else
             {
-                Debug.Log($"Попытка {attempt + 1}: путь не подходит (X={current.x}, длина={pathSize}), пробуем снова.");
-            }*/
+                shortPathCount++;
+                //Debug.Log($"Попытка {attempt + 1}: путь не подходит (X={current.x}, длина={pathSize}), пробуем снова.");
+            }
         }
 
-        Debug.LogWarning("Не удалось сгенерировать путь, достигающий правого края за максимальное количество попыток.");
+        Debug.LogWarning($"Не удалось сгенерировать путь, достигающий правого края за {maxAttempts} попыток.");
+        Debug.Log($"Тупиковых: {deadEndPathCount}, коротких {shortPathCount - deadEndPathCount}");
         return new List<Vector2Int>(); // Возвращаем пустой путь
     }
 
@@ -221,38 +180,49 @@ public class PathGenerator
     }
 
 
-    private Vector2Int ChooseBiasedDirection(List<Vector2Int> options)
+    private Vector2Int ChooseBiasedDirection(List<Vector2Int> options, int currentLength, int minPathLength)
     {
-        List<(Vector2Int dir, float weight)> weighted = new();
+        Dictionary<Vector2Int, float> weights = new();
+
+        int diff = minPathLength - currentLength;
+
+        // Кривая усиливающего веса: чем больше diff, тем сильнее boost
+        // Можно подобрать по вкусу: exp, логистика и т.п.
+        float boost = diff > 0 ? Mathf.Clamp01(1f / (1f + Mathf.Exp(-0.5f * (diff - 5)))) : 0f;
 
         foreach (var dir in options)
         {
-            float weight = dir == Vector2Int.right ? 0.6f :
-                           dir == Vector2Int.left ? 0.05f :
-                           0.175f;
+            float weight = 1f;
 
-            weighted.Add((dir, weight));
+            if (dir == Vector2Int.right)
+            {
+                weight = 3f;
+            }
+            else if (dir == Vector2Int.left)
+            {
+                weight = 0.5f + 2.0f * boost; // до +2.5 при сильном отставании
+            }
+            else if (dir == Vector2Int.up || dir == Vector2Int.down)
+            {
+                weight = 1f;
+            }
+
+            weights[dir] = weight;
         }
 
-        return WeightedRandomChoice(weighted);
-    }
+        // Выбор по весу
+        float totalWeight = weights.Values.Sum();
+        float rand = Random.value * totalWeight;
 
-    private Vector2Int WeightedRandomChoice(List<(Vector2Int dir, float weight)> options)
-    {
-        float total = options.Sum(o => o.weight);
-        float r = Random.Range(0f, total);
-        float cumulative = 0f;
-
-        foreach (var option in options)
+        foreach (var pair in weights)
         {
-            cumulative += option.weight;
-            if (r <= cumulative)
-                return option.dir;
+            rand -= pair.Value;
+            if (rand <= 0f)
+                return pair.Key;
         }
 
-        return options.Last().dir;
+        return options[Random.Range(0, options.Count)];
     }
-
 
     public Tuple<List<Vector2Int>, List<Vector2Int>> GenerateRoute()
     {

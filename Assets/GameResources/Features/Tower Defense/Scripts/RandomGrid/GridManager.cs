@@ -16,9 +16,6 @@ public class GridManager : MonoBehaviour
     [Header("Path parameters")]
     [SerializeField] private int minPathLength = 35;
     [SerializeField] private int maxPathLength = 50;
-    //[SerializeField] private int minLoops = 1;
-    //[SerializeField] private int maxLoops = 4;
-    //public bool addLoops;
     [SerializeField] private int maxAttempts = 1000000;
 
     [Header("Preset Settings")]
@@ -80,7 +77,6 @@ public class GridManager : MonoBehaviour
             pathCells = GenerateValidPath();
         }
 
-        //Debug.Log("pathCells: " + string.Join(", ", pathCells));
         StartCoroutine(CreateGrid(pathCells));
     }
 
@@ -122,8 +118,6 @@ public class GridManager : MonoBehaviour
 
     private List<Vector2Int> GenerateValidPath()
     {
-        //int iteration = 0;
-        //pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
         pathCells = pathGenerator.GeneratePath(maxAttempts, minPathLength, maxPathLength);
         pathGenerator.pathCells = pathCells;
         int pathSize = pathCells.Count;
@@ -133,41 +127,6 @@ public class GridManager : MonoBehaviour
             UseRandomPreset();
         }
 
-        /*if (addLoops)
-        {
-            while (pathSize < minPathLength || pathSize > maxPathLength || pathGenerator.loopCount < minLoops || pathGenerator.loopCount > maxLoops)
-            {
-                iteration++;
-                //pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
-                pathCells = pathGenerator.GeneratePath();
-                pathSize = pathCells.Count;
-
-                if (iteration >= maxAttempts)
-                {
-                    UseRandomPreset();
-                    break;
-                }
-            }
-        }
-        else
-        {
-            while (pathSize < minPathLength || pathSize > maxPathLength)
-            {
-                iteration++;
-                //pathCells = pathGenerator.GeneratePath(addLoops, minLoops, maxLoops);
-                pathCells = pathGenerator.GeneratePath();
-                pathGenerator.pathCells = pathCells;
-                pathSize = pathCells.Count;
-
-                if (iteration >= maxAttempts)
-                {
-                    //UseRandomPreset();
-                    break;
-                }
-            }
-        }
-
-        print("Path of length " + pathCells.Count + " generated at iteration " + iteration);*/
         Debug.Log("PathGenerator: pathCells = " + string.Join(", ", pathCells));
         return pathCells;
     }
